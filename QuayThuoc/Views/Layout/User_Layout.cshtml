@@ -1,0 +1,878 @@
+﻿@{
+    String title = "active";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>@ViewBag.Title - Pharmacity</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Rubik:400,700|Crimson+Text:400,400i" rel="stylesheet">
+    <link rel="stylesheet" href="~/Content/User_asset/fonts/icomoon/style.css">
+
+    <link rel="stylesheet" href="~/Content/User_asset/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/User_asset/css/magnific-popup.css">
+    <link rel="stylesheet" href="~/Content/User_asset/css/jquery-ui.css">
+    <link rel="stylesheet" href="~/Content/User_asset/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/Content/User_asset/css/owl.theme.default.min.css">
+    <link href="~/Content/admin/public/css/font-awesome.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="~/Content/User_asset/css/aos.css">
+
+    <link rel="stylesheet" href="~/Content/User_asset/css/style.css">
+    <link rel="stylesheet" href="~/Content/toast/style.css" />
+    <script src="~/Content/toast/cute-alert.js"></script>
+    <script src="~/Content/admin/public/js/moment.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <!-- Modal đăng nhập-->
+    <div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top:65px">
+
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Đăng Nhập</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-grow text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-secondary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-success" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-danger" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+
+                <div class="modal-body">
+                    <form class="form-signin col-lg-9" id="form-login" style="margin:auto">
+                        <h1 class="h3 mb-3 font-weight-normal">Vui lòng đăng nhập</h1>
+                        <label for="inputEmail" class="sr-only">Email</label>
+                        <input type="email" id="email" class="form-control" placeholder="Địa chi email" required="" autofocus="">
+                        <br />
+                        <label for="inputPassword" class="sr-only">Mật Khẩu</label>
+                        <input type="password" id="password" class="form-control" placeholder="Mật khẩu" required="">
+                        <br />
+                        <div class="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" value="remember-me" id="RememberAccount"> Nhớ tài khoản
+                            </label>
+                            <br />
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-block col-12" id="loginSubmit" type="submit">Đăng nhập</button>
+                        <p class="mt-5 mb-3 text-muted">Chưa có tài khoản? <a href="javascript:void(0)" class="register">Đăng kí nhanh</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Đăng kí-->
+    <div class="modal fade" id="register-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top:65px">
+
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Đăng kí</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-grow text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-secondary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-success" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <div class="spinner-grow text-danger" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+
+                <div class="modal-body">
+                    <form class="form-signin col-lg-9" id="form-register" style="margin:auto">
+                        <h1 class="h3 mb-3 font-weight-normal">Đăng kí nhanh</h1>
+                        <div class="form-group">
+                            <label for="tensp-edit">Tên người dùng</label>
+                            <input type="text" value="" class="form-control" id="UserName" placeholder="Tên người dùng">
+                        </div>
+                        <div class="form-group">
+                            <label for="tensp-edit">Email</label>
+                            <input type="email" value="" class="form-control" id="rs-email" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="tensp-edit">Mật khẩu</label>
+                            <input type="password" value="" class="form-control" id="rs-password" placeholder="Mật khẩu">
+                        </div>
+                        <div class="form-group">
+                            <label for="tensp-edit">Xác nhận mật khẩu</label>
+                            <input type="password" value="" class="form-control" id="rs-passwordC" placeholder="Mật khẩu">
+                        </div>
+                        <div class="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" id="check"> Đồng ý điều khoản sử dụng
+                            </label>
+                            <br />
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-primary">Đăng kí</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*-- Modal xem thông tin --*@
+    <div class="modal fade" id="modal-edit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <form action="" id="form-update" method="POST" role="form">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="Title"></h4>
+                        <button readonly type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="number" hidden id="id_nhanvien" />
+                        <input type="text" hidden id="cmnd" />
+                        <div class="form-group" id="lbl-MaNv">
+                            <label for="tensp-edit">Mã người dùng</label>
+                            <input type="text" value="" readonly class="form-control" id="MaNv" placeholder="Mã người dùng">
+                        </div>
+                        <div class="form-group">
+                            <label for="tensp-edit">Tên người dùng</label>
+                            <input type="text" value="" class="form-control" id="TenNv" placeholder="Tên người dùng">
+                        </div>
+                        <div class="form-group">
+                            <label for="tensp-edit">Email</label>
+                            <input type="email" value="" class="form-control" id="Email" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="tensp-edit">Địa Chỉ</label>
+                            <input type="text" value="" class="form-control" id="DiaChi" placeholder="Địa chỉ">
+                        </div>
+                        <div class="form-group">
+                            <label for="tensp-edit">Liên hệ(sdt)</label>
+                            <input type="text" value="" class="form-control" id="LienHe" placeholder="Liên hệ">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Giới tính</label>
+                            <select id="GioiTinh" class="form-control">
+                                <option selected value="0">--Chọn...</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                                <option value="Khác">Khác</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tensp-edit">Ngày sinh</label>
+                            <input type="date" value="" class="form-control" id="NgaySinh">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="cancel" data-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-default" id="edit">Cập nhật</button>
+                        <button type="submit" class="btn btn-primary" id="submit_edit">Xác nhận</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @*-- Modal đổi mật khẩu --*@
+    <div class="modal fade" id="modal-change">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <form action="" id="form-changePassword" method="POST" role="form">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="Title">Đổi mật khẩu</h4>
+                        <button readonly type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="number" hidden id="id_nhanviens" />
+                        <div class="form-group">
+                            <label for="Email">Email</label>
+                            <input type="email" value="" class="form-control" id="c-email" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="old-pass">Mật khẩu</label>
+                            <input type="password" value="" class="form-control" id="old-pass" placeholder="Mật khẩu cũ">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-pass">Mật khẩu mới</label>
+                            <input type="password" value="" class="form-control" id="new-pass" placeholder="Mật khẩu mới">
+                        </div>
+                        <div class="form-group">
+                            <label for="pass-confirm">Xác nhận mật khẩu</label>
+                            <input type="password" value="" class="form-control" id="pass-confirm" placeholder="Xác nhận mật khẩu">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">Xác Nhận</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="site-wrap">
+
+
+        <div class="site-navbar py-2">
+
+            <div class="search-wrap">
+                <div class="container">
+                    <a href="#" class="search-close js-search-close"><span class="icon-close2"></span></a>
+                    <form action="#" id="f-sr" method="get">
+                        <input type="text" class="form-control" id="sr" placeholder="Nhập tên thuốc cần tìm...">
+                    </form>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="logo">
+                        <div class="site-logo">
+                            <a href="/Home/Index" class="js-logo-clone">Pharmacity</a>
+                        </div>
+                    </div>
+                    <div class="main-nav d-none d-lg-block">
+                        <nav class="site-navigation text-right text-md-center" role="navigation">
+                            <ul class="site-menu js-clone-nav d-none d-lg-block">
+                                <li class="@if (ViewBag.Title == "Home") { @title } "><a href="/">Trang chủ</a></li>
+                                <li class="@if (ViewBag.Title == "Tin Tức") { @title; }">@Html.ActionLink("Tin Tức", "RSSFeed", "Home") </li>
+                                <li class="@if (ViewBag.Title == "Sản Phẩm") { @title; }"><a href="/Home/SanPham">Sản phẩm</a></li>
+                                <li class="@if (ViewBag.Title == "Giới Thiệu") { @title; }"><a href="/Home/GioiThieu">Giới Thiệu</a></li>
+                                <li><a href="#">Tuyển Dụng</a></li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="icons">
+                        <a href="#" class="icons-btn d-inline-block js-search-open"><span class="icon-search"></span></a>
+                        <a href="/Home/Cart" class="icons-btn d-inline-block bag">
+                            <span class="icon-shopping-bag"></span>
+                            <span class="number">0</span>
+                        </a>
+                        <a href="#" class="site-menu-toggle js-menu-toggle ml-3 d-inline-block d-lg-none">
+                            <span class="icon-menu"></span>
+                        </a>
+                    </div>
+
+                    <div class="icons" style="margin-left:20px" id="icons">
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        @RenderBody()
+
+        <div class="site-section">
+            <div class="container">
+                <div class="row">
+                    <div class="title-section text-center col-12">
+                        <h2 class="text-uppercase">Testimonials</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 block-3 products-wrap">
+                        <div class="nonloop-block-3 no-direction owl-carousel">
+
+                            <div class="testimony">
+                                <blockquote>
+                                    <img src="~/Content/User_asset/images/person_1.jpg" alt="Image" class="img-fluid w-25 mb-4 rounded-circle">
+                                    <p>&ldquo;Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo omnis voluptatem consectetur quam tempore obcaecati maiores voluptate aspernatur iusto eveniet, placeat ab quod tenetur ducimus. Minus ratione sit quaerat unde.&rdquo;</p>
+                                </blockquote>
+
+                                <p>&mdash; Kelly Holmes</p>
+                            </div>
+
+                            <div class="testimony">
+                                <blockquote>
+                                    <img src="~/Content/User_asset/images/person_2.jpg" alt="Image" class="img-fluid w-25 mb-4 rounded-circle">
+                                    <p>
+                                        &ldquo;Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo omnis voluptatem consectetur quam tempore
+                                        obcaecati maiores voluptate aspernatur iusto eveniet, placeat ab quod tenetur ducimus. Minus ratione sit quaerat
+                                        unde.&rdquo;
+                                    </p>
+                                </blockquote>
+
+                                <p>&mdash; Rebecca Morando</p>
+                            </div>
+
+                            <div class="testimony">
+                                <blockquote>
+                                    <img src="~/Content/User_asset/images/person_3.jpg" alt="Image" class="img-fluid w-25 mb-4 rounded-circle">
+                                    <p>
+                                        &ldquo;Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo omnis voluptatem consectetur quam tempore
+                                        obcaecati maiores voluptate aspernatur iusto eveniet, placeat ab quod tenetur ducimus. Minus ratione sit quaerat
+                                        unde.&rdquo;
+                                    </p>
+                                </blockquote>
+
+                                <p>&mdash; Lucas Gallone</p>
+                            </div>
+
+                            <div class="testimony">
+                                <blockquote>
+                                    <img src="~/Content/User_asset/images/person_4.jpg" alt="Image" class="img-fluid w-25 mb-4 rounded-circle">
+                                    <p>
+                                        &ldquo;Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nemo omnis voluptatem consectetur quam tempore
+                                        obcaecati maiores voluptate aspernatur iusto eveniet, placeat ab quod tenetur ducimus. Minus ratione sit quaerat
+                                        unde.&rdquo;
+                                    </p>
+                                </blockquote>
+
+                                <p>&mdash; Andrew Neel</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="site-section bg-secondary bg-image" style="background-image: url('../../Content/User_asset/images/bg_2.jpg');">
+            <div class="container">
+                <div class="row align-items-stretch">
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <a href="#" class="banner-1 h-100 d-flex" style="background-image: url('../../Content/User_asset/images/bg_1.jpg');">
+                            <div class="banner-1-inner align-self-center">
+                                <h2>Pharma Products</h2>
+                                <p>
+                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae ex ad minus rem odio voluptatem.
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <a href="#" class="banner-1 h-100 d-flex" style="background-image: url('../../Content/User_asset/images/bg_2.jpg');">
+                            <div class="banner-1-inner ml-auto  align-self-center">
+                                <h2>Rated by Experts</h2>
+                                <p>
+                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Molestiae ex ad minus rem odio voluptatem.
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <footer class="site-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+
+                        <div class="block-7">
+                            <h3 class="footer-heading mb-4">Về chúng tôi</h3>
+                            <p style="font-size:16px;">
+                                Ở Pharmacity, mỗi dược sỹ không chỉ có năng lực chuyên môn cao, luôn tận tâm với nghề mà còn được đào tạo và huấn luyện để hoàn thành xuất sắc những sứ mệnh được giao, giúp Pharmacity luôn xứng đáng với niềm tin của khách hàng, xứng đáng với niềm tự hào của Việt Nam.
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="col-lg-3 mx-auto mb-5 mb-lg-0">
+                        <h3 class="footer-heading mb-4">Liên kết hưu ích</h3>
+                        <ul class="list-unstyled">
+                            <li><a href="https://ncov.moh.gov.vn/web/guest/trang-chu">Tin tức bộ y tế về covid-19</a></li>
+                            <li><a href="#">Tư vấn y tế</a></li>
+                            <li><a href="#">Trở thành nhà cung cấp</a></li>
+                            <li><a href="#">Tuyển dụng</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-6 col-lg-3">
+                        <div class="block-5 mb-5">
+                            <h3 class="footer-heading mb-4">Thông tin liêc lạc</h3>
+                            <ul class="list-unstyled">
+                                <li class="address">Số 98, đường Dương Quảng Hàm, phường Quan Hoa, quận Cầu Giấy, Hà Nội</li>
+                                <li class="phone"><a href="tel://0983776901">+84983776901</a></li>
+                                <li class="email">pharmacity@moh.gov.vn</li>
+                            </ul>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="row pt-5 mt-5 text-center">
+                    <div class="col-md-12">
+                        <p>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;
+                            <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made
+                            with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank"
+                                                                                     class="text-primary">Colorlib</a>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="~/Content/User_asset/js/jquery-3.6.0.min.js"></script>
+    <script src="~/Content/User_asset/js/jquery-ui.js"></script>
+    <script src="~/Content/User_asset/js/popper.min.js"></script>
+    <script src="~/Content/User_asset/js/bootstrap.min.js"></script>
+    <script src="~/Content/User_asset/js/owl.carousel.min.js"></script>
+    <script src="~/Content/User_asset/js/jquery.magnific-popup.min.js"></script>
+    <script src="~/Content/User_asset/js/aos.js"></script>
+
+    <script src="~/Content/User_asset/js/main.js"></script>
+
+    <script type="text/javascript">
+
+        var Id_NhanVien = -1;
+        const formatter = new Intl.NumberFormat('vi-en', {
+            style: 'currency',
+            currency: 'VND',
+            minimumFractionDigits: 0
+        })
+
+        $('#document').ready(function () {
+            loadLogin();
+        });
+
+        $(document).on('click', "button[name='login']", function () {
+            $('#login-modal').modal('show');
+            $('#register-modal').modal('hide');
+            $('.spinner-grow').hide();
+        });
+
+        $(document).on('click', "button[name='register']", function () {
+            $('#register-modal').modal('show');
+            $('#login-modal').modal('hide');
+            $('.spinner-grow').hide();
+        });
+        $('.register').click(function () {
+            $('#register-modal').modal('show');
+            $('#login-modal').modal('hide');
+            $('.spinner-grow').hide();
+        })
+
+        function loadLogin() {
+            if (sessionStorage.getItem("email") != null) {
+                let htm = '<nav class="site-navigation text-right text-md-center" role="navigation">'
+                htm += '<ul class="site-menu js-clone-nav d-none d-lg-block">';
+                htm += '<li class="has-children">';
+                htm += '<a href="#">' + sessionStorage.getItem("Ten") + '</a>';
+                htm += '<ul class="dropdown">';
+                if ((sessionStorage.getItem("Id_ChucVu") != 5)) { htm += '<li><a href="/Admin/Index">Hệ thống bán hàng</a></li>'; }
+                htm += '<li><a href="#" name="detail">Thông Tin</a></li>';
+                htm += '<li><a href="#" name="change-pass">Đổi mật khẩu</a></li>';
+                htm += '<li><a href="#" name="logout">Đăng Xuất</a></li>';
+                htm += '</ul>';
+                htm += '</li>';
+                htm += '</ul>';
+                htm += '</nav>';
+                $('#icons').html(htm);
+                Id_NhanVien = sessionStorage.getItem("Id_NhanVien")
+                loadCart();
+            } else {
+                let htm = '<button type="button" style="margin-right:10px;" class="btn btn-outline-danger" name="login">Đăng nhập</button>';
+                htm += '<button type="button" class="btn btn-outline-danger" name="register">Đăng kí</button>';
+                $('#icons').html(htm);
+            }
+        }
+
+        function loadCart() {
+            $.ajax({
+                type: 'GET',
+                url: '/Order/LoadCart',
+                data: {
+                    Id_NhanVien: sessionStorage.getItem("Id_NhanVien"),
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data.data.length > 0) {
+                        $('#cart').empty();
+                        TongDonHang = 0;
+                        TongGiamGia = 0;
+                        $('.number').html(data.data.length);
+                        $.each(data.data, function (k, v) {
+                            let html = '<tr id="' + v.Id_KhoHang + '">'
+                            html += '<td class="product-thumbnail"><img src="../../Content/User_asset/images/' + v.HinhAnh + '" alt="Image" class="img-fluid"></td>'
+                            html += '<td class="product-name"><h2 class="h5 text-black">' + v.TenSp + '</h2></td>'
+                            html += '<td>' + formatter.format(v.GiaBan) + '</td>'
+                            html += '<td><div class="input-group mb-3" style="max-width: 140px;">'
+                            html += '<div class="input-group-prepend">'
+                            html += '<button class="btn btn-outline-primary js-btn-minus" name="minus" type="button">&minus;</button>'
+                            html += '</div>'
+                            html += '<input type="text" id="sl-sp' + v.Id_KhoHang + '" readonly class="form-control text-center" value="' + v.SoLuong + '">'
+                            html += '<div class="input-group-append">'
+                            html += '<button class="btn btn-outline-primary js-btn-plus" name="plus" type="button">&plus;</button>'
+                            html += '</div>'
+                            html += '</div>'
+                            html += '</td>'
+                            html += '<td>' + formatter.format(v.TongTien) + '</td>'
+                            html += '<td><a href="#" class="btn btn-primary height-auto btn-sm " name="delete">X</a></td>'
+                            html += '</tr>'
+                            $('#cart').append(html);
+
+                            TongDonHang += v.TongTien;
+                            TongGiamGia += v.GiamGia;
+
+                            $('#GiamGia').html(formatter.format(TongGiamGia));
+                            $('#TongTien').html(formatter.format(TongDonHang));
+                        })
+                    } else {
+                        $('#cart-container').empty();
+                        $('#cart-container').html('<h2>Đơn hàng trống</h2>');
+                    }
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        }
+
+        $('#form-login').submit(function (e) {
+            e.preventDefault();
+            $('.spinner-grow').show();
+            var data = {
+                email: $('#email').val(),
+                pass: $('#password').val(),
+
+            };
+            $.ajax({
+                type: 'Post',
+                url: '/Login/Login',
+                data: data,
+                success: function (data) {
+                    console.log(data)
+                    if (data.code == 200) {
+                        $('.spinner-grow').hide();
+                        console.log(data)
+                        sessionStorage.setItem("Id_NhanVien", data.data.Id);
+                        sessionStorage.setItem("MaNV", data.data.MaNV);
+                        sessionStorage.setItem("Ten", data.data.Ten);
+                        sessionStorage.setItem("email", data.data.email);
+                        sessionStorage.setItem("ChucVu", data.data.ChucVu);
+                        sessionStorage.setItem("Id_ChucVu", data.data.Id_ChucVu);
+
+                        if (data.data.Id_ChucVu != 5) window.location = "/Admin/Index";
+
+                        $('#login-modal').modal('hide');
+                        loadLogin();
+                    } else {
+                        $('.spinner-grow').hide();
+                        cuteToast({
+                            type: "error", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+                        //alert(data.msg)
+                        $('#password').val("");
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        })
+
+        $('#form-register').submit(function (e) {
+            e.preventDefault();
+            var rs_Ten = $('#UserName').val();
+            var rs_email = $('#rs-email').val();
+            var rs_password = $('#rs-password').val();
+            var passCofirm = $('#rs-passwordC').val();
+
+            var ck = $('#check').is(":checked");
+
+            if (rs_Ten == "" || rs_email == "" || rs_password == "" || passCofirm == "") {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Không được để trống thông tin!",
+                    timer: 5000
+                });
+                return;
+            }
+            if (rs_password != passCofirm) {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Mật khẩu xác nhận không đúng!",
+                    timer: 5000
+                });
+                return;
+            }
+            if (!ck) {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Vui lòng đồng ý điều kiện sử dụng!",
+                    timer: 5000
+                });
+                return;
+            }
+
+            var rs_diachi = "undefined";
+            var rs_lienhe = "undefined";
+            var rs_gioitinh = "undefined";
+            var rs_ngaysinh = moment().format("YYYY-MM-DD");
+            var rs_CMND = "undefined";
+
+            $('.spinner-grow').show();
+            $.ajax({
+                type: 'Post',
+                url: '/NhanVien/Create',
+                data: {
+                    TenNv: rs_Ten,
+                    Email: rs_email,
+                    Password: rs_password,
+                    DiaChi: rs_diachi,
+                    LienHe: rs_lienhe,
+                    GioiTinh: rs_gioitinh,
+                    NgaySinh: rs_ngaysinh,
+                    CMND: rs_CMND,
+                    Id_ChucVu: 5,
+                    user: true,
+                }, success: function (data) {
+                    if (data.code == 200) {
+                        console.log(data)
+                        cuteToast({
+                            type: "success", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+                        $('.spinner-grow').hide();
+                        $('#login-modal').modal('show');
+                        $('#register-modal').modal('hide');
+                    } else {
+                        cuteToast({
+                            type: "error", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+                    }
+
+                }, error: function (error) { console.log(error) }
+            })
+
+        })
+
+
+        $(document).on('click', "a[name='logout']", function () {
+            cuteAlert({
+                type: "question",
+                title: "Đăng Xuất",
+                message: "Bạn Có Muốn Đăng Xuất Không?",
+                confirmText: "Đồng Ý",
+                cancelText: "Hủy"
+            }).then((e) => {
+                if (e == ("confirm")) {
+                    sessionStorage.clear();
+                    loadLogin();
+                    loadCart();
+                } else {
+                    return;
+                }
+            })
+        });
+
+        $(document).on('click', 'a[name="detail"]', function (e) {
+            e.preventDefault();
+            $('#modal-edit').modal('show');
+            $('#Title').html('Thông tin người dùng');
+            $('#submit_edit').hide();
+            $('#edit').show();
+            $('#lbl-MaNv').show();
+            $('#TenNv').attr('readonly', true);
+            $('#Email').attr('readonly', true);
+            $('#DiaChi').attr('readonly', true);
+            $('#LienHe').attr('readonly', true);
+            $('#GioiTinh').attr('disabled', true);
+            $('#NgaySinh').attr('readonly', true);
+
+            $.ajax({
+                type: 'Get',
+                url: '/NhanVien/Detail',
+                data: {
+                    id: sessionStorage.getItem("Id_NhanVien"),
+                },
+                success: function (data) {
+                    console.log(data)
+                    $('#id_nhanvien').val(data.data.Id);
+                    $('#cmnd').val(data.data.CMND);
+                    $('#MaNv').val(data.data.MaNv);
+                    $('#TenNv').val(data.data.TenNv);
+                    $('#Email').val(data.data.Email);
+                    $('#DiaChi').val(data.data.DiaChi);
+                    $('#LienHe').val(data.data.LienHe);
+                    $('#GioiTinh').val(data.data.GioiTinh);
+                    $('#NgaySinh').val(moment(data.data.NgaySinh).format("YYYY-MM-DD"));
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        })
+
+        $(document).on('click', 'button[id="edit"]', function () {
+            $('#modal-edit').modal('show');
+            $('#Title').html('Cập Nhật Nhân Viên');
+            $('#submit_edit').show();
+            $('#edit').hide();
+            $('#lbl-MaNv').hide();
+            $('#TenNv').attr('readonly', false);
+            $('#Email').attr('readonly', false);
+            $('#DiaChi').attr('readonly', false);
+            $('#LienHe').attr('readonly', false);
+            $('#GioiTinh').attr('disabled', false);
+            $('#NgaySinh').attr('readonly', false);
+
+        })
+
+        $('#form-update').submit(function (e) {
+            e.preventDefault();
+
+            let TenNv = $('#TenNv').val();
+            let Email = $('#Email').val();
+            let DiaChi = $('#DiaChi').val();
+            let LienHe = $('#LienHe').val();
+            let GioiTinh = $('#GioiTinh').val();
+            let NgaySinh = moment($('#NgaySinh').val()).format("YYYY-MM-DD");
+            let CMND = $('#cmnd').val();
+            let ChucVu = -1;
+
+            if (TenNv == "" || Email == "" || NgaySinh == "" || GioiTinh == "" || ChucVu == null) {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Không được để trống thông tin!",
+                    timer: 5000
+                });
+                return;
+            }
+            let id = $('#id_nhanvien').val();
+            $.ajax({
+                type: 'Post',
+                url: '/NhanVien/Update',
+                data: {
+                    Id: id,
+                    TenNv: TenNv,
+                    Email: Email,
+                    DiaChi: DiaChi,
+                    LienHe: LienHe,
+                    GioiTinh: GioiTinh,
+                    NgaySinh: NgaySinh,
+                    CMND: CMND,
+                    Id_ChucVu: ChucVu,
+                },
+                success: function (data) {
+                    console.log(data)
+                    cuteToast({
+                        type: "success", // or 'info', 'error', 'warning'
+                        message: data.msg,
+                        timer: 5000
+                    });
+                    $('#modal-edit').modal('hide');
+                    loadData(pageIndex, TimKiem, Id_ChucVu);
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        })
+
+        $(document).on('click', "a[name='change-pass']", function () {
+            $('#modal-change').modal('show');
+            $('#id_nhanviens').val(sessionStorage.getItem("Id_NhanVien"));
+        });
+
+        $('#form-changePassword').submit(function (e) {
+            e.preventDefault();
+            let id = $('#id_nhanviens').val();
+            let Email = $('#c-email').val();
+            let O_Pass = $('#old-pass').val();
+            let N_Pass = $('#new-pass').val();
+            let C_Pass = $('#pass-confirm').val();
+
+            if (Email == "" || O_Pass == "" || N_Pass == "" || C_Pass == "") {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Không được để trống thông tin!",
+                    timer: 5000
+                });
+                return;
+            }
+
+            if (N_Pass.length < 8 || C_Pass.length < 8) {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Mật khẩu mới quá ngắn!",
+                    timer: 5000
+                });
+                return;
+            }
+            if (N_Pass != C_Pass) {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Mật khẩu xác nhận không trùng khớp!",
+                    timer: 5000
+                });
+                return;
+            }
+            $.ajax({
+                type: 'post',
+                url: '/NhanVien/ChangePassword',
+                data: {
+                    Id: id,
+                    Email: Email,
+                    PasswordConfirm: O_Pass,
+                    Password: N_Pass,
+                },
+                success: function (data) {
+                    console.log(data)
+                    if (data.code == 200) {
+                        cuteToast({
+                            type: "success", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+                        $('#modal-change').modal('hide');
+                        sessionStorage.clear();
+                        loadLogin();
+                    } else {
+                        cuteToast({
+                            type: "error", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+                    }
+                    
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        })
+
+        $("#f-sr").submit(function (e) {
+            e.preventDefault();
+            let value = $('#sr').val();
+            if (value.length > 0) {
+                window.location = "/Home/SanPham?name=" + value;
+                //alert(value);
+            }
+        })
+
+
+    </script>
+
+    @RenderSection("scripts", required: false)
+
+</body>
+
+</html>

@@ -1,0 +1,587 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Layout/Admin_Layout.cshtml";
+}
+
+<div class="page-header">
+    <h3 class="page-title">
+        <span class="page-title-icon bg-gradient-primary text-white mr-2">
+            <i class="mdi mdi-store-24-hour"></i>
+        </span> Quầy thuốc
+    </h3>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <button class="btn btn-outline-info" id="khohang">Sản phẩm</button>
+                <button type="button" class="btn btn-outline-info" id="donhang">
+                    Đơn hàng <span class="soluong badge bg-danger">0</span>
+                    <span class="sr-only">unread messages</span>
+                </button>
+                <br />
+                <br />
+                <br />
+                <div class="table-responsive" id="khohangDT">
+
+                    <form class="form-inline" style="margin-bottom:15px;">
+
+                        <div class="form-group mx-sm-3 mb-2" style="margin-top:5px;">
+                            <label for="search" class="sr-only">search</label>
+                            <input type="text" class="form-control" id="search" name="search" placeholder="Tìm kiếm sản phẩm">
+                        </div>
+                        <button type="button" id="btn-search" class="btn btn-outline-info"><i class="fa fa-search" aria-hidden="true"></i></button>
+
+                        <div class="form-group mx-sm-5 mb-2">
+                            <label for="inputState" style="margin-right:10px;">Loại Sản Phẩm</label>
+                            <select class="custom-select mr-sm-4" id="loaisp">
+                                <option selected value="-1">Tất cả sản phẩm</option>
+                                @foreach (var item in ViewBag.LoaiSp)
+                                {
+                                    <option value="@item.Id_LoaiSP">@item.TenLoaiSP</option>
+                                }
+                            </select>
+                        </div>
+                    </form>
+
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Mã Hàng</th>
+                                <th scope="col">Tên Sản Phẩm</th>
+                                <th scope="col">Số Lượng</th>
+                                <th scope="col">Giá Bán</th>
+                                <th scope="col">Giảm Giá</th>
+                                <th class="text-center">Thêm Vào Đơn</th>
+                            </tr>
+                        </thead>
+                        <tbody id="spKhohang">
+                        </tbody>
+                    </table>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center" id="pagination">
+                        </ul>
+                    </nav>
+                </div>
+                <div class="table-responsive" id="donhangDT">
+                    <form class="form-inline" style="float:left;margin-bottom:20px;">
+                        <div class="form-group mx-sm-3 mb-2">
+                            <label for="inputState" style="margin-right:10px;">Khách hàng</label>
+                            <select class="custom-select mr-sm-5" id="KhachHang" style="width:280px;">
+                            </select>
+                        </div>
+                        <button type="button" id="themKH" class="btn btn-outline-primary" style="margin:0px 80px 8px 0px;"><i class="fa fa-plus" aria-hidden="true"></i></button>
+
+
+                        <div class="form-group mb-2">
+                            <label style="margin-right:20px;font-size:18px;">Tổng thanh toán (<span class="soluong">0</span>&nbsp; sản phẩn):&nbsp;<span style="margin-right:5px;font-size:20px;color:#FF0000" id="TongTien">0</span></label>
+                        </div>
+                        <button type="button" class="btn btn-outline-danger" style="margin: 10px 0px 10px 100px;" id="ThanhToan">Thanh Toán</button>
+                        <button type="button" class="btn btn-outline-danger" style="margin: 10px 0px 10px 40px;" id="HuyDonHang">Hủy Đơn</button>
+                    </form>
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Mã Hàng</th>
+                                <th scope="col">Tên Sản Phẩm</th>
+                                <th scope="col">Giá Bán</th>
+                                <th scope="col">Giảm Giá</th>
+                                <th scope="col">Số Lượng</th>
+                                <th scope="col">Tổng Tiền</th>
+                                <th class="text-center">Xử lý</th>
+                            </tr>
+                        </thead>
+                        <tbody id="spDonhang">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*-- Modal thêm khách hàng --*@
+<div class="modal fade" id="KH-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form action="" id="form-KH" role="form">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="Title_sp">Khách Hàng Mới</h4>
+                    <button readonly type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="tensp-edit">Tên khách hàng</label>
+                        <input name="TenSp" type="text" value="" class="form-control" id="kh-Ten" placeholder="Tên khách hàng">
+                    </div>
+                    <div class="form-group">
+                        <label for="tensp-edit">Địa chỉ</label>
+                        <input name="TenSp" type="text" value="" class="form-control" id="kh-DiaChi" placeholder="Địa chỉ">
+                    </div>
+                    <div class="form-group">
+                        <label for="tensp-edit">Liên hệ</label>
+                        <input name="TenSp" type="text" value="" class="form-control" id="kh-LienHe" placeholder="Liên hệ">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Xác Nhận</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts {
+
+    <script type="text/javascript">
+
+        var timkiem = '';
+        var loaisp = -1;
+        var pageIndex = 1;
+        var TongTien = 0;
+        var total = 0;
+        const formatter = new Intl.NumberFormat('vi-en', {
+            style: 'currency',
+            currency: 'VND',
+            minimumFractionDigits: 0
+        })
+
+        $(document).ready(function () {
+            loadData(timkiem, loaisp, pageIndex);
+            $('#khohang').button('toggle');
+            $('#khohang').css('pointer-events', 'none');
+            $('#khohangDT').show();
+            $('#donhangDT').hide();
+            $('#KhachHang').select2();
+        })
+
+        function loadData(timkiem, loaisp, pageIndex) {
+            $.ajax({
+                type: "GET",
+                url: "/KhoHang/LayDuLieuKhoHang",
+                data: {
+                    Id_NhanVien: Id_NhanVien,
+                    Id_LoaiSp: loaisp,
+                    TimKiem: timkiem,
+                    pageIndex: pageIndex,
+                },
+                success: function (data) {
+                    TongTien = 0;
+                    console.log(data);
+                    $('#spKhohang').empty();
+                    $('#spDonhang').empty();
+                    $('.soluong').text(data.donhang.length)
+                    if (data.khohang.length > 0) {
+                        $.each(data.khohang, function (k, v) {
+                            let html = '<tr id="' + v.Id + '">'
+                            html += '<td>' + k + '</td>'
+                            html += '<td>' + v.MaHang + '</td>'
+                            html += '<td>' + v.TenSp + '</td>'
+                            html += '<td>' + v.SoLuong + '</td>'
+                            html += '<td>' + v.GiaBan + '</td>'
+                            html += '<td>' + v.GiamGia + '</td>'
+                            html += '<td style="max-width:150px;" class="text-center">'
+                            html += '<button type="button" name="add" class="btn btn-info btn-show"><i class="fa fa-plus" aria-hidden="true"></i></button>'
+                            html += '</td>'
+                            html += '</tr>'
+                            $('#spKhohang').append(html);
+                        })
+
+                        if (data.soTrang > 1) {
+                            let li = '';
+                            if (pageIndex > 1) li += '<li class="page-item" ><a class="page-link" href ="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+                            for (i = 1; i <= data.soTrang; i++) {
+                                if (i == pageIndex) li += '<li class="page-item" ><a class="page-link" href="#" style="background-color: #92a8d1;pointer-events: none;">' + i + '</a></li>'
+                                else li += '<li class="page-item" ><a class="page-link" href="#">' + i + '</a></li>'
+                            }
+                            if (pageIndex < data.soTrang) li += '<li class="page-item"><a class="page-link" href ="#" aria-label="Next" id="Next"><span aria-hidden="true">&raquo;</span></a></li>'
+                            $('#pagination').html(li);
+
+                        } else {
+                            let li = '<li class="page-item"><a class="page-link" href="#">1</a></li>'
+                            $('#pagination').html(li);
+                        }
+
+                    } else {
+                        let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                        $('#spKhohang').append(html);
+                    }
+                    if (data.donhang.length > 0) {
+                        total = data.donhang.length;
+                        TongTien = 0;
+                        $.each(data.donhang, function (k, v) {
+                            let html = '<tr id="' + v.Id_KhoHang + '">'
+                            html += '<td>' + k + '</td>'
+                            html += '<td>' + v.MaHang + '</td>'
+                            html += '<td>' + v.TenSp + '</td>'
+                            html += '<td>' + v.GiaBan + '</td>'
+                            html += '<td>' + v.GiamGia + '</td>'
+                            html += '<td><input type="number" class="form-control" name="SoLuongSp" id="SoLuongSp" value="' + v.SoLuong + '" min="0"</td>'
+                            html += '<td>' + v.TongTien + '</td>'
+                            html += '<td style="max-width:150px;" class="text-center">'
+                            html += '<button data-url="" type="button" name="delete" class="btn btn-danger btn-delete"><i class="fa fa-trash"></i></button>'
+                            html += '</td>'
+                            html += '</tr>'
+                            $('#spDonhang').append(html);
+
+                            TongTien += v.TongTien;
+                        })
+
+                        $('#TongTien').html(formatter.format(TongTien));
+                    } else {
+                        let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+
+                        $('#spDonhang').append(html);
+                    }
+
+                    if (data.KhachHang.length > 0) {
+                        $('#KhachHang').empty();
+                        let html = '<option selected value="-1">Chọn khách hàng...</option>'
+                        $.each(data.KhachHang, function (index, item) {
+                            html += '<option value="' + item.Id_KhachHang + '"> ' + item.TenKhachHang + ' ( ' + item.LienHe + ' )</option>'
+                        })
+                        $('#KhachHang').html(html);
+                    }
+
+
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        }
+
+        $('#pagination').on('click', 'li', function (e) {
+            e.preventDefault();
+            var p = $(this).text();
+            if (p == '«') {
+                pageIndex--;
+                loadData(timkiem, loaisp, pageIndex);
+            } else if (p == '»') {
+                pageIndex++;
+                loadData(timkiem, loaisp, pageIndex);
+            } else {
+                pageIndex = p;
+                loadData(timkiem, loaisp, pageIndex);
+            }
+
+        })
+
+        $('#khohang').click(function () {
+            $('#khohangDT').show();
+            $('#donhangDT').hide();
+
+            $('#khohang').css('pointer-events', 'none');
+            $('#donhang').css('pointer-events', 'auto');
+
+            $('#khohang').button('toggle');
+            $('#donhang').button('toggle');
+        })
+
+        $('#donhang').click(function () {
+            $('#donhang').button('toggle');
+            $('#khohang').button('toggle');
+
+            $('#donhang').css('pointer-events', 'none');
+            $('#khohang').css('pointer-events', 'auto');
+
+            $('#donhangDT').show();
+            $('#khohangDT').hide();
+
+
+        })
+
+        $('#btn-search').click(function () {
+            timkiem = $('#search').val();
+            loaisp = $('#loaisp').val();
+
+            loadData(timkiem, loaisp, pageIndex);
+        })
+
+        $('#loaisp').change(function () {
+            timkiem = $('#search').val();
+            loaisp = $('#loaisp').val();
+
+            loadData(timkiem, loaisp, pageIndex);
+        })
+
+        $(document).on('click', 'button[name="add"]', function () {
+            let id = $(this).closest('tr').attr('id');
+            $.ajax({
+                type: 'post',
+                url: '/DonHang/ThemDonHang',
+                data: {
+                    Id_KhoHang: id,
+                    Id_NhanVien: Id_NhanVien,
+                    SoLuong: -1,
+                    check: false,
+                },
+                success: function (data) {
+                    console.log(data)
+                    if (data.code == 200) {
+                        cuteToast({
+                            type: "success", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+
+                    }
+                    if (data.code == 500) {
+                        cuteToast({
+                            type: "error", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+
+                    }
+                    loadData(timkiem, loaisp, pageIndex);
+                }, error: function (error) { }
+            })
+            //alert(id);
+        })
+
+        $(document).on('click', 'button[name="delete"]', function () {
+            let id = $(this).closest('tr').attr('id');
+            cuteAlert({
+                type: "question",
+                title: "Xóa sản phẩm",
+                message: "Bạn có muốn xóa sản phẩm khỏi đơn hàng?",
+                confirmText: "Đồng Ý",
+                cancelText: "Hủy"
+            }).then((e) => {
+                if (e == ("confirm")) {
+                    $.ajax({
+                        type: "Post",
+                        url: "/DonHang/ThemDonHang",
+                        data: {
+                            Id_KhoHang: id,
+                            Id_NhanVien: Id_NhanVien,
+                            SoLuong: 0,
+                            check: false,
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            cuteToast({
+                                type: "success", // or 'info', 'error', 'warning'
+                                message: data.msg,
+                                timer: 5000
+                            });
+                            loadData(timkiem, loaisp, pageIndex);
+                        }
+                    })
+                } else {
+                    return;
+                }
+            })
+        })
+
+        $(document).on('change', 'input[name="SoLuongSp"]', function () {
+            let sl = $(this).val();
+            let id = $(this).closest('tr').attr('id');
+            if (sl == 0) {
+                cuteAlert({
+                    type: "question",
+                    title: "Xóa sản phẩm",
+                    message: "Bạn có muốn xóa sản phẩm khỏi đơn hàng?",
+                    confirmText: "Đồng Ý",
+                    cancelText: "Hủy"
+                }).then((e) => {
+                    if (e == ("confirm")) {
+                        $.ajax({
+                            type: "Post",
+                            url: "/DonHang/ThemDonHang",
+                            data: {
+                                Id_KhoHang: id,
+                                Id_NhanVien: Id_NhanVien,
+                                SoLuong: 0,
+                                check: false,
+                            },
+                            success: function (data) {
+                                console.log(data)
+                                cuteToast({
+                                    type: "success", // or 'info', 'error', 'warning'
+                                    message: data.msg,
+                                    timer: 5000
+                                });
+                                loadData(timkiem, loaisp, pageIndex);
+                            }
+                        })
+                    } else {
+                        return;
+                    }
+                })
+            } else {
+                $.ajax({
+                    type: "Post",
+                    url: "/DonHang/ThemDonHang",
+                    data: {
+                        Id_KhoHang: id,
+                        Id_NhanVien: Id_NhanVien,
+                        SoLuong: sl,
+                        check: false,
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        if (data.code != 100) {
+                            cuteToast({
+                                type: "warning", // or 'info', 'error', 'warning'
+                                message: data.msg,
+                                timer: 5000
+                            });
+                        }
+                        loadData(timkiem, loaisp, pageIndex);
+                    }
+                })
+            }
+        })
+
+        $('#ThanhToan').click(function () {
+            var date = moment().format("YYYY-MM-DD HH:mm:ss");
+            var Id_KhachHang = $('#KhachHang').val();
+
+            if (total == 0) {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Đơn hàng trống!",
+                    timer: 5000
+                });
+                return;
+            }
+            if (Id_KhachHang == -1) {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Chưa chọn Khách Hàng",
+                    timer: 5000
+                });
+                return;
+            }
+
+            cuteAlert({
+                type: "question",
+                title: "Thanh toán",
+                message: "Bạn có muốn thanh toán đơn thuốc với tổng số tiền là " + formatter.format(TongTien) + "?",
+                confirmText: "Đồng Ý",
+                cancelText: "Hủy"
+            }).then((e) => {
+                if (e == ("confirm")) {
+                    $.ajax({
+                        type: "Post",
+                        url: "/DonHang/ThanhToan",
+                        data: {
+                            Id_NhanVien: Id_NhanVien,
+                            Id_KhachHang: Id_KhachHang,
+                            NgayTao: date,
+                            TongTien: TongTien,
+                            GiamGia: 0,
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            if (data.code == 200) {
+                                cuteToast({
+                                    type: "success", // or 'info', 'error', 'warning'
+                                    message: data.msg,
+                                    timer: 5000
+                                });
+                            }
+
+                            loadData(timkiem, loaisp, pageIndex);
+                        }
+                    })
+                } else {
+                    return;
+                }
+            })
+        })
+
+        $('#HuyDonHang').click(function () {
+            cuteAlert({
+                type: "question",
+                title: "Xóa đơn hàng",
+                message: "Bạn có muốn hủy đơn hàng không?",
+                confirmText: "Đồng Ý",
+                cancelText: "Hủy"
+            }).then((e) => {
+                if (e == ("confirm")) {
+                    $.ajax({
+                        type: "Post",
+                        url: "/DonHang/XoaDonBan",
+                        data: {
+                            Id_NhanVien: Id_NhanVien
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            cuteToast({
+                                type: "success", // or 'info', 'error', 'warning'
+                                message: data.msg,
+                                timer: 5000
+                            });
+                            loadData(timkiem, loaisp, pageIndex);
+                        }, error: function (error) { console.log(error.msg) }
+                    })
+                } else {
+                    return;
+                }
+            })
+        })
+
+        $('#themKH').click(function () {
+            $('#KH-modal').modal('show');
+        })
+
+        $('#form-KH').submit(function (e) {
+            e.preventDefault();
+
+            let ten = $('#kh-Ten').val();
+            let diachi = $('#kh-DiaChi').val();
+            let lienhe = $('#kh-LienHe').val();
+
+            if (ten == "" || diachi == "" || lienhe == "") {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Thiếu thông tin",
+                    timer: 5000
+                });
+                return;
+            }
+            $.ajax({
+                type: 'post',
+                url: '/Admin/ThemKhachHang',
+                data: {
+                    TenKh: ten,
+                    DiaChi: diachi,
+                    LienHe: lienhe,
+                    Id_LoaiKh: 1,
+                },
+                success: function (data) {
+                    if (data.code == 200) {
+                        cuteToast({
+                            type: "success", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+                    }
+                    $('#KH-modal').modal('hide');
+                    loadData(timkiem, loaisp, pageIndex);
+                }, error: function (error) {
+                    cuteToast({
+                        type: "error", // or 'info', 'error', 'warning'
+                        message: error.msg,
+                        timer: 5000
+                    });
+                }
+            })
+
+
+        })
+    </script>
+
+}
+

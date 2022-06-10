@@ -1,0 +1,217 @@
+﻿
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Layout/User_Layout.cshtml";
+}
+
+<div class="site-blocks-cover" style="background-image: url('../../Content/User_asset/images/hero_1.jpg');">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 mx-auto order-lg-2 align-self-center">
+                <div class="site-block-cover-content text-center">
+                    <h2 class="sub-title">TIẾT KIỆM HƠN - SỐNG KHỎE HƠN</h2>
+                    <h1>Pharmacity Nhà thuốc tiện lợi</h1>
+                    <p>
+                        <a href="Home/SanPham" class="btn btn-primary px-5 py-3">Sản Phẩm</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="site-section">
+    <div class="container">
+        <div class="row align-items-stretch section-overlap">
+            <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
+                <div class="banner-wrap bg-primary h-100">
+                    <a href="javascript:void(0)" class="h-100">
+                        <h5>Giao hàng <br> Miễn phí</h5>
+                        <p>
+                            Giao hàng miễn phí tận nhà
+                            <strong>Áp dụng cho đơn hàng trong nội thành hoặc đơn hàng trên 500,000 đ.</strong>
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
+                <div class="banner-wrap h-100">
+                    <a href="javascript:void(0)" class="h-100">
+                        <h5>Thanh toán <br> MoMo, Airpay</h5>
+                        <p>
+                            Hoàn tiền khi thanh toán qua ví
+                            <strong>Giảm 5-10% khi thanh toán qua ví MoMo hoặc Aripay.</strong>
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4 mb-4 mb-lg-0">
+                <div class="banner-wrap bg-warning h-100">
+                    <a href="javascript:void(0)" class="h-100">
+                        <h5>Thuốc tốt <br> Giá rẻ</h5>
+                        <p>
+                            Nếu không rẻ
+                            <strong>Hoàn tiền chênh lệch.</strong>
+                        </p>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div>
+
+    <div class="site-section">
+        <div class="container">
+            <div class="row">
+                <div class="title-section text-center col-12">
+                    <h2 class="text-uppercase">Sản phẩm phổ biến</h2>
+                </div>
+            </div>
+
+            <div class="row" id="SpPhoBien">
+
+            </div>
+            <div class="row mt-5">
+                <div class="col-12 text-center">
+                    <a href="/Home/SanPham" class="btn btn-primary px-4 py-3">View All Products</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="site-section bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="title-section text-center col-12">
+                    <h2 class="text-uppercase">Sản Phẩm Mới</h2>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 block-3 products-wrap">
+                    <div class="nonloop-block-3 owl-carousel" id="SpMoi">
+
+                        <div class="text-center item mb-4">
+                            <a href="/Home/ChiTietSanPham?id=11"> <img src="~/Content/User_asset/images/product_03.png" alt="Image"></a>
+                            <h3 class="text-dark"><a href="/Home/ChiTietSanPham?id=11">Umcka Cold Care</a></h3>
+                            <p class="price">$120.00</p>
+                        </div>
+
+                        <div class="text-center item mb-4">
+                            <a href="/Home/ChiTietSanPham?id=12"> <img src="~/Content/User_asset/images/product_01.png" alt="Image"></a>
+                            <h3 class="text-dark"><a href="/Home/ChiTietSanPham?id=12">Umcka Cold Care</a></h3>
+                            <p class="price">$120.00</p>
+                        </div>
+
+                        <div class="text-center item mb-4">
+                            <a href="/Home/ChiTietSanPham?id=3"> <img src="~/Content/User_asset/images/product_02.png" alt="Image"></a>
+                            <h3 class="text-dark"><a href="/Home/ChiTietSanPham?id=3">Umcka Cold Care</a></h3>
+                            <p class="price">$120.00</p>
+                        </div>
+
+                        <div class="text-center item mb-4">
+                            <a href="/Home/ChiTietSanPham?id=4"> <img src="~/Content/User_asset/images/product_04.png" alt="Image"></a>
+                            <h3 class="text-dark"><a href="/Home/ChiTietSanPham?id=4">Umcka Cold Care</a></h3>
+                            <p class="price">$120.00</p>
+                        </div>
+
+                        <div class="text-center item mb-4">
+                            <a href="/Home/ChiTietSanPham?id=5"> <img src="~/Content/User_asset/images/product_03.png" alt="Image"></a>
+                            <h3 class="text-dark"><a href="/Home/ChiTietSanPham?id=5">Umcka Cold Care</a></h3>
+                            <p class="price">$120.00</p>
+                        </div>
+
+                        <div class="text-center item mb-4">
+                            <a href="/Home/ChiTietSanPham?id=6"> <img src="~/Content/User_asset/images/product_02.png" alt="Image"></a>
+                            <h3 class="text-dark"><a href="/Home/ChiTietSanPham?id=6">Umcka Cold Care</a></h3>
+                            <p class="price">$120.00</p>
+                        </div>
+
+                        <div class="text-center item mb-4">
+                            <a href="/Home/ChiTietSanPham?id=7"> <img src="~/Content/User_asset/images/product_01.png" alt="Image"></a>
+                            <h3 class="text-dark"><a href="/Home/ChiTietSanPham?id=7">Umcka Cold Care</a></h3>
+                            <p class="price">$120.00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts {
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            loadSpPhoBien()
+            //loadSpMoi();
+        })
+
+        function loadSpPhoBien() {
+            $.ajax({
+                type: 'get',
+                url: '/Home/SpPhoBien',
+                success: function (data) {
+                    console.log(data);
+                    $('#SpPhoBien').empty();
+                    if (data.data.length > 0) {
+                        $.each(data.data, function (k, v) {
+                            let html = '';
+                            if (v.GiamGia > 0) {
+                                html += '<div class="col-sm-6 col-lg-4 text-center item mb-4" style="width:189px;height:259px;margin:0px 0px 150px 0px;">'
+                                html += '<span class="tag">Sale</span>'
+                                html += '<a href="/Home/ChiTietSanPham?id=' + v.Id + '"> <img src="../../Content/User_asset/images/' + v.HinhAnh + '" alt="Image" width="179px" height="209px"></a>'
+                                html += '<h3 class="text-dark" style="max-width:320px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><a href="shop-single.html">' + v.TenSp + '</a></h3>'
+                                html += '<p class="price"><del>' + formatter.format(v.GiaBan) + '</del> &mdash; ' + formatter.format(v.GiaBan - v.GiamGia) + '</p>'
+                                html += '</div>'
+
+                            } else {
+                                html += '<div class="col-sm-6 col-lg-4 text-center item mb-4" style="width:189px;height:259px;margin:0px 0px 150px 0px;">'
+                                html += '<a href="/Home/ChiTietSanPham?id=' + v.Id + '"> <img src="../../Content/User_asset/images/' + v.HinhAnh + '" alt="Image" width="189px" height="209px"></a>'
+                                html += '<h3 class="text-dark"style="max-width:320px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"><a href="shop-single.html">' + v.TenSp + '</a></h3>'
+                                html += '<p class="price">' + formatter.format(v.GiaBan) + '</p>'
+                                html += '</div>'
+                            }
+                            $('#SpPhoBien').append(html);
+                        })
+
+                    } else {
+                        let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                        $('#SpPhoBien').append(html);
+                    }
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        }
+
+        function loadSpMoi() {
+            $.ajax({
+                type: 'get',
+                url: '/Home/SpMoi',
+                success: function (data) {
+                    console.log(data);
+                    $('#SpMoi').empty();
+                    if (data.data.length > 0) {
+                        $.each(data.data, function (k, v) {
+                            let html = '<div class="text-center item mb-4">'
+                            html += '<a href="shop-single.html"> <img src="~/Content/User_asset/images/product_04.png" alt="Image"></a>'
+                            html += '<h3 class="text-dark"><a href="shop-single.html">Umcka Cold Care</a></h3>'
+                            html += '<p class="price">$120.00</p>'
+                            html += '</div>'
+                            $('#SpMoi').append(html);
+                        })
+
+                    } else {
+                        let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                        $('#SpMoi').append(html);
+                    }
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        }
+
+    </script>
+
+}

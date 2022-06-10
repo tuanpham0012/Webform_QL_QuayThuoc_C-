@@ -1,0 +1,169 @@
+﻿
+@{
+    ViewBag.Title = "Sản Phẩm";
+    Layout = "~/Views/Layout/User_Layout.cshtml";
+}
+
+
+<div>
+    <div class="site-section">
+        <div class="container">
+            <div class="row">
+                <div class="title-section text-center col-12">
+                    <h2 class="text-uppercase" id="title"></h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <form class="form-inline" style="margin:35px 0px 20px 30px;">
+
+                    <div class="form-group mx-sm-3 mb-2" style="margin-top:5px;">
+                        <label for="search" class="sr-only">search</label>
+                        <input type="text" class="form-control" id="search" name="search" placeholder="Tìm kiếm sản phẩm">
+                    </div>
+                    <button type="button" id="btn-search" class="btn btn-outline-info"><i class="fa fa-search" aria-hidden="true"></i></button>
+
+                    <div class="form-group mx-sm-5 mb-2">
+                        <label for="inputState" style="margin-right:10px;">Loại Sản Phẩm</label>
+                        <select class="custom-select mr-sm-4" id="Loai-sp">
+                            <option selected value="-1">Tất cả sản phẩm</option>
+                            @foreach (var item in ViewBag.LoaiSp)
+                            {
+                                <option value="@item.Id_LoaiSP">@item.TenLoaiSP</option>
+                            }
+                        </select>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row" id="ds_sanpham">
+            </div>
+            <div class="row mt-5">
+                <div class="col-md-12 text-center">
+                    <div class="site-block-27">
+                        <ul id="pag">
+                            
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+
+        let pageIndex = 1;
+        let TimKiem = "";
+        let Id_LoaiSp = -1;
+        let title = $('#Loai-sp :selected').text();
+
+        let p = new URLSearchParams(location.search);
+        let s = p.get('name');
+        
+        
+        $('document').ready(function () {
+            
+                TimKiem = s;
+                $('#search').val(s);
+            $('#title').html(title);
+            loadData(pageIndex, TimKiem, Id_LoaiSp);
+        })
+
+        $('#pag').on('click', 'li', function (e) {
+            e.preventDefault();
+            var p = $(this).text();
+            if (p == '<') {
+                pageIndex--;
+                loadData(pageIndex, TimKiem, Id_LoaiSp);
+            } else if (p == '>') {
+                pageIndex++;
+                loadData(pageIndex, TimKiem, Id_LoaiSp);
+            } else {
+                pageIndex = p;
+                loadData(pageIndex, TimKiem, Id_LoaiSp);
+            }
+
+        })
+
+        function loadData(pageIndex, TimKiem, Id_LoaiSp) {
+            $.ajax({
+                type: 'post',
+                url: '/Home/DsSanPham',
+                data: {
+                    pageIndex: pageIndex,
+                    TimKiem: TimKiem,
+                    Id_LoaiSp: Id_LoaiSp,
+                },
+                success: function (data) {
+                    console.log(data);
+                    if (data.data.length > 0) {
+                        $('#ds_sanpham').empty();
+                        $.each(data.data, function (k, v) {
+                            let html = '';
+                            if (v.GiamGia > 0) {
+                                html += '<div class="col-sm-6 col-lg-4 text-center item mb-4">'
+                                html += '<span class="tag">Sale</span>'
+                                html += '<a href="/Home/ChiTietSanPham?id=' + v.Id + '"> <img src="../../Content/User_asset/images/' + v.HinhAnh + '" alt="Image" width="189px" height="259px"></a>'
+                                html += '<h3 class="text-dark"><a href="/Home/ChiTietSanPham?id=' + v.Id + '">' + v.TenSp + '</a></h3>'
+                                html += '<p class="price"><del>' + formatter.format(v.GiaBan) + '</del> &mdash; ' + formatter.format(v.GiaBan - v.GiamGia) + '</p>'
+                                html += '</div>'
+
+                            } else {
+                                html += '<div class="col-sm-6 col-lg-4 text-center item mb-4">'
+                                html += '<a href="/Home/ChiTietSanPham?id=' + v.Id + '"> <img src="../../Content/User_asset/images/' + v.HinhAnh + '" alt="Image"  width="189px" height="259px"></a>'
+                                html += '<h3 class="text-dark"><a href="/Home/ChiTietSanPham?id=' + v.Id + '">' + v.TenSp + '</a></h3>'
+                                html += '<p class="price">' + formatter.format(v.GiaBan) + '</p>'
+                                html += '</div>'
+                            }
+
+                            $('#ds_sanpham').append(html);
+                        });
+
+                        if (data.soTrang > 1) {
+                            let li = '';
+                            if (pageIndex > 1) li += '<li><a href="#">&lt;</a></li>';
+                            for (i = 1; i <= data.soTrang; i++) {
+                                if (i == pageIndex) li += '<li class="active" ><span>' + i + '</span></li>'
+                                else li += '<li><a href="#">' + i + '</a></li>'
+                            }
+                            if (pageIndex < data.soTrang) li += '<li><a href="#">&gt;</a></li>'
+                            $('#pag').html(li);
+
+                        } else {
+                            let li = '<li class="active"><span>1</span></li>'
+                            $('#pag').html(li);
+                        }
+                    } else {
+                        $('#ds_sanpham').empty();
+                        let html = '<p> Không có sản phẩm cần tìm';
+                        $('#ds_sanpham').append(html);
+                        $('#pag').empty();
+                    }
+                    
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        }
+
+        $('#btn-search').click(function () {
+            TimKiem = $('#search').val();
+            Id_LoaiSp = $('#Loai-sp').val();
+
+            loadData(pageIndex, TimKiem, Id_LoaiSp);
+        })
+
+        $('#Loai-sp').change(function () {
+            TimKiem = $('#search').val();
+            Id_LoaiSp = $('#Loai-sp').val();
+            title = $('#loaisp :selected').text();
+            $('#title').html(title);
+            loadData(pageIndex, TimKiem, Id_LoaiSp);
+        })
+
+    </script>
+}
+
+
+

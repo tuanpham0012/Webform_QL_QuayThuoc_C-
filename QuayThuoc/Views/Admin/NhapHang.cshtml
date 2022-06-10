@@ -1,0 +1,577 @@
+﻿
+@{
+    ViewBag.Title = "NhapHang";
+    Layout = "~/Views/Layout/Admin_Layout.cshtml";
+}
+
+<style>
+    #ed {
+        max-width: 120px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<div class="page-header">
+    <h3 class="page-title">
+        <span class="page-title-icon bg-gradient-primary text-white mr-2">
+            <i class="mdi mdi-database-plus"></i>
+        </span> Nhập sản phẩm
+    </h3>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <button class="btn btn-outline-info" id="btn-SanPham">Sản phẩm</button>
+                <button type="button" class="btn btn-outline-info" id="btn-DonMua">Đơn nhập sp</button>
+                <br />
+                <br />
+                <br />
+                <div class="table-responsive" id="SanPham">
+
+                    <form class="form-inline" style="margin-bottom:15px;">
+
+                        <div class="form-group mx-sm-3 mb-2" style="margin-top:5px;">
+                            <label for="search" class="sr-only">search</label>
+                            <input type="text" class="form-control" id="search" name="search" placeholder="Tìm kiếm sản phẩm">
+                        </div>
+                        <button type="button" id="btn-search" class="btn btn-outline-info"><i class="fa fa-search" aria-hidden="true"></i></button>
+
+                        <div class="form-group mx-sm-5 mb-2">
+                            <label for="inputState" style="margin-right:10px;">Loại Sản Phẩm</label>
+                            <select class="custom-select mr-sm-4" id="loaisp">
+                                <option selected value="-1">Tất cả sản phẩm</option>
+                                @foreach (var item in ViewBag.LoaiSp)
+                                {
+                                    <option value="@item.Id_LoaiSP">@item.TenLoaiSP</option>
+                                }
+                            </select>
+                        </div>
+                    </form>
+
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Tên Sản Phẩm</th>
+                                <th scope="col">Mã Sp</th>
+                                <th scope="col">Loại Sản Phẩm</th>
+                                <th scope="col">Thông Tin</th>
+                                <th scope="col">Đơn Vị</th>
+                                <th class="text-center">Xử lý</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb-SanPham"></tbody>
+                    </table>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination justify-content-center" id="pagination">
+                        </ul>
+                    </nav>
+                </div>
+                <div class="table-responsive" id="DonMua">
+                    <button type="button" style="margin-bottom:30px;" class="btn btn-outline-danger" id="NhapHang">Nhập Hàng</button>
+                    <button type="button" style="margin-bottom:30px;margin-left:40px;" class="btn btn-outline-danger" id="HuyDon">Hủy Đơn</button>
+                    <table class="table table-hover text-small">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Tên Sản Phẩm</th>
+                                <th scope="col">Mã Hàng</th>
+                                <th scope="col">Số Lượng</th>
+                                <th scope="col">Giá Bán</th>
+                                <th scope="col">Giá Nhập</th>
+                                <th scope="col">Giảm Giá</th>
+                                <th scope="col">Ngày Sx</th>
+                                <th scope="col">Hạn Sd</th>
+                                <th class="text-center">Xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb-DonMua"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+
+    <script type="text/javascript">
+
+        var timkiem = '';
+        var loaisp = -1;
+        var pageIndex = 1;
+        var total = 0;
+        $(document).ready(function () {
+            loadData(timkiem, loaisp, pageIndex);
+            $('#btn-SanPham').button('toggle');
+            $('#btn-SanPham').css('pointer-events', 'none');
+            $('#SanPham').show();
+            $('#DonMua').hide();
+        })
+
+        function loadData(timkiem, loaisp, pageIndex) {
+            $.ajax({
+                type: "GET",
+                url: "/SanPham/Show",
+                data: {
+                    Id_LoaiSp: loaisp,
+                    TimKiem: timkiem,
+                    pageIndex: pageIndex,
+                },
+                success: function (data) {
+                    console.log(data);
+                    $('#tb-SanPham').empty();
+                    if (data.data.length > 0) {
+                        $.each(data.data, function (k, v) {
+                            let html = '<tr id="' + v.Id + '">'
+                            html += '<td>' + k + '</td>'
+                            html += '<td>' + v.TenSp + '</td>'
+                            html += '<td>' + v.MaSp + '</td>'
+                            html += '<td>' + v.TenLoaiSp + '</td>'
+                            html += '<td id="ed">' + v.ThongTin + '</td>'
+                            html += '<td>' + v.DonVi + '</td>'
+                            html += '<td style="max-width:150px;" class="text-center">'
+                            html += '<button data-url="" type="button" name="add" class="btn btn-info btn-show"><i class="fa fa-plus-square" aria-hidden="true"></i></button>'
+                            html += '</td>'
+                            html += '</tr>'
+                            $('#tb-SanPham').append(html);
+                        })
+
+                        if (data.soTrang > 1) {
+                            let li = '';
+                            if (pageIndex > 1) li += '<li class="page-item" ><a class="page-link" href ="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+                            for (i = 1; i <= data.soTrang; i++) {
+                                if (i == pageIndex) li += '<li class="page-item" ><a class="page-link" href="#" style="background-color: #92a8d1;pointer-events: none;">' + i + '</a></li>'
+                                else li += '<li class="page-item" ><a class="page-link" href="#">' + i + '</a></li>'
+                            }
+                            if (pageIndex < data.soTrang) li += '<li class="page-item"><a class="page-link" href ="#" aria-label="Next" id="Next"><span aria-hidden="true">&raquo;</span></a></li>'
+                            $('#pagination').html(li);
+
+                        } else {
+                            let li = '<li class="page-item"><a class="page-link" href="#">1</a></li>'
+                            $('#pagination').html(li);
+                        }
+
+                    } else {
+                        let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                        $('#tb-SanPham').append(html);
+                    }
+
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        }
+
+        function loadDonMua() {
+            $.ajax({
+                type: "GET",
+                url: "/NhapSanPham/DonNhap",
+                data: {
+                    Id_NhanVien: Id_NhanVien,
+                },
+                success: function (data) {
+                    console.log(data);
+                    $('#tb-DonMua').empty();
+                    total = data.DonMua.length;
+                    if (data.DonMua.length > 0) {
+                        $.each(data.DonMua, function (k, v) {
+                            let htm = '<tr style="font-size:8px;" id="' + v.Id + '">'
+                            htm += '<td>' + k + '</td>'
+                            htm += '<td>' + v.TenSp + '</td>'
+                            htm += '<td style="min-width:130px;"><input type="text" name="MaHang" class="form-control" value="' + v.MaHang + '" /></td>'
+                            htm += '<td style="min-width:80px;"><input type="number" name="SoLuong" min="0" class="form-control" value="' + v.SoLuong + '"/></td>'
+                            htm += '<td style="min-width:130px;"><input type="number" name="GiaBan" min="0" class="form-control" value="' + v.GiaBan + '"/></td>'
+                            htm += '<td style="min-width:130px;"><input type="number" name="GiaNhap" min="0" class="form-control" value="' + v.GiaNhap + '" /></td>'
+                            htm += '<td style="min-width:130px;"><input type="number" name="GiamGia" min="0" class="form-control" value="' + v.GiamGia + '" /></td>'
+                            htm += '<td style="max-width:200px;"><input type="date" name="NgaySx" id="NgaySx" class="form-control" value="' + moment(v.NgaySx).format("YYYY-MM-DD") + '" /></td>'
+                            htm += '<td style="max-width:200px;"><input type="date" name="HanSd" id="HanSd" class="form-control" value="' + moment(v.HanSd).format("YYYY-MM-DD") + '" /></td>'
+                            htm += '<td class="text-center">'
+                            htm += '<button data-url="" type="button" name="delete" class="btn btn-info btn-show"><i class="fa fa-trash-o" aria-hidden="true"></i></button>'
+                            htm += '</td>'
+                            htm += '</tr>'
+                            $('#tb-DonMua').append(htm);
+                        })
+                    } else {
+                        let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                        $('#tb-DonMua').append(html);
+                    }
+
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        }
+
+        $('#pagination').on('click', 'li', function (e) {
+            e.preventDefault();
+            var p = $(this).text();
+            if (p == '«') {
+                pageIndex--;
+                loadData(timkiem, loaisp, pageIndex);
+            } else if (p == '»') {
+                pageIndex++;
+                loadData(timkiem, loaisp, pageIndex);
+            } else {
+                pageIndex = p;
+                loadData(timkiem, loaisp, pageIndex);
+            }
+
+        })
+
+        $('#btn-SanPham').click(function () {
+            $('#SanPham').show();
+            $('#DonMua').hide();
+
+            $('#btn-SanPham').css('pointer-events', 'none');
+            $('#btn-DonMua').css('pointer-events', 'auto');
+
+            $('#btn-SanPham').button('toggle');
+            $('#btn-DonMua').button('toggle');
+        })
+
+        $('#btn-DonMua').click(function () {
+            loadDonMua();
+            $('#btn-DonMua').button('toggle');
+            $('#btn-SanPham').button('toggle');
+
+            $('#btn-DonMua').css('pointer-events', 'none');
+            $('#btn-SanPham').css('pointer-events', 'auto');
+
+            $('#DonMua').show();
+            $('#SanPham').hide();
+
+
+        })
+
+        $('#btn-search').click(function () {
+            timkiem = $('#search').val();
+            loaisp = $('#loaisp').val();
+
+            loadData(timkiem, loaisp, pageIndex);
+        })
+
+        $('#loaisp').change(function () {
+            timkiem = $('#search').val();
+            loaisp = $('#loaisp').val();
+
+            loadData(timkiem, loaisp, pageIndex);
+        })
+
+        $(document).on('click', 'button[name="add"]', function () {
+            let id = $(this).closest('tr').attr('id');
+            $.ajax({
+                type: 'post',
+                url: '/NhapSanPham/ThemSpNhap',
+                data: {
+                    Id_SanPham: id,
+                    Id_NhanVien: Id_NhanVien,
+                },
+                success: function (data) {
+                    console.log(data)
+                    if (data.code == 200) {
+                        cuteToast({
+                            type: "success", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+
+                    }
+                    if (data.code == 202) {
+                        cuteToast({
+                            type: "error", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+
+                    }
+                    loadData(timkiem, loaisp, pageIndex);
+                }, error: function (error) { }
+            })
+        })
+
+        $(document).on('click', 'button[name="delete"]', function () {
+            let id = $(this).closest('tr').attr('id');
+            cuteAlert({
+                type: "question",
+                title: "Xóa sản phẩm",
+                message: "Bạn có muốn xóa sản phẩm khỏi đơn?",
+                confirmText: "Đồng Ý",
+                cancelText: "Hủy"
+            }).then((e) => {
+                if (e == ("confirm")) {
+                    $.ajax({
+                        type: "Post",
+                        url: "/NhapSanPham/XoaSpNhap",
+                        data: {
+                            Id: id
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            cuteToast({
+                                type: "success", // or 'info', 'error', 'warning'
+                                message: data.msg,
+                                timer: 5000
+                            });
+                            loadDonMua();
+                        }, error: function (error) { console.log(error.msg) }
+                    })
+                } else {
+                    return;
+                }
+            })
+        })
+
+        $('#HuyDon').click(function () {
+            cuteAlert({
+                type: "question",
+                title: "Xóa đơn hàng",
+                message: "Bạn có muốn xóa đơn hàng không?",
+                confirmText: "Đồng Ý",
+                cancelText: "Hủy"
+            }).then((e) => {
+                if (e == ("confirm")) {
+                    $.ajax({
+                        type: "Post",
+                        url: "/NhapSanPham/XoaDonNhap",
+                        data: {
+                            Id_NhanVien: Id_NhanVien
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            cuteToast({
+                                type: "success", // or 'info', 'error', 'warning'
+                                message: data.msg,
+                                timer: 5000
+                            });
+                            loadDonMua();
+                        }, error: function (error) { console.log(error.msg) }
+                    })
+                } else {
+                    return;
+                }
+            })
+        })
+
+        $(document).on('change', 'input[name="MaHang"]', function () {
+            let MaHang = $(this).val();
+            let id = $(this).closest('tr').attr('id');
+
+            $.ajax({
+                type: 'post',
+                url: '/NhapSanPham/UpdateDonNhap',
+                data: {
+                    Id: id,
+                    MaHang: MaHang,
+                    SoLuong: -1,
+                    GiaBan: -1,
+                    GiaNhap: -1,
+                    GiamGia: -1,
+                    NgaySx: moment().format("YYYY-MM-DD"),
+                    HanSd: moment().format("YYYY-MM-DD"),
+                    NgaySxCheck: false,
+                    HanSdCheck: false,
+                }, success: function (data) {
+                    console.log(data);
+                    loadDonMua();
+                }, error: function (error) { console.log(error); }
+            })
+            
+        })
+        $(document).on('change', 'input[name="SoLuong"]', function () {
+            let SoLuong = $(this).val();
+            let id = $(this).closest('tr').attr('id');
+
+            $.ajax({
+                type: 'post',
+                url: '/NhapSanPham/UpdateDonNhap',
+                data: {
+                    Id: id,
+                    MaHang: '',
+                    SoLuong: SoLuong,
+                    GiaBan: -1,
+                    GiaNhap: -1,
+                    GiamGia: -1,
+                    NgaySx: moment().format("YYYY-MM-DD"),
+                    HanSd: moment().format("YYYY-MM-DD"),
+                    NgaySxCheck: false,
+                    HanSdCheck: false,
+                }, success: function (data) {
+                    console.log(data);
+                    loadDonMua();
+                }, error: function (error) { console.log(error); }
+            })
+
+        })
+        $(document).on('change', 'input[name="GiaBan"]', function () {
+            let GiaBan = $(this).val();
+            let id = $(this).closest('tr').attr('id');
+
+            $.ajax({
+                type: 'post',
+                url: '/NhapSanPham/UpdateDonNhap',
+                data: {
+                    Id: id,
+                    MaHang: '',
+                    SoLuong: -1,
+                    GiaBan: GiaBan,
+                    GiaNhap: -1,
+                    GiamGia: -1,
+                    NgaySx: moment().format("YYYY-MM-DD"),
+                    HanSd: moment().format("YYYY-MM-DD"),
+                    NgaySxCheck: false,
+                    HanSdCheck: false,
+                }, success: function (data) {
+                    console.log(data);
+                    loadDonMua();
+                }, error: function (error) { console.log(error); }
+            })
+
+        })
+        $(document).on('change', 'input[name="GiaNhap"]', function () {
+            let GiaNhap = $(this).val();
+            let id = $(this).closest('tr').attr('id');
+
+            $.ajax({
+                type: 'post',
+                url: '/NhapSanPham/UpdateDonNhap',
+                data: {
+                    Id: id,
+                    MaHang: '',
+                    SoLuong: -1,
+                    GiaBan: -1,
+                    GiaNhap: GiaNhap,
+                    GiamGia: -1,
+                    NgaySx: moment().format("YYYY-MM-DD"),
+                    HanSd: moment().format("YYYY-MM-DD"),
+                    NgaySxCheck: false,
+                    HanSdCheck: false,
+                }, success: function (data) {
+                    console.log(data);
+                    loadDonMua();
+                }, error: function (error) { console.log(error); }
+            })
+
+        })
+        $(document).on('change', 'input[name="GiamGia"]', function () {
+            let GiamGia = $(this).val();
+            let id = $(this).closest('tr').attr('id');
+
+            $.ajax({
+                type: 'post',
+                url: '/NhapSanPham/UpdateDonNhap',
+                data: {
+                    Id: id,
+                    MaHang: '',
+                    SoLuong: -1,
+                    GiaBan: -1,
+                    GiaNhap: -1,
+                    GiamGia: GiamGia,
+                    NgaySx: moment().format("YYYY-MM-DD"),
+                    HanSd: moment().format("YYYY-MM-DD"),
+                    NgaySxCheck: false,
+                    HanSdCheck: false,
+                }, success: function (data) {
+                    console.log(data);
+                    loadDonMua();
+                }, error: function (error) { console.log(error); }
+            })
+
+        })
+        $(document).on('change', 'input[name="NgaySx"]', function () {
+            let NgaySx = moment($(this).val()).format("YYYY-MM-DD");
+            let id = $(this).closest('tr').attr('id');
+
+            $.ajax({
+                type: 'post',
+                url: '/NhapSanPham/UpdateDonNhap',
+                data: {
+                    Id: id,
+                    MaHang: '',
+                    SoLuong: -1,
+                    GiaBan: -1,
+                    GiaNhap: -1,
+                    GiamGia: -1,
+                    NgaySx: NgaySx,
+                    HanSd: moment().format("YYYY-MM-DD"),
+                    NgaySxCheck: true,
+                    HanSdCheck: false,
+                }, success: function (data) {
+                    console.log(data);
+                    loadDonMua();
+                }, error: function (error) { console.log(error); }
+            })
+
+        })
+        $(document).on('change', 'input[name="HanSd"]', function () {
+            let HanSd = moment($(this).val()).format("YYYY-MM-DD");
+            let id = $(this).closest('tr').attr('id');
+
+            $.ajax({
+                type: 'post',
+                url: '/NhapSanPham/UpdateDonNhap',
+                data: {
+                    Id: id,
+                    MaHang: '',
+                    SoLuong: -1,
+                    GiaBan: -1,
+                    GiaNhap: -1,
+                    GiamGia: -1,
+                    NgaySx: moment().format("YYYY-MM-DD"),
+                    HanSd: HanSd,
+                    NgaySxCheck: false,
+                    HanSdCheck: true,
+                }, success: function (data) {
+                    console.log(data);
+                    loadDonMua();
+                }, error: function (error) { console.log(error); }
+            })
+
+        })
+
+        $('#NhapHang').click(function () {
+            if (total == 0) {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Đơn nhập trống!",
+                    timer: 5000
+                });
+                return;
+            }
+            
+            cuteAlert({
+                type: "question",
+                title: "Thanh toán",
+                message: "Bạn có muốn nhập đơn hàng? Lưu ý bạn hãy chắc chắn đã nhập đầy đủ thông tin của sản phẩm!",
+                confirmText: "Đồng Ý",
+                cancelText: "Hủy"
+            }).then((e) => {
+                if (e == ("confirm")) {
+                    $.ajax({
+                        type: "Post",
+                        url: "/NhapSanPham/NhapHang",
+                        data: {
+                            Id_NhanVien: Id_NhanVien,
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            if (data.code == 200) {
+                                cuteToast({
+                                    type: "success", // or 'info', 'error', 'warning'
+                                    message: data.msg,
+                                    timer: 5000
+                                });
+                            }
+
+                            loadDonMua();
+                        }, error: function (error) { console.log(error) }
+                    })
+                } else {
+                    return;
+                }
+            })
+        })
+
+    </script>
+
+}

@@ -1,0 +1,788 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E60BA713-D172-4C30-BA9E-D740D7AA9D2E}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>QuayThuoc</RootNamespace>
+    <AssemblyName>QuayThuoc</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort>44300</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\Admin\DoanhThuController.cs" />
+    <Compile Include="Controllers\Admin\HoaDonBanController.cs" />
+    <Compile Include="Controllers\Admin\HoaDonNhapController.cs" />
+    <Compile Include="Controllers\Admin\KhachHangController.cs" />
+    <Compile Include="Controllers\Admin\KhoHangController.cs" />
+    <Compile Include="Controllers\Admin\NhanVienController.cs" />
+    <Compile Include="Controllers\Admin\NhapSanPhamController.cs" />
+    <Compile Include="Controllers\Admin\RestoreController.cs" />
+    <Compile Include="Controllers\Admin\SanPhamController.cs" />
+    <Compile Include="Controllers\Admin\DonHangController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ChucVu.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DoanhThu.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DonHang.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DonMua.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DonVi.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DungChung.cs" />
+    <Compile Include="Models\HoaDonBan.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\HoaDonNhap.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\KhachHang.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\KhoHang.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LoaiKH.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\LoaiSP.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NhaCungCap.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\NhanVien.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Order.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\QLQuayThuocModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QLQuayThuocModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\QLQuayThuocModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\QLQuayThuocModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QLQuayThuocModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SanPham.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SanPhamBan.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SanPhamNhap.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
+      <DependentUpon>QLQuayThuocModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\admin\assets\css\style.css" />
+    <Content Include="Content\admin\assets\images\dashboard\circle.png" />
+    <Content Include="Content\admin\assets\images\dashboard\circle.svg" />
+    <Content Include="Content\admin\assets\images\dashboard\img_1.jpg" />
+    <Content Include="Content\admin\assets\images\dashboard\img_2.jpg" />
+    <Content Include="Content\admin\assets\images\dashboard\img_3.jpg" />
+    <Content Include="Content\admin\assets\images\dashboard\img_4.jpg" />
+    <Content Include="Content\admin\assets\images\faces-clipart\pic-1.png" />
+    <Content Include="Content\admin\assets\images\faces-clipart\pic-2.png" />
+    <Content Include="Content\admin\assets\images\faces-clipart\pic-3.png" />
+    <Content Include="Content\admin\assets\images\faces-clipart\pic-4.png" />
+    <Content Include="Content\admin\assets\images\faces\face1.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face10.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face11.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face12.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face13.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face14.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face15.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face16.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face17.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face18.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face19.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face2.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face20.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face21.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face22.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face23.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face24.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face25.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face26.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face27.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face3.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face4.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face5.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face6.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face7.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face8.jpg" />
+    <Content Include="Content\admin\assets\images\faces\face9.jpg" />
+    <Content Include="Content\admin\assets\images\favicon.ico" />
+    <Content Include="Content\admin\assets\images\favicon.png" />
+    <Content Include="Content\admin\assets\images\logo-mini.svg" />
+    <Content Include="Content\admin\assets\images\logo.svg" />
+    <Content Include="Content\admin\assets\images\sprites\blue.png" />
+    <Content Include="Content\admin\assets\images\sprites\dark.png" />
+    <Content Include="Content\admin\assets\images\sprites\flag.png" />
+    <Content Include="Content\admin\assets\images\sprites\green.png" />
+    <Content Include="Content\admin\assets\images\sprites\jsgrid-icons.png" />
+    <Content Include="Content\admin\assets\images\sprites\red.png" />
+    <Content Include="Content\admin\assets\images\sprites\yellow.png" />
+    <Content Include="Content\admin\assets\js\chart.js" />
+    <Content Include="Content\admin\assets\js\dashboard.js" />
+    <Content Include="Content\admin\assets\js\file-upload.js" />
+    <Content Include="Content\admin\assets\js\hoverable-collapse.js" />
+    <Content Include="Content\admin\assets\js\misc.js" />
+    <Content Include="Content\admin\assets\js\off-canvas.js" />
+    <Content Include="Content\admin\assets\js\todo.js" />
+    <Content Include="Content\admin\assets\js\todolist.js" />
+    <Content Include="Content\admin\assets\vendors\chart.js\Chart.min.js" />
+    <Content Include="Content\admin\assets\vendors\css\vendor.bundle.base.css" />
+    <Content Include="Content\admin\assets\vendors\js\vendor.bundle.base.js" />
+    <Content Include="Content\admin\assets\vendors\mdi\css\materialdesignicons.min.css" />
+    <Content Include="Content\admin\public\css\bootstrap-grid.css" />
+    <Content Include="Content\admin\public\css\bootstrap-grid.min.css" />
+    <Content Include="Content\admin\public\css\bootstrap-reboot.css" />
+    <Content Include="Content\admin\public\css\bootstrap-reboot.min.css" />
+    <Content Include="Content\admin\public\css\bootstrap.css" />
+    <Content Include="Content\admin\public\css\bootstrap.min.css" />
+    <Content Include="Content\admin\public\css\font-awesome.css" />
+    <Content Include="Content\admin\public\css\font-awesome.min.css" />
+    <Content Include="Content\admin\public\css\jumbotron.css" />
+    <Content Include="Content\admin\public\css\select2.min.css" />
+    <Content Include="Content\admin\public\css\sticky-footer.css" />
+    <Content Include="Content\admin\public\css\style.css" />
+    <Content Include="Content\admin\public\images\cart.png" />
+    <Content Include="Content\admin\public\images\hi.png" />
+    <Content Include="Content\admin\public\images\languages\en.png" />
+    <Content Include="Content\admin\public\images\languages\vi.png" />
+    <Content Include="Content\admin\public\images\lg_dantri_dktop.svg" />
+    <Content Include="Content\admin\public\images\logo_dcv_71x35.png" />
+    <Content Include="Content\admin\public\images\user_icon.png" />
+    <Content Include="Content\admin\public\js\bootstrap.bundle.js" />
+    <Content Include="Content\admin\public\js\bootstrap.bundle.min.js" />
+    <Content Include="Content\admin\public\js\bootstrap.js" />
+    <Content Include="Content\admin\public\js\bootstrap.min.js" />
+    <Content Include="Content\admin\public\js\jquery-3.4.1.min.js" />
+    <Content Include="Content\admin\public\js\jquery.number.min.js" />
+    <Content Include="Content\admin\public\js\moment.js" />
+    <Content Include="Content\admin\public\js\select2.min.js" />
+    <Content Include="Content\admin\public\js\socket.io.js" />
+    <Content Include="Content\admin\public\js\xuly.js" />
+    <Content Include="Content\admin\toastr-master\build\toastr.css" />
+    <Content Include="Content\admin\toastr-master\build\toastr.min.css" />
+    <Content Include="Content\admin\toastr-master\build\toastr.min.js" />
+    <Content Include="Content\admin\toastr-master\demo.html" />
+    <Content Include="Content\admin\toastr-master\gulpfile.js" />
+    <Content Include="Content\admin\toastr-master\karma.conf.js" />
+    <Content Include="Content\admin\toastr-master\nuget\content\content\toastr.css" />
+    <Content Include="Content\admin\toastr-master\nuget\content\content\toastr.min.css" />
+    <Content Include="Content\admin\toastr-master\nuget\content\scripts\toastr.js" />
+    <Content Include="Content\admin\toastr-master\nuget\content\scripts\toastr.min.js" />
+    <Content Include="Content\admin\toastr-master\tests\qunit\qunit.css" />
+    <Content Include="Content\admin\toastr-master\tests\qunit\qunit.js" />
+    <Content Include="Content\admin\toastr-master\tests\toastr-tests.html" />
+    <Content Include="Content\admin\toastr-master\tests\unit\qunit-helper.js" />
+    <Content Include="Content\admin\toastr-master\tests\unit\toastr-tests.js" />
+    <Content Include="Content\admin\toastr-master\tests\unit\x.js" />
+    <Content Include="Content\admin\toastr-master\toastr-icon.png" />
+    <Content Include="Content\admin\toastr-master\toastr.js" />
+    <Content Include="Content\toast\cute-alert.js" />
+    <Content Include="Content\toast\img\error.svg" />
+    <Content Include="Content\toast\img\info.svg" />
+    <Content Include="Content\toast\img\question.svg" />
+    <Content Include="Content\toast\img\success.svg" />
+    <Content Include="Content\toast\img\warning.svg" />
+    <Content Include="Content\toast\style.css" />
+    <Content Include="Content\User_asset\css\aos.css" />
+    <Content Include="Content\User_asset\css\bootstrap.min.css" />
+    <Content Include="Content\User_asset\css\bootstrap\bootstrap-grid.css" />
+    <Content Include="Content\User_asset\css\bootstrap\bootstrap-reboot.css" />
+    <Content Include="Content\User_asset\css\bootstrap\bootstrap.css" />
+    <Content Include="Content\User_asset\css\jquery-ui.css" />
+    <Content Include="Content\User_asset\css\magnific-popup.css" />
+    <Content Include="Content\User_asset\css\owl.carousel.min.css" />
+    <Content Include="Content\User_asset\css\owl.theme.default.min.css" />
+    <Content Include="Content\User_asset\css\style.css" />
+    <Content Include="Content\User_asset\fonts\icomoon\demo-files\demo.css" />
+    <Content Include="Content\User_asset\fonts\icomoon\demo-files\demo.js" />
+    <Content Include="Content\User_asset\fonts\icomoon\demo.html" />
+    <Content Include="Content\User_asset\fonts\icomoon\fonts\icomoon.svg" />
+    <Content Include="Content\User_asset\fonts\icomoon\Read Me.txt" />
+    <Content Include="Content\User_asset\fonts\icomoon\style.css" />
+    <Content Include="Content\User_asset\images\Abilify.jpg" />
+    <Content Include="Content\User_asset\images\Acilesol.jpg" />
+    <Content Include="Content\User_asset\images\Aclop.jpg" />
+    <Content Include="Content\User_asset\images\Acyclovir.jpg" />
+    <Content Include="Content\User_asset\images\Albinax70mg.jpg" />
+    <Content Include="Content\User_asset\images\Amino-Vita-Complex.jpg" />
+    <Content Include="Content\User_asset\images\An.jpg" />
+    <Content Include="Content\User_asset\images\Arginine.jpg" />
+    <Content Include="Content\User_asset\images\Asevictoria.jpg" />
+    <Content Include="Content\User_asset\images\Asiacomb.jpg" />
+    <Content Include="Content\User_asset\images\Assolin.jpg" />
+    <Content Include="Content\User_asset\images\Becopanthyl.png" />
+    <Content Include="Content\User_asset\images\Befabrol.jpg" />
+    <Content Include="Content\User_asset\images\Belsartas.png" />
+    <Content Include="Content\User_asset\images\Bepromatol-2.5.png" />
+    <Content Include="Content\User_asset\images\Beprosazone.jpg" />
+    <Content Include="Content\User_asset\images\Berodual.jpg" />
+    <Content Include="Content\User_asset\images\Betacream-GM.png" />
+    <Content Include="Content\User_asset\images\bg_1.jpg" />
+    <Content Include="Content\User_asset\images\bg_2.jpg" />
+    <Content Include="Content\User_asset\images\Bi-Gmax.jpg" />
+    <Content Include="Content\User_asset\images\biseptol-480-1.jpg" />
+    <Content Include="Content\User_asset\images\BOCALEX.jpg" />
+    <Content Include="Content\User_asset\images\Boniancol.jpg" />
+    <Content Include="Content\User_asset\images\bp.jpg" />
+    <Content Include="Content\User_asset\images\Capulco.jpg" />
+    <Content Include="Content\User_asset\images\Drosperin.jpg" />
+    <Content Include="Content\User_asset\images\elamore.jpg" />
+    <Content Include="Content\User_asset\images\Emanera.png" />
+    <Content Include="Content\User_asset\images\Entraviga.jpg" />
+    <Content Include="Content\User_asset\images\Farmazoline.png" />
+    <Content Include="Content\User_asset\images\fastep.jpg" />
+    <Content Include="Content\User_asset\images\Fefurate.jpg" />
+    <Content Include="Content\User_asset\images\Fentanyl.png" />
+    <Content Include="Content\User_asset\images\Foltene.png" />
+    <Content Include="Content\User_asset\images\Hada.jpg" />
+    <Content Include="Content\User_asset\images\hero_1.jpg" />
+    <Content Include="Content\User_asset\images\ISIS.jpg" />
+    <Content Include="Content\User_asset\images\Megaduo.jpg" />
+    <Content Include="Content\User_asset\images\NaCl 0,9.jpg" />
+    <Content Include="Content\User_asset\images\Neurocoline.jpg" />
+    <Content Include="Content\User_asset\images\O2.jpg" />
+    <Content Include="Content\User_asset\images\optimum.jpg" />
+    <Content Include="Content\User_asset\images\optimum2.jpg" />
+    <Content Include="Content\User_asset\images\Osicent.jpg" />
+    <Content Include="Content\User_asset\images\person_1.jpg" />
+    <Content Include="Content\User_asset\images\person_2.jpg" />
+    <Content Include="Content\User_asset\images\person_3.jpg" />
+    <Content Include="Content\User_asset\images\person_4.jpg" />
+    <Content Include="Content\User_asset\images\person_5.jpg" />
+    <Content Include="Content\User_asset\images\products_1.png" />
+    <Content Include="Content\User_asset\images\product_01.png" />
+    <Content Include="Content\User_asset\images\product_02.png" />
+    <Content Include="Content\User_asset\images\product_03.png" />
+    <Content Include="Content\User_asset\images\product_04.png" />
+    <Content Include="Content\User_asset\images\product_05.png" />
+    <Content Include="Content\User_asset\images\product_06.png" />
+    <Content Include="Content\User_asset\images\product_07_large.png" />
+    <Content Include="Content\User_asset\images\Qik.jpg" />
+    <Content Include="Content\User_asset\images\shoe.png" />
+    <Content Include="Content\User_asset\images\sure.png" />
+    <Content Include="Content\User_asset\images\sure2.jpg" />
+    <Content Include="Content\User_asset\images\VimII.jpg" />
+    <Content Include="Content\User_asset\images\vina1.jpg" />
+    <Content Include="Content\User_asset\images\Vitamim.jpg" />
+    <Content Include="Content\User_asset\images\wave.svg" />
+    <Content Include="Content\User_asset\images\women.jpg" />
+    <Content Include="Content\User_asset\images\yoko.jpg" />
+    <Content Include="Content\User_asset\images\yoko1.jpg" />
+    <Content Include="Content\User_asset\images\Yoosun.jpg" />
+    <Content Include="Content\User_asset\js\aos.js" />
+    <Content Include="Content\User_asset\js\bootstrap.min.js" />
+    <Content Include="Content\User_asset\js\jquery-3.6.0.min.js" />
+    <Content Include="Content\User_asset\js\jquery-3.3.1.min.js" />
+    <Content Include="Content\User_asset\js\jquery-ui.js" />
+    <Content Include="Content\User_asset\js\jquery.magnific-popup.min.js" />
+    <Content Include="Content\User_asset\js\main.js" />
+    <Content Include="Content\User_asset\js\owl.carousel.min.js" />
+    <Content Include="Content\User_asset\js\popper.min.js" />
+    <Content Include="Content\User_asset\js\slick.min.js" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Models\QLQuayThuocModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>QLQuayThuocModel.edmx</DependentUpon>
+      <LastGenOutput>QLQuayThuocModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\QLQuayThuocModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>QLQuayThuocModel.edmx</DependentUpon>
+      <LastGenOutput>QLQuayThuocModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Content\User_asset\.DS_Store" />
+    <Content Include="Content\User_asset\fonts\icomoon\fonts\icomoon.eot" />
+    <Content Include="Content\User_asset\fonts\icomoon\fonts\icomoon.ttf" />
+    <Content Include="Content\User_asset\fonts\icomoon\fonts\icomoon.woff" />
+    <Content Include="Content\User_asset\fonts\icomoon\selection.json" />
+    <Content Include="Content\User_asset\images\.DS_Store" />
+    <Content Include="Content\User_asset\scss\.DS_Store" />
+    <Content Include="Content\User_asset\scss\bootstrap\.DS_Store" />
+    <Content Include="Content\User_asset\scss\bootstrap\bootstrap-grid.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\bootstrap-reboot.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\bootstrap.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_alert.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_background-variant.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_badge.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_border-radius.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_box-shadow.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_breakpoints.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_buttons.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_caret.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_clearfix.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_float.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_forms.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_gradients.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_grid-framework.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_grid.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_hover.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_image.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_list-group.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_lists.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_nav-divider.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_pagination.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_reset-text.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_resize.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_screen-reader.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_size.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_table-row.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_text-emphasis.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_text-hide.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_text-truncate.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_transition.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\mixins\_visibility.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\utilities\_align.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\utilities\_background.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\utilities\_borders.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\utilities\_clearfix.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\utilities\_display.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\utilities\_embed.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\utilities\_flex.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\utilities\_float.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\utilities\_position.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\utilities\_screenreaders.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\utilities\_shadows.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\utilities\_sizing.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\utilities\_spacing.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\utilities\_text.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\utilities\_visibility.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_alert.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_badge.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_breadcrumb.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_button-group.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_buttons.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_card.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_carousel.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_close.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_code.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_custom-forms.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_dropdown.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_forms.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_functions.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_grid.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_images.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_input-group.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_jumbotron.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_list-group.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_media.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_mixins.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_modal.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_nav.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_navbar.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_pagination.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_popover.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_print.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_progress.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_reboot.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_root.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_tables.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_tooltip.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_transitions.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_type.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_utilities.scss" />
+    <Content Include="Content\User_asset\scss\bootstrap\_variables.scss" />
+    <Content Include="Content\User_asset\scss\style.scss" />
+    <Content Include="Content\User_asset\scss\_site-base.scss" />
+    <Content Include="Content\User_asset\scss\_site-blocks.scss" />
+    <Content Include="Content\User_asset\scss\_site-navbar.scss" />
+    <Content Include="Content\toast\LICENSE" />
+    <Content Include="Content\toast\README.md" />
+    <Content Include="Content\admin\assets\css\style.css.map" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Bold.eot" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Bold.ttf" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Bold.woff" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Bold.woff2" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Light.eot" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Light.ttf" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Light.woff" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Light.woff2" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Medium.eot" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Medium.ttf" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Medium.woff" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Medium.woff2" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Regular.eot" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Regular.ttf" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Regular.woff" />
+    <Content Include="Content\admin\assets\fonts\Ubuntu\Ubuntu-Regular.woff2" />
+    <Content Include="Content\admin\assets\scss\components\_badges.scss" />
+    <Content Include="Content\admin\assets\scss\components\_bootstrap-progress.scss" />
+    <Content Include="Content\admin\assets\scss\components\_breadcrumbs.scss" />
+    <Content Include="Content\admin\assets\scss\components\_buttons.scss" />
+    <Content Include="Content\admin\assets\scss\components\_cards.scss" />
+    <Content Include="Content\admin\assets\scss\components\_checkbox-radio.scss" />
+    <Content Include="Content\admin\assets\scss\components\_dropdown.scss" />
+    <Content Include="Content\admin\assets\scss\components\_forms.scss" />
+    <Content Include="Content\admin\assets\scss\components\_icons.scss" />
+    <Content Include="Content\admin\assets\scss\components\_lists.scss" />
+    <Content Include="Content\admin\assets\scss\components\_preview.scss" />
+    <Content Include="Content\admin\assets\scss\components\_tables.scss" />
+    <Content Include="Content\admin\assets\scss\components\_todo-list.scss" />
+    <Content Include="Content\admin\assets\scss\landing-screens\_auth.scss" />
+    <Content Include="Content\admin\assets\scss\mixins\_animation.scss" />
+    <Content Include="Content\admin\assets\scss\mixins\_background.scss" />
+    <Content Include="Content\admin\assets\scss\mixins\_badges.scss" />
+    <Content Include="Content\admin\assets\scss\mixins\_blockqoute.scss" />
+    <Content Include="Content\admin\assets\scss\mixins\_breadcrumbs.scss" />
+    <Content Include="Content\admin\assets\scss\mixins\_buttons.scss" />
+    <Content Include="Content\admin\assets\scss\mixins\_cards.scss" />
+    <Content Include="Content\admin\assets\scss\mixins\_misc.scss" />
+    <Content Include="Content\admin\assets\scss\mixins\_pagination.scss" />
+    <Content Include="Content\admin\assets\scss\mixins\_popovers.scss" />
+    <Content Include="Content\admin\assets\scss\mixins\_text.scss" />
+    <Content Include="Content\admin\assets\scss\mixins\_tooltips.scss" />
+    <Content Include="Content\admin\assets\scss\style.scss" />
+    <Content Include="Content\admin\assets\scss\_dashboard.scss" />
+    <Content Include="Content\admin\assets\scss\_demo.scss" />
+    <Content Include="Content\admin\assets\scss\_fonts.scss" />
+    <Content Include="Content\admin\assets\scss\_footer.scss" />
+    <Content Include="Content\admin\assets\scss\_functions.scss" />
+    <Content Include="Content\admin\assets\scss\_layouts.scss" />
+    <Content Include="Content\admin\assets\scss\_misc.scss" />
+    <Content Include="Content\admin\assets\scss\_navbar.scss" />
+    <Content Include="Content\admin\assets\scss\_reset.scss" />
+    <Content Include="Content\admin\assets\scss\_sidebar.scss" />
+    <Content Include="Content\admin\assets\scss\_typography.scss" />
+    <Content Include="Content\admin\assets\scss\_utilities.scss" />
+    <Content Include="Content\admin\assets\scss\_variables.scss" />
+    <Content Include="Content\admin\assets\scss\_vertical-wrapper.scss" />
+    <Content Include="Content\admin\assets\scss\_widget-grid.scss" />
+    <Content Include="Content\admin\assets\vendors\js\bootstrap.min.js.map" />
+    <Content Include="Content\admin\assets\vendors\mdi\css\materialdesignicons.min.css.map" />
+    <Content Include="Content\admin\assets\vendors\mdi\fonts\materialdesignicons-webfont.eot" />
+    <Content Include="Content\admin\assets\vendors\mdi\fonts\materialdesignicons-webfont.ttf" />
+    <Content Include="Content\admin\assets\vendors\mdi\fonts\materialdesignicons-webfont.woff" />
+    <Content Include="Content\admin\assets\vendors\mdi\fonts\materialdesignicons-webfont.woff2" />
+    <Content Include="Content\admin\public\css\bootstrap-grid.css.map" />
+    <Content Include="Content\admin\public\css\bootstrap-grid.min.css.map" />
+    <Content Include="Content\admin\public\css\bootstrap-reboot.css.map" />
+    <Content Include="Content\admin\public\css\bootstrap-reboot.min.css.map" />
+    <Content Include="Content\admin\public\css\bootstrap.css.map" />
+    <Content Include="Content\admin\public\css\bootstrap.min.css.map" />
+    <Content Include="Content\admin\public\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\admin\public\js\bootstrap.bundle.js.map" />
+    <Content Include="Content\admin\public\js\bootstrap.bundle.min.js.map" />
+    <Content Include="Content\admin\public\js\bootstrap.js.map" />
+    <Content Include="Content\admin\public\js\bootstrap.min.js.map" />
+    <Content Include="Content\admin\toastr-master\.gitattributes" />
+    <Content Include="Content\admin\toastr-master\.gitignore" />
+    <Content Include="Content\admin\toastr-master\.jscsrc" />
+    <Content Include="Content\admin\toastr-master\.jshintrc" />
+    <Content Include="Content\admin\toastr-master\.travis.yml" />
+    <Content Include="Content\admin\toastr-master\build\toastr.js.map" />
+    <Content Include="Content\admin\toastr-master\CHANGELOG.md" />
+    <Content Include="Content\admin\toastr-master\LICENSE" />
+    <Content Include="Content\admin\toastr-master\nuget\content\content\toastr.less" />
+    <Content Include="Content\admin\toastr-master\nuget\content\content\toastr.scss" />
+    <Content Include="Content\admin\toastr-master\nuget\content\scripts\toastr.min.js.map" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.0.0.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.0.0.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.0.1.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.0.1.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.0.2.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.0.2.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.0.3.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.0.3.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.1.0.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.1.0.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.1.1.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.1.1.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.1.2.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.1.2.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.1.3.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.1.4.1.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.1.4.1.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.1.4.2.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.1.4.2.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.1.4.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.1.4.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.1.5.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.1.5.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.2.0.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.2.0.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.2.1.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.2.1.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.2.2.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.2.2.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.3.0.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.3.0.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.3.1.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.1.3.1.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.2.0.0-rc1.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.2.0.0-rc1.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.2.0.1.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.2.0.1.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.2.0.2.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.2.0.2.nuspec" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.2.0.3.nupkg" />
+    <Content Include="Content\admin\toastr-master\nuget\toastr.2.0.3.nuspec" />
+    <Content Include="Content\admin\toastr-master\package-lock.json" />
+    <Content Include="Content\admin\toastr-master\package.json" />
+    <Content Include="Content\admin\toastr-master\README.md" />
+    <Content Include="Content\admin\toastr-master\release checklist.md" />
+    <Content Include="Content\admin\toastr-master\toastr.less" />
+    <Content Include="Content\admin\toastr-master\toastr.scss" />
+    <Content Include="Content\User_asset\css\bootstrap.min.css.map" />
+    <Content Include="Content\User_asset\js\bootstrap.min.js.map" />
+    <Content Include="Content\User_asset\images\TPCNN6d2.png.crdownload" />
+    <EntityDeploy Include="Models\QLQuayThuocModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>QLQuayThuocModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\QLQuayThuocModel.edmx.diagram">
+      <DependentUpon>QLQuayThuocModel.edmx</DependentUpon>
+    </Content>
+    <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.4.1.js" />
+    <Content Include="Scripts\jquery-3.4.1.min.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.js" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\Layout\User_Layout.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\RSSFeed.cshtml" />
+    <Content Include="Views\Layout\Admin_Layout.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Home\SanPham.cshtml" />
+    <Content Include="Views\Admin\SanPham.cshtml" />
+    <Content Include="Views\Admin\NhapHang.cshtml" />
+    <Content Include="Views\Admin\HoaDonBan.cshtml" />
+    <Content Include="Views\Admin\HoaDonNhap.cshtml" />
+    <Content Include="Views\Admin\KiemTraSp.cshtml" />
+    <Content Include="Views\Admin\DoanhThu.cshtml" />
+    <Content Include="Views\Admin\KhoHang.cshtml" />
+    <Content Include="Views\Admin\KhachHang.cshtml" />
+    <Content Include="Views\Admin\NhanVien.cshtml" />
+    <Content Include="Views\Admin\DaXoa.cshtml" />
+    <Content Include="Views\Home\GioiThieu.cshtml" />
+    <Content Include="Views\Home\ChiTietSanPham.cshtml" />
+    <Content Include="Views\Home\Cart.cshtml" />
+    <Content Include="Views\Admin\DatHang.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Content\admin\public\uploads\" />
+    <Folder Include="Views\Order\" />
+    <Folder Include="Views\ReStore\" />
+    <Folder Include="Views\User\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <None Include="packages.config" />
+    <Content Include="Scripts\jquery-3.4.1.slim.min.map" />
+    <Content Include="Scripts\jquery-3.4.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>50012</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>https://localhost:44300/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

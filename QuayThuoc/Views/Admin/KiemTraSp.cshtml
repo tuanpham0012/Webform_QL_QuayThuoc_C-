@@ -1,0 +1,205 @@
+﻿
+@{
+    ViewBag.Title = "KiemTraSanPham";
+    Layout = "~/Views/Layout/Admin_Layout.cshtml";
+}
+
+<div class="page-header">
+    <h3 class="page-title">
+        <span class="page-title-icon bg-gradient-primary text-white mr-2">
+            <i class="mdi mdi-chart-bar"></i>
+        </span> Kiểm tra sản phẩm
+    </h3>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form class="form-inline" style="margin-bottom:15px;">
+
+                    <div class="form-group mx-sm-5 mb-2">
+                        <label for="inputState" style="margin-right:10px;">Lọc Sản Phẩm</label>
+                        <select class="custom-select mr-sm-4" id="LocSp">
+                            <option selected value="-1">--Chọn...</option>
+                            <option value="0">Số lượng sắp hết</option>
+                            <option value="1">Sắp hết hạn</option>
+                            <option value="2">Đã hết hạn</option>
+                        </select>
+                        <button type="button" class="btn btn-success btn-add" id="btn-Sp">Sp bán chạy</button>
+                    </div>
+                </form>
+                <br />
+                <br />
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Mã Hàng</th>
+                                <th scope="col">Tên Sản Phẩm</th>
+                                <th scope="col">Số Lượng</th>
+                                <th scope="col">Ngày Sx</th>
+                                <th scope="col">Hạn Sd</th>
+                            </tr>
+                        </thead>
+                        <tbody id="KhoHang"></tbody>
+                    </table>
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination" id="pagination">
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*-- Modal chi tiết hóa đơn bán --*@
+<div class="modal fade" id="modal-Sp">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Sản phẩm bán nhiều trong tháng</h4>
+                <button readonly type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Tên Sản Phẩm</th>
+                                <th scope="col">Mã Sản Phẩm</th>
+                                <th scope="col">Số Lượng Bán</th>
+                            </tr>
+                        </thead>
+                        <tbody id="SpBan"></tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <nav aria-label="Page navigation example" style="margin:8px 180px 0px 0px">
+                    <ul class="pagination" id="model-pag-HDB">
+                    </ul>
+                </nav>
+                <button type="button" class="btn btn-default" id="cancel" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+
+    <script type="text/javascript">
+
+        var pageIndex = 1;
+        var LocSp = $('#LocSp').val();
+        $(document).ready(function () {
+            loadData(pageIndex, LocSp)
+        })
+
+        function loadData(pageIndex, LocSp) {
+            $.ajax({
+                type: "post",
+                url: "/KhoHang/KiemTraKhoHang",
+                data: {
+                    pageIndex: pageIndex,
+                    LocSp: LocSp,
+                },
+                success: function (data) {
+                    console.log(data);
+                    $('#KhoHang').empty();
+                    if (data.dbKhoHang.length > 0) {
+                        $.each(data.dbKhoHang, function (k, v) {
+                            let html = '<tr id="' + v.Id + '">'
+                            html += '<td>' + k + '</td>'
+                            html += '<td>' + v.MaHang + '</td>'
+                            html += '<td>' + v.TenSp + '</td>'
+                            html += '<td>' + v.SoLuong + '</td>'
+                            html += '<td>' + moment(v.NgaySx).format("YYYY-MM-DD") + '</td>'
+                            html += '<td>' + moment(v.HanSd).format("YYYY-MM-DD") + '</td>'
+                            html += '</tr>'
+                            $('#KhoHang').append(html);
+                        })
+
+                        if (data.soTrang > 1) {
+                            let li = '';
+                            if (pageIndex > 1) li += '<li class="page-item" ><a class="page-link" href ="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+                            for (i = 1; i <= data.soTrang; i++) {
+                                if (i == pageIndex) li += '<li class="page-item" ><a class="page-link" href="#" style="background-color: #92a8d1;pointer-events: none;">' + i + '</a></li>'
+                                else li += '<li class="page-item" ><a class="page-link" href="#">' + i + '</a></li>'
+                            }
+                            if (pageIndex < data.soTrang) li += '<li class="page-item"><a class="page-link" href ="#" aria-label="Next" id="Next"><span aria-hidden="true">&raquo;</span></a></li>'
+                            $('#pagination').html(li);
+
+                        } else {
+                            let li = '<li class="page-item"><a class="page-link" href="#">1</a></li>'
+                            $('#pagination').html(li);
+                        }
+
+                    } else {
+                        let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                        $('#KhoHang').append(html);
+                    }
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        }
+
+        $('#pagination').on('click', 'li', function (e) {
+            e.preventDefault();
+            var p = $(this).text();
+            if (p == '«') {
+                pageIndex--;
+                loadData(pageIndex, LocSp)
+            } else if (p == '»') {
+                pageIndex++;
+                loadData(pageIndex, LocSp)
+            } else {
+                pageIndex = p;
+                loadData(pageIndex, LocSp)
+            }
+
+        })
+
+        $('#LocSp').change(function () {
+            LocSp = $('#LocSp').val();
+            loadData(pageIndex, LocSp)
+        })
+
+        $('#btn-Sp').click(function () {
+            $('#modal-Sp').modal('show');
+            $.ajax({
+                type: "post",
+                url: "/KhoHang/ThongKeSp",
+                data: {
+                    date: moment().format("YYYY-MM-1"),
+                },
+                success: function (data) {
+                    console.log(data);
+                    $('#SpBan').empty();
+                    if (data.data.length > 0) {
+                        $.each(data.data, function (k, v) {
+                            let html = '<tr id="' + v.Id + '">'
+                            html += '<td>' + k + '</td>'
+                            html += '<td>' + v.TenSp + '</td>'
+                            html += '<td>' + v.MaSp + '</td>'
+                            html += '<td>' + v.SoLuong + '</td>'
+                            html += '</tr>'
+                            $('#SpBan').append(html);
+                        })
+                    } else {
+                        let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                        $('#SpBan').append(html);
+                    }
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        })
+
+    </script>
+
+}
+
+
+

@@ -1,0 +1,494 @@
+﻿
+@{
+    ViewBag.Title = "Nhân Viên";
+    Layout = "~/Views/Layout/Admin_Layout.cshtml";
+}
+
+
+<div class="page-header">
+    <h3 class="page-title">
+        <span class="page-title-icon bg-gradient-primary text-white mr-2">
+            <i class="mdi mdi-account-multiple-outline"></i>
+        </span> Nhân viên
+    </h3>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <form class="form-inline" style="margin-bottom:15px;">
+
+                    <div class="form-group mx-sm-3 mb-2" style="margin-top:5px;">
+                        <label for="search" class="sr-only">search</label>
+                        <input type="text" class="form-control" id="search" name="search" placeholder="Tìm nhân viên">
+                    </div>
+                    <button type="button" id="btn-search" class="btn btn-outline-info"><i class="fa fa-search" aria-hidden="true"></i></button>
+
+                    <div class="form-group mx-sm-5 mb-2">
+                        <label for="inputState" style="margin-right:10px;">Chức vụ</label>
+                        <select class="custom-select mr-sm-4" id="Id_ChucVu">
+                            <option selected value="-1">--Tất cả...</option>
+                            @foreach (var item in ViewBag.ChucVu)
+                            {
+                                <option value="@item.Id_ChucVu">@item.TenChucVu</option>
+                            }
+                        </select>
+                    </div>
+
+                    <button type="button" style="margin-bottom:10px;" class="btn btn-success btn-add" id="btn-ThemNv"> <i class="fa fa-plus-circle" aria-hidden="true"></i> Thêm mới</button>
+                </form>
+
+
+                <br />
+                <br />
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Tên Nhân Viên</th>
+                                <th scope="col">Mã Nhân Viên</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Giới Tính</th>
+                                <th scope="col">Ngày Sinh</th>
+                                <th scope="col">Chức Vụ</th>
+                                <th class="text-center">Xử lý</th>
+                            </tr>
+                        </thead>
+                        <tbody id="NhanVien"></tbody>
+                    </table>
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination" id="pagination">
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+
+        @*-- Modal nhân viên --*@
+        <div class="modal fade" id="modal-edit-NV">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <form action="" id="form-update-NV" method="POST" role="form">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="Title"></h4>
+                            <button readonly type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="number" hidden id="id_NhanVien" />
+                            <div class="form-group" id="lbl-MaNv">
+                                <label for="tensp-edit">Mã nhân viên</label>
+                                <input type="text" value="" readonly class="form-control" id="Ma-Nv" placeholder="Mã nhân viên">
+                            </div>
+                            <div class="form-group">
+                                <label for="tensp-edit">Tên nhân viên</label>
+                                <input type="text" value="" class="form-control" id="Ten-Nv" placeholder="Tên nhân viên">
+                            </div>
+                            <div class="form-group">
+                                <label for="tensp-edit">Email</label>
+                                <input type="email" value="" class="form-control" id="Email-Nv" placeholder="Email">
+                            </div>
+                            <div class="form-group">
+                                <label for="tensp-edit">Địa Chỉ</label>
+                                <input type="text" value="" class="form-control" id="DiaChi-Nv" placeholder="Địa chỉ">
+                            </div>
+                            <div class="form-group">
+                                <label for="tensp-edit">Liên hệ(sdt)</label>
+                                <input type="text" value="" class="form-control" id="LienHe-Nv" placeholder="Liên hệ">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Giới tính</label>
+                                <select id="GioiTinh-Nv" class="form-control">
+                                    <option selected value="0">--Chọn...</option>
+                                    <option value="Nam">Nam</option>
+                                    <option value="Nữ">Nữ</option>
+                                    <option value="Khác">Khác</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="tensp-edit">Ngày sinh</label>
+                                <input type="date" value="" class="form-control" id="NgaySinh-Nv">
+                            </div>
+                            <div class="form-group">
+                                <label for="tensp-edit">CMND/CCCD</label>
+                                <input type="text" value="" class="form-control" id="CMND-Nv" placeholder="CMND/CCCD">
+                            </div>
+                            <div class="form-group">
+                                <label for="">Chức Vụ</label>
+                                <select id="Id_chucvu" class="form-control">
+                                    <option selected>--Chọn...</option>
+                                    <option value="2">Quản lý</option>
+                                    <option value="3">Nhân viên kho</option>
+                                    <option value="4">Nhân viên bán hàng</option>
+                                </select>
+                            </div>
+                            <div id="detail-nv">
+                                <div class="form-group">
+                                    <label for="tensp-edit">Ngày tạo</label>
+                                    <input type="text" readonly value="" class="form-control" id="NgayTao">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tensp-edit">Ngày sửa</label>
+                                    <input type="text" readonly value="" class="form-control" id="NgaySua">
+                                </div>
+                                <div class="form-group">
+                                    <label for="tensp-edit">Lần đăng nhập cuối</label>
+                                    <input type="text" readonly value="" class="form-control" id="DangNhapCuoi">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-primary" id="submit_edit_nv">Xác Nhận</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+
+    <script type="text/javascript">
+
+        var pageIndex = 1;
+        var TimKiem = '';
+        var Id_ChucVu = -1;
+        $(document).ready(function () {
+            loadData(pageIndex, TimKiem, Id_ChucVu);
+        });
+
+        $('#pagination').on('click', 'li', function (e) {
+            e.preventDefault();
+            var p = $(this).text();
+            if (p == '«') {
+                pageIndex--;
+                loadData(pageIndex, TimKiem, Id_ChucVu);
+            } else if (p == '»') {
+                pageIndex++;
+                loadData(pageIndex, TimKiem, Id_ChucVu);
+            } else {
+                pageIndex = p;
+                loadData(pageIndex, TimKiem, Id_ChucVu);
+            }
+
+        })
+
+        function loadData(pageIndex, TimKiem, Id_ChucVu) {
+            $.ajax({
+                type: 'get',
+                url: '/NhanVien/Show',
+                data: {
+                    pageIndex: pageIndex,
+                    TimKiem: TimKiem,
+                    Id_ChucVu: Id_ChucVu,
+                },
+                success: function (data) {
+                    console.log(data);
+                    $('#NhanVien').empty();
+                    if (data.data.length > 0) {
+                        console.log(data.msg)
+                        $.each(data.data, function (k, v) {
+                            let html = '<tr id="' + v.Id + '">'
+                            html += '<td>' + k + '</td>'
+                            html += '<td>' + v.TenNv + '</td>'
+                            html += '<td>' + v.MaNv + '</td>'
+                            html += '<td>' + v.Email + '</td>'
+                            html += '<td>' + v.GioiTinh + '</td>'
+                            html += '<td>' + moment(v.NgaySinh).format("DD-MM-YYYY") + '</td>'
+                            html += '<td>' + v.ChucVu + '</td>'
+                            html += '<td style="max-width:150px;" class="text-center">'
+                            html += '<button data-url="" type="button" name="show" class="btn btn-info btn-show"><i class="fa fa-info-circle"></i></button>'
+                            html += '<button data-url="" type="button" name="edit" class="btn btn-warning btn-edit"><i class="fa fa-upload"></i></button>'
+                            html += '<button data-url="" type="button" name="delete" class="btn btn-danger btn-delete"><i class="fa fa-trash"></i></button>'
+                            html += '</td>'
+                            html += '</tr>'
+
+                            $('#NhanVien').append(html);
+
+                            if (data.soTrang > 1) {
+                                let li = '';
+                                if (pageIndex > 1) li +='<li class="page-item" ><a class="page-link" href ="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+                                for (i = 1; i <= data.soTrang; i++) {
+                                    if (i == pageIndex) li += '<li class="page-item" ><a class="page-link" href="#" style="background-color: #92a8d1;pointer-events: none;">' + i + '</a></li>'
+                                    else li += '<li class="page-item" ><a class="page-link" href="#">' + i + '</a></li>'
+                                }
+                                if (pageIndex < data.soTrang) li += '<li class="page-item"><a class="page-link" href ="#" aria-label="Next" id="Next"><span aria-hidden="true">&raquo;</span></a></li>'
+                                $('#pagination').html(li);
+
+                            } else {
+                                let li = '<li class="page-item"><a class="page-link" href="#">1</a></li>'
+                                $('#pagination').html(li);
+                            }
+                        })
+                    } else {
+                        let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                        $('#NhanVien').append(html);
+                    }
+
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            });
+        }
+
+
+        $(document).on('click', 'button[name="show"]', function () {
+            $('#modal-edit-NV').modal('show');
+            $('#Title').html('Chi Tiết Nhân Viên');
+            $('#submit_edit').hide();
+            $('#lbl-MaNv').show();
+            $('#Ten-Nv').attr('readonly', true);
+            $('#Email-Nv').attr('readonly', true);
+            $('#DiaChi-Nv').attr('readonly', true);
+            $('#LienHe-Nv').attr('readonly', true);
+            $('#GioiTinh-Nv').attr('disabled', true);
+            $('#NgaySinh-Nv').attr('readonly', true);
+            $('#CMND-Nv').attr('readonly', true);
+            $('#Id_chucvu').attr('disabled', true);
+            $('#detail-nv').show();
+
+            let id = $(this).closest('tr').attr('id');
+            $.ajax({
+                type: 'Get',
+                url: '/NhanVien/Detail',
+                data: {
+                    id: id,
+                },
+                success: function (data) {
+                    console.log(data)
+                    $('#id_NhanVien').val(data.data.Id);
+                    $('#Ma-Nv').val(data.data.MaNv);
+                    $('#Ten-Nv').val(data.data.TenNv);
+                    $('#Email-Nv').val(data.data.Email);
+                    $('#DiaChi-Nv').val(data.data.DiaChi);
+                    $('#LienHe-Nv').val(data.data.LienHe);
+                    $('#GioiTinh-Nv').val(data.data.GioiTinh);
+                    $('#NgaySinh-Nv').val(moment(data.data.NgaySinh).format("YYYY-MM-DD"));
+                    $('#CMND-Nv').val(data.data.CMND);
+                    $('#Id_chucvu').val(data.data.Id_ChucVu);
+                    $('#NgayTao').val(moment(data.data.NgayTao).format("kk:mm DD-MM-YYYY"));
+                    $('#NgaySua').val(moment(data.data.NgayTao).format("kk:mm DD-MM-YYYY"));
+                    $('#DangNhapCuoi').val(moment(data.data.DangNhapCuoi).format("kk:mm DD-MM-YYYY"));
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        })
+
+        $(document).on('click', 'button[name="edit"]', function () {
+            $('#modal-edit-NV').modal('show');
+            $('#Title').html('Cập Nhật Nhân Viên');
+            $('#submit_edit').show();
+            $('#lbl-MaNv').hide();
+            $('#Ten-Nv').attr('readonly', false);
+            $('#Email-Nv').attr('readonly', false);
+            $('#DiaChi-Nv').attr('readonly', false);
+            $('#LienHe-Nv').attr('readonly', false);
+            $('#GioiTinh-Nv').attr('disabled', false);
+            $('#NgaySinh-Nv').attr('readonly', false);
+            $('#CMND-Nv').attr('readonly', false);
+            $('#Id_chucvu').attr('disabled', false);
+            $('#detail-nv').hide();
+
+            let id = $(this).closest('tr').attr('id');
+            $.ajax({
+                type: 'Get',
+                url: '/NhanVien/Detail',
+                data: {
+                    id: id,
+                },
+                success: function (data) {
+                    console.log(data)
+                    $('#id_NhanVien').val(data.data.Id);
+                    $('#Ten-Nv').val(data.data.TenNv);
+                    $('#Email-Nv').val(data.data.Email);
+                    $('#DiaChi-Nv').val(data.data.DiaChi);
+                    $('#LienHe-Nv').val(data.data.LienHe);
+                    $('#GioiTinh-Nv').val(data.data.GioiTinh);
+                    $('#NgaySinh-Nv').val(moment(data.data.NgaySinh).format("YYYY-MM-DD"));
+                    $('#CMND-Nv').val(data.data.CMND);
+                    $('#Id_chucvu').val(data.data.Id_ChucVu);
+                    $('#NgayTao').val(moment(data.data.NgayTao).format("kk:mm DD-MM-YYYY"));
+                    $('#NgaySua').val(moment(data.data.NgayTao).format("kk:mm DD-MM-YYYY"));
+                    $('#DangNhapCuoi').val(moment(data.data.DangNhapCuoi).format("kk:mm DD-MM-YYYY"));
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        })
+
+        $(document).on('click', 'button[name="delete"]', function () {
+            cuteAlert({
+                type: "question",
+                title: "Xóa nhân viên",
+                message: "Bạn có muốn xóa nhân viên?",
+                confirmText: "Đồng Ý",
+                cancelText: "Hủy"
+            }).then((e) => {
+                if (e == ("confirm")) {
+                    let id = $(this).closest('tr').attr('id');
+                    $.ajax({
+                        type: "Post",
+                        url: "/NhanVien/Delete",
+                        data: {
+                            Id: id
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            if (data.code == 200) {
+                                cuteToast({
+                                    type: "success", // or 'info', 'error', 'warning'
+                                    message: data.msg,
+                                    timer: 5000
+                                });
+                            } else if (data.code == 202) {
+                                cuteToast({
+                                    type: "warning", // or 'info', 'error', 'warning'
+                                    message: data.msg,
+                                    timer: 5000
+                                });
+                            }
+                            
+                            loadData(pageIndex, TimKiem, Id_LoaiKh);
+                        }
+                    })
+                } else {
+                    return;
+                }
+            })
+        })
+
+        $('#btn-ThemNv').click(function () {
+            $('#modal-edit-NV').modal('show');
+            $('#Title').html('Thêm Mới Nhân Viên');
+            $('#submit_edit').show();
+            $('#lbl-MaNv').hide();
+            $('#Ten-Nv').attr('readonly', false);
+            $('#Email-Nv').attr('readonly', false);
+            $('#DiaChi-Nv').attr('readonly', false);
+            $('#LienHe-Nv').attr('readonly', false);
+            $('#GioiTinh-Nv').attr('disabled', false);
+            $('#NgaySinh-Nv').attr('readonly', false);
+            $('#CMND-Nv').attr('readonly', false);
+            $('#Id_chucvu').attr('disabled', false);
+            $('#detail-nv').hide();
+            $('#id_NhanVien').val('');
+            $('#Ten-Nv').val('');
+            $('#Email-Nv').val('');
+            $('#DiaChi-Nv').val('');
+            $('#LienHe-Nv').val('');
+            $('#GioiTinh-Nv').val('');
+            $('#NgaySinh-Nv').val('');
+            $('#CMND-Nv').val('');
+            $('#Id_chucvu').val('');
+        })
+
+
+        $('#form-update-NV').submit(function (e) {
+            e.preventDefault();
+
+            let TenNv = $('#Ten-Nv').val();
+            let Email = $('#Email-Nv').val();
+            let DiaChi = $('#DiaChi-Nv').val();
+            let LienHe = $('#LienHe-Nv').val();
+            let GioiTinh = $('#GioiTinh-Nv').val();
+            let NgaySinh = moment($('#NgaySinh-Nv').val()).format("YYYY-MM-DD");
+            let CMND = $('#CMND-Nv').val();
+            let ChucVu = $('#Id_chucvu').val();
+
+            if (TenNv == "" || Email == "" || NgaySinh == "" || CMND == "" || ChucVu == null) {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Không được để trống thông tin!",
+                    timer: 5000
+                });
+                return;
+            }
+            let id = $('#id_NhanVien').val();
+
+            if (id != "") {
+                $.ajax({
+                    type: 'Post',
+                    url: '/NhanVien/Update',
+                    data: {
+                        Id: id,
+                        TenNv: TenNv,
+                        Email: Email,
+                        DiaChi: DiaChi,
+                        LienHe: LienHe,
+                        GioiTinh: GioiTinh,
+                        NgaySinh: NgaySinh,
+                        CMND: CMND,
+                        Id_ChucVu: ChucVu,
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        cuteToast({
+                            type: "success", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+                        $('#modal-edit-NV').modal('hide');
+                        loadData(pageIndex, TimKiem, Id_ChucVu);
+                    }, error: function (jqXHR, textStatus, errorThrown) { }
+                })
+            } else {
+                $.ajax({
+                    type: 'Post',
+                    url: '/NhanVien/Create',
+                    data: {
+                        TenNv: TenNv,
+                        Email: Email,
+                        Password: 1,
+                        DiaChi: DiaChi,
+                        LienHe: LienHe,
+                        GioiTinh: GioiTinh,
+                        NgaySinh: NgaySinh,
+                        CMND: CMND,
+                        Id_ChucVu: ChucVu,
+                        user: false,
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        if (data.code == 200) {
+                            cuteToast({
+                                type: "success", // or 'info', 'error', 'warning'
+                                message: data.msg,
+                                timer: 5000
+                            });
+                            $('#modal-edit-NV').modal('hide');
+                            loadData(pageIndex, TimKiem, Id_ChucVu);
+                        } else {
+                            cuteToast({
+                                type: "error", // or 'info', 'error', 'warning'
+                                message: data.msg,
+                                timer: 5000
+                            });
+                        }
+                        
+                        
+                    }, error: function (jqXHR, textStatus, errorThrown) { }
+                })
+            }
+
+        })
+
+        $('#btn-search').click(function () {
+            TimKiem = $('#search').val();
+            Id_ChucVu = $('#Id_ChucVu').val();
+
+            loadData(pageIndex, TimKiem, Id_ChucVu);
+        })
+
+        $('#Id_ChucVu').change(function () {
+            TimKiem = $('#search').val();
+            Id_ChucVu = $('#Id_ChucVu').val();
+
+            loadData(pageIndex, TimKiem, Id_ChucVu);
+        })
+
+    </script>
+
+}
+

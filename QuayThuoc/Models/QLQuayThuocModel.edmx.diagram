@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d7431f7e9609429cbb434db32bdb4767" Name="Diagram1" ZoomLevel="82">
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.ChucVu" Width="1.5" PointX="17.125" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.DoanhThu" Width="1.5" PointX="9" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.DonHang" Width="1.5" PointX="15" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.DonMua" Width="1.5" PointX="15" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.DonVi" Width="1.5" PointX="15" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.HoaDonBan" Width="1.5" PointX="20.875" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.HoaDonNhap" Width="1.5" PointX="18.875" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.KhachHang" Width="1.5" PointX="20.875" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.KhoHang" Width="1.5" PointX="9" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.LoaiKH" Width="1.5" PointX="22.625" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.LoaiSP" Width="1.5" PointX="9" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.NhaCungCap" Width="1.5" PointX="12.875" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.NhanVien" Width="1.5" PointX="17.125" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.Order" Width="1.5" PointX="19" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.SanPhamBan" Width="1.5" PointX="10.75" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.SanPhamNhap" Width="1.5" PointX="10.875" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.SanPham" Width="1.5" PointX="12.875" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLQuayThuocDBModel.sysdiagram" Width="1.5" PointX="4.25" PointY="0.875" IsExpanded="true" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_NhanViens_ChucVus" ManuallyRouted="false" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_DonHangs_KhoHangs" ManuallyRouted="false" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_DonHangs_NhanViens" ManuallyRouted="false" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_DonHangs_SanPhams" ManuallyRouted="false" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_DonMuas_NhanViens" ManuallyRouted="false" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_DonMuas_SanPhams" ManuallyRouted="false" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_HoaDonBan_KhachHang" ManuallyRouted="false" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_HoaDonBan_NhanViens" ManuallyRouted="false" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_HoaDonNhaps_NhanViens" ManuallyRouted="false" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_KhachHang_LoaiKHs" ManuallyRouted="false" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_KhoHangs_SanPhams" ManuallyRouted="false" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_SanPhams_LoaiSPs" ManuallyRouted="false" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_SanPhams_NhaCungCaps" ManuallyRouted="false" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_Order_NhanViens" ManuallyRouted="false" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_SanPhamBans_SanPhams" ManuallyRouted="false" />
+        <AssociationConnector Association="QLQuayThuocDBModel.FK_SanPhamNhaps_SanPhams" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

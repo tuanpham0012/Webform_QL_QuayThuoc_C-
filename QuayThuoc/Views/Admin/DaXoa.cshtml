@@ -1,0 +1,386 @@
+﻿
+@{
+    ViewBag.Title = "DaXoa";
+    Layout = "~/Views/Layout/Admin_Layout.cshtml";
+}
+<div class="page-header">
+    <h3 class="page-title">
+        <span class="page-title-icon bg-gradient-primary text-white mr-2">
+            <i class="mdi mdi-delete-forever"></i>
+        </span> Recycle Bin
+    </h3>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form class="form-inline" style="margin-bottom:15px;">
+                    <div class="form-group mx-sm-5 mb-2">
+                        <label for="inputState" style="margin-right:10px;">Chọn Table</label>
+                        <select class="custom-select mr-sm-4" id="tbl-db">
+                            <option selected value="NhanVien">Nhân viên</option>
+                            <option value="KhachHang">Khách hàng</option>
+                            <option value="SanPham">Sản phẩm</option>
+                        </select>
+                    </div>
+                </form>
+                <br />
+                <br />
+                <div class="table-responsive" id="tbl-nhanvien">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Tên Nhân Viên</th>
+                                <th scope="col">Mã Nhân Viên</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Ngày Sinh</th>
+                                <th scope="col">Chức Vụ</th>
+                                <th class="text-center">Xử lý</th>
+                            </tr>
+                        </thead>
+                        <tbody id="db-nhanvien"></tbody>
+                    </table>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination" id="pag-nhanvien">
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="table-responsive" id="tbl-khachhang">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Tên Khách Hàng</th>
+                                <th scope="col">Địa Chỉ</th>
+                                <th scope="col">Liên Hệ</th>
+                                <th scope="col">Khách Hàng</th>
+                                <th class="text-center">Xử lý</th>
+                            </tr>
+                        </thead>
+                        <tbody id="db-khachhang"></tbody>
+                    </table>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination" id="pag-khachhang">
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="table-responsive" id="tbl-sanpham">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Tên Sản Phẩm</th>
+                                <th scope="col">Mã Sản Phẩm</th>
+                                <th scope="col">Loại Sản Phẩm</th>
+                                <th scope="col">Đơn Vị</th>
+                                <th class="text-center">Xử lý</th>
+                            </tr>
+                        </thead>
+                        <tbody id="db-sanpham"></tbody>
+                    </table>
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination" id="pagination">
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+
+    <script type="text/javascript">
+
+        var pageNv = 1;
+        var pageKh = 1;
+        var pageSp = 1;
+        var table = $('#tbl-db').val();
+        $(document).ready(function () {
+            $('#tbl-nhanvien').show();
+            $('#tbl-khachhang').hide();
+            $('#tbl-sanpham').hide();
+            loadNhanVien(pageNv)
+        });
+
+        function loadNhanVien(pageNv) {
+            $.ajax({
+                type: 'get',
+                url: '/Restore/NhanVien',
+                data: {
+                    pageIndex: pageNv,
+                },
+                success: function (data) {
+                    console.log(data);
+                    $('#db-nhanvien').empty();
+                    if (data.data.length > 0) {
+                        console.log(data.msg)
+                        $.each(data.data, function (k, v) {
+                            let html = '<tr id="' + v.Id + '">'
+                            html += '<td>' + k + '</td>'
+                            html += '<td>' + v.TenNv + '</td>'
+                            html += '<td>' + v.MaNv + '</td>'
+                            html += '<td>' + v.Email + '</td>'
+                            html += '<td>' + v.GioiTinh + '</td>'
+                            html += '<td>' + moment(v.NgaySinh).format("DD-MM-YYYY") + '</td>'
+                            html += '<td>' + v.ChucVu + '</td>'
+                            html += '<td style="max-width:150px;" class="text-center">'
+                            html += '<button data-url="" type="button" name="restore" class="btn btn-info btn-show"><i class="fa fa-info-circle"></i></button>'
+                            html += '</td>'
+                            html += '</tr>'
+
+                            $('#db-nhanvien').append(html);
+
+                            if (data.soTrang > 1) {
+                                let li = '';
+                                if (pageNv > 1) li += '<li class="page-item" ><a class="page-link" href ="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+                                for (i = 1; i <= data.soTrang; i++) {
+                                    if (i == pageNv) li += '<li class="page-item" ><a class="page-link" href="#" style="background-color: #92a8d1;pointer-events: none;">' + i + '</a></li>'
+                                    else li += '<li class="page-item" ><a class="page-link" href="#">' + i + '</a></li>'
+                                }
+                                if (pageNv < data.soTrang) li += '<li class="page-item"><a class="page-link" href ="#" aria-label="Next" id="Next"><span aria-hidden="true">&raquo;</span></a></li>'
+                                $('#pag-nhanvien').html(li);
+
+                            } else {
+                                let li = '<li class="page-item"><a class="page-link" href="#">1</a></li>'
+                                $('#pag-nhanvien').html(li);
+                            }
+                        })
+                    } else {
+                        let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                        $('#db-nhanvien').append(html);
+                    }
+
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            });
+        }
+
+        $('#pag-nhanvien').on('click', 'li', function (e) {
+            e.preventDefault();
+            var p = $(this).text();
+            if (p == '«') {
+                pageNv--;
+                loadNhanVien(pageNv);
+            } else if (p == '»') {
+                pageNv++;
+                lloadNhanVien(pageNv);
+            } else {
+                pageNv = p;
+                loadNhanVien(pageNv);
+            }
+
+        })
+
+        function loadKhachHang(pageKh) {
+            $.ajax({
+                type: 'get',
+                url: '/Restore/KhachHang',
+                data: {
+                    pageIndex: pageKh,
+                },
+                success: function (data) {
+                    console.log(data);
+                    $('#db-khachhang').empty();
+                    if (data.data.length > 0) {
+                        console.log(data.msg)
+                        $.each(data.data, function (k, v) {
+                            let html = '<tr id="' + v.Id + '">'
+                            html += '<td>' + k + '</td>'
+                            html += '<td>' + v.TenKh + '</td>'
+                            html += '<td>' + v.DiaChi + '</td>'
+                            html += '<td>' + v.LienHe + '</td>'
+                            html += '<td>' + v.LoaiKh + '</td>'
+                            html += '<td style="max-width:150px;" class="text-center">'
+                            html += '<button data-url="" type="button" name="restore" class="btn btn-info btn-show"><i class="fa fa-info-circle"></i></button>'
+                            html += '</td>'
+                            html += '</tr>'
+
+                            $('#db-khachhang').append(html);
+
+                            if (data.soTrang > 1) {
+                                let li = '';
+                                if (pageKh > 1) li += '<li class="page-item" ><a class="page-link" href ="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+                                for (i = 1; i <= data.soTrang; i++) {
+                                    if (i == pageKh) li += '<li class="page-item" ><a class="page-link" href="#" style="background-color: #92a8d1;pointer-events: none;">' + i + '</a></li>'
+                                    else li += '<li class="page-item" ><a class="page-link" href="#">' + i + '</a></li>'
+                                }
+                                if (pageKh < data.soTrang) li += '<li class="page-item"><a class="page-link" href ="#" aria-label="Next" id="Next"><span aria-hidden="true">&raquo;</span></a></li>'
+                                $('#pag-khachhang').html(li);
+
+                            } else {
+                                let li = '<li class="page-item"><a class="page-link" href="#">1</a></li>'
+                                $('#pag-khachhang').html(li);
+                            }
+                        })
+                    } else {
+                        let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                        $('#db-khachhang').append(html);
+                    }
+
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            });
+        }
+
+        $('#pag-khachhang').on('click', 'li', function (e) {
+            e.preventDefault();
+            var p = $(this).text();
+            if (p == '«') {
+                pageKh--;
+                loadKhachHang(pageKh);
+            } else if (p == '»') {
+                pageKh++;
+                loadKhachHang(pageKh);
+            } else {
+                pageKh = p;
+                loadKhachHang(pageKh);
+            }
+
+        })
+
+        function loadSanPham(pageSp) {
+            $.ajax({
+                type: 'get',
+                url: '/Restore/SanPham',
+                data: {
+                    pageIndex: pageSp,
+                },
+                success: function (data) {
+                    console.log(data);
+                    $('#db-sanpham').empty();
+                    if (data.data.length > 0) {
+                        console.log(data.msg)
+                        $.each(data.data, function (k, v) {
+                            let html = '<tr id="' + v.Id + '">'
+                            html += '<td>' + k + '</td>'
+                            html += '<td>' + v.TenSp + '</td>'
+                            html += '<td>' + v.MaSp + '</td>'
+                            html += '<td>' + v.TenLoaiSp + '</td>'
+                            html += '<td>' + v.DonVi + '</td>'
+                            html += '<td style="max-width:150px;" class="text-center">'
+                            html += '<button data-url="" type="button" name="restore" class="btn btn-info btn-show"><i class="fa fa-info-circle"></i></button>'
+                            html += '</td>'
+                            html += '</tr>'
+
+                            $('#db-sanpham').append(html);
+
+                            if (data.soTrang > 1) {
+                                let li = '';
+                                if (pageSp > 1) li += '<li class="page-item" ><a class="page-link" href ="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+                                for (i = 1; i <= data.soTrang; i++) {
+                                    if (i == pageSp) li += '<li class="page-item" ><a class="page-link" href="#" style="background-color: #92a8d1;pointer-events: none;">' + i + '</a></li>'
+                                    else li += '<li class="page-item" ><a class="page-link" href="#">' + i + '</a></li>'
+                                }
+                                if (pageSp < data.soTrang) li += '<li class="page-item"><a class="page-link" href ="#" aria-label="Next" id="Next"><span aria-hidden="true">&raquo;</span></a></li>'
+                                $('#pag-sanpham').html(li);
+
+                            } else {
+                                let li = '<li class="page-item"><a class="page-link" href="#">1</a></li>'
+                                $('#pag-sanpham').html(li);
+                            }
+                        })
+                    } else {
+                        let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                        $('#db-sanpham').append(html);
+                    }
+
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            });
+        }
+
+        $('#pag-sanpham').on('click', 'li', function (e) {
+            e.preventDefault();
+            var p = $(this).text();
+            if (p == '«') {
+                pageSp--;
+                loadSanPham(pageSp);
+            } else if (p == '»') {
+                pageSp++;
+                loadSanPham(pageSp);
+            } else {
+                pageSp = p;
+                loadSanPham(pageSp);
+            }
+
+        })
+
+        $(document).on('click', 'button[name="restore"]', function () {
+            cuteAlert({
+                type: "question",
+                title: "Khôi phục",
+                message: "Bạn có muốn khôi phục record?",
+                confirmText: "Đồng Ý",
+                cancelText: "Hủy"
+            }).then((e) => {
+                if (e == ("confirm")) {
+                    let id = $(this).closest('tr').attr('id');
+                    let tbl = $('#tbl-db').val();
+                    $.ajax({
+                        type: 'post',
+                        url: '/Restore/RestoreData',
+                        data: {
+                            Id: id,
+                            table: tbl,
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            if (data.code == 200) {
+                                cuteToast({
+                                    type: "success", // or 'info', 'error', 'warning'
+                                    message: data.msg,
+                                    timer: 5000
+                                });
+                            } else {
+                                cuteToast({
+                                    type: "error", // or 'info', 'error', 'warning'
+                                    message: data.msg,
+                                    timer: 5000
+                                });
+                            }
+                            if (tbl == "NhanVien") {
+                                loadNhanVien(pageNv)
+                            } else if (tbl == "KhachHang") {
+                                loadKhachHang(pageKh)
+                            } else if (tbl == "SanPham") {
+                                loadSanPham(pageSp)
+                            }
+                        }, error: function (jqXHR, textStatus, errorThrown) { }
+                    })
+                } else {
+                    return;
+                }
+            })
+            
+        })
+        
+        $('#tbl-db').change(function () {
+            table = $('#tbl-db').val();
+            if (table == "NhanVien") {
+                $('#tbl-nhanvien').show();
+                $('#tbl-khachhang').hide();
+                $('#tbl-sanpham').hide();
+                loadNhanVien(pageNv)
+            }
+            if (table == "KhachHang") {
+                $('#tbl-nhanvien').hide();
+                $('#tbl-khachhang').show();
+                $('#tbl-sanpham').hide();
+                loadKhachHang(pageKh)
+            }
+            if (table == "SanPham") {
+                $('#tbl-nhanvien').hide();
+                $('#tbl-khachhang').hide();
+                $('#tbl-sanpham').show();
+                loadSanPham(pageSp)
+            }
+        })
+
+    </script>
+
+}
+

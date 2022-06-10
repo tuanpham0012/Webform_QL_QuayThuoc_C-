@@ -1,0 +1,634 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Shop Admin</title>
+    <!-- plugins:css -->
+    <link rel="stylesheet" href="~/Content/admin/assets/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="~/Content/admin/assets/vendors/css/vendor.bundle.base.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link href="~/Content/admin/public/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/admin/public/css/style.css" rel='stylesheet' type='text/css'>
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="~/Content/admin/assets/css/style.css">
+    <link rel="shortcut icon" href="~/Content/admin/assets/images/favicon.ico" />
+    <!-- End layout styles -->
+    <!-- CSS only -->
+    <link rel="stylesheet" href="~/Content/admin/public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/admin/public/css/select2.min.css" />
+
+    <!-- <script src="admin_css/public/js/jquery-3.3.1.min.js"></script> -->
+    <script src="~/Content/admin/public/js/jquery-3.4.1.min.js"></script>
+    <script src="~/Content/admin/public/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/Content/toast/style.css" />
+    <script src="~/Content/toast/cute-alert.js"></script>
+    <script src="~/Content/admin/public/js/select2.min.js" type="text/javascript"></script>
+    <script src="~/Content/admin/public/js/moment.js" type="text/javascript"></script>
+
+
+    <style>
+        .modal-body span {
+            font-size: 20px;
+            font-family: "Time New Roman";
+            color: #00008B;
+        }
+    </style>
+</head>
+<body style="height:100%;">
+
+    @*-- Modal xem thông tin --*@
+    <div class="modal fade" id="modal-edit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <form action="" id="form-update" method="POST" role="form">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="Title"></h4>
+                        <button readonly type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="number" hidden id="id_nhanvien" />
+                        <div class="form-group" id="lbl-MaNv">
+                            <label for="tensp-edit">Mã nhân viên</label>
+                            <input type="text" value="" readonly class="form-control" id="MaNv" placeholder="Mã nhân viên">
+                        </div>
+                        <div class="form-group">
+                            <label for="tensp-edit">Tên nhân viên</label>
+                            <input type="text" value="" class="form-control" id="TenNv" placeholder="Tên nhân viên">
+                        </div>
+                        <div class="form-group">
+                            <label for="tensp-edit">Email</label>
+                            <input type="email" value="" class="form-control" id="Email" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="tensp-edit">Địa Chỉ</label>
+                            <input type="text" value="" class="form-control" id="DiaChi" placeholder="Địa chỉ">
+                        </div>
+                        <div class="form-group">
+                            <label for="tensp-edit">Liên hệ(sdt)</label>
+                            <input type="text" value="" class="form-control" id="LienHe" placeholder="Liên hệ">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Giới tính</label>
+                            <select id="GioiTinh" class="form-control">
+                                <option selected value="0">--Chọn...</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                                <option value="Khác">Khác</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tensp-edit">Ngày sinh</label>
+                            <input type="date" value="" class="form-control" id="NgaySinh">
+                        </div>
+                        <div class="form-group">
+                            <label for="tensp-edit">Số CCCD/CMND</label>
+                            <input type="text" value="" class="form-control" id="cmnd" placeholder="Số CCCD/CMND">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" id="cancel" data-dismiss="modal">Hủy</button>
+                        <button type="button" class="btn btn-default" id="edit">Cập nhật</button>
+                        <button type="submit" class="btn btn-primary" id="submit_edit">Xác nhận</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @*-- Modal đổi mật khẩu --*@
+    <div class="modal fade" id="modal-change">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <form action="" id="form-changePassword" method="POST" role="form">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="Title">Đổi mật khẩu</h4>
+                        <button readonly type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="number" hidden id="id_nhanviens" />
+                        <div class="form-group">
+                            <label for="Email">Email</label>
+                            <input type="email" value="" class="form-control" id="c-email" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="old-pass">Mật khẩu</label>
+                            <input type="password" value="" class="form-control" id="old-pass" placeholder="Mật khẩu cũ">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-pass">Mật khẩu mới</label>
+                            <input type="password" value="" class="form-control" id="new-pass" placeholder="Mật khẩu mới">
+                        </div>
+                        <div class="form-group">
+                            <label for="pass-confirm">Xác nhận mật khẩu</label>
+                            <input type="password" value="" class="form-control" id="pass-confirm" placeholder="Xác nhận mật khẩu">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">Xác Nhận</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container-scroller">
+        <!-- partial:partials/_navbar.html -->
+        <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+                <a class="navbar-brand brand-logo" href="index.html"><img src="~/Content/admin/assets/images/logo.svg" alt="logo" /></a>
+                <a class="navbar-brand brand-logo-mini" href="index.html"><img src="~/Content/admin/assets/images/logo-mini.svg" alt="logo" /></a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-stretch">
+                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                    <span class="mdi mdi-menu"></span>
+                </button>
+                <div class="search-field d-none d-md-block">
+                    <form class="d-flex align-items-center h-100" action="#">
+                        <div class="input-group">
+                            <div class="input-group-prepend bg-transparent">
+                                <i class="input-group-text border-0 mdi mdi-magnify"></i>
+                            </div>
+                            <input type="text" class="form-control bg-transparent border-0" placeholder="Search projects">
+                        </div>
+                    </form>
+                </div>
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item nav-profile dropdown">
+                        <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                            <div class="nav-profile-img">
+                                <img src="~/Content/admin/assets/images/faces/face1.jpg" alt="image">
+                                <span class="availability-status online"></span>
+                            </div>
+                            <div class="nav-profile-text">
+                                <p class="mb-1 text-black UserName"></p>
+                            </div>
+                        </a>
+                        <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
+                            <a class="dropdown-item" href="#" name="detail">
+                                <i class="mdi mdi-cached mr-2 text-success"></i> Thông tin cá nhân
+                            </a>
+                            <a class="dropdown-item" href="#" name="change-pass">
+                                <i class="mdi mdi-cached mr-2 text-success"></i> Đổi mật khẩu
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#" id="LogOut">
+                                <i class="mdi mdi-logout mr-2 text-primary"></i> Đăng xuất
+                            </a>
+
+                            <form id="logout-form" action="#" method="POST" style="display: none;">
+                            </form>
+                        </div>
+                    </li>
+                    <li class="nav-item d-none d-lg-block full-screen-link">
+                        <a class="nav-link">
+                            <i class="mdi mdi-fullscreen" id="fullscreen-button"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link count-indicator dropdown-toggle" id="messageDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-email-outline"></i>
+                            <span class="count-symbol bg-warning"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="messageDropdown">
+                            <h6 class="p-3 mb-0">Messages</h6>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <img src="~/Content/admin/assets/images/faces/face4.jpg" alt="image" class="profile-pic">
+                                </div>
+                                <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                                    <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Mark send you a message</h6>
+                                    <p class="text-gray mb-0"> 1 Minutes ago </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <img src="~/Content/admin/assets/images/faces/face2.jpg" alt="image" class="profile-pic">
+                                </div>
+                                <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                                    <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Cregh send you a message</h6>
+                                    <p class="text-gray mb-0"> 15 Minutes ago </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <img src="~/Content/admin/assets/images/faces/face3.jpg" alt="image" class="profile-pic">
+                                </div>
+                                <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                                    <h6 class="preview-subject ellipsis mb-1 font-weight-normal">Profile picture updated</h6>
+                                    <p class="text-gray mb-0"> 18 Minutes ago </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <h6 class="p-3 mb-0 text-center">4 new messages</h6>
+                        </div>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
+                            <i class="mdi mdi-bell-outline"></i>
+                            <span class="count-symbol bg-danger"></span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+                            <h6 class="p-3 mb-0">Notifications</h6>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-success">
+                                        <i class="mdi mdi-calendar"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                                    <h6 class="preview-subject font-weight-normal mb-1">Event today</h6>
+                                    <p class="text-gray ellipsis mb-0"> Just a reminder that you have an event today </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-warning">
+                                        <i class="mdi mdi-settings"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                                    <h6 class="preview-subject font-weight-normal mb-1">Settings</h6>
+                                    <p class="text-gray ellipsis mb-0"> Update dashboard </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item preview-item">
+                                <div class="preview-thumbnail">
+                                    <div class="preview-icon bg-info">
+                                        <i class="mdi mdi-link-variant"></i>
+                                    </div>
+                                </div>
+                                <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+                                    <h6 class="preview-subject font-weight-normal mb-1">Launch Admin</h6>
+                                    <p class="text-gray ellipsis mb-0"> New admin wow! </p>
+                                </div>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <h6 class="p-3 mb-0 text-center">See all notifications</h6>
+                        </div>
+                    </li>
+                    <!-- <li class="nav-item nav-logout d-none d-lg-block">
+                      <a class="nav-link" href="#">
+                        <i class="mdi mdi-power"></i>
+                      </a>
+                    </li> -->
+                    <li class="nav-item nav-settings d-none d-lg-block">
+                        <a class="nav-link" href="/Home">
+                            <i class="mdi mdi-home"></i>
+                        </a>
+                    </li>
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                    <span class="mdi mdi-home"></span>
+                </button>
+            </div>
+        </nav>
+        <!-- partial -->
+        <div class="container-fluid page-body-wrapper">
+            <!-- partial:partials/_sidebar.html -->
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item nav-profile">
+                        <a href="javascript:void(0)" class="nav-link" disabled="disabled">
+                            <div class="nav-profile-image">
+                                <img src="~/Content/admin/assets/images/faces/face1.jpg" alt="profile">
+                                <span class="login-status online"></span>
+                                <!--change to offline or busy as needed-->
+                            </div>
+                            <div class="nav-profile-text d-flex flex-column">
+                                <span class="font-weight-bold mb-2 UserName"></span>
+                                <span class="text-secondary text-small" id="ChucVu"></span>
+                            </div>
+                            <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Admin/Index">
+                            <span class="menu-title">Cửa hàng</span>
+                            <i class="mdi mdi-store-24-hour menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Admin/DatHang">
+                            <span class="menu-title">Đơn hàng online</span>
+                            <i class="mdi mdi-cart-plus menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item QlKho">
+                        <a class="nav-link" href="/Admin/SanPham">
+                            <span class="menu-title">Sản phẩm</span>
+                            <i class="mdi mdi-cube menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item QlKho">
+                        <a class="nav-link" href="/Admin/NhapHang">
+                            <span class="menu-title">Nhập sản phẩm</span>
+                            <i class="mdi mdi-database-plus menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#general-pages" aria-expanded="false" aria-controls="general-pages">
+                            <span class="menu-title">Thống kê</span>
+                            <i class="menu-arrow"></i>
+                            <i class="mdi mdi-chart-bar menu-icon"></i>
+                        </a>
+                        <div class="collapse" id="general-pages">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="/Admin/KiemTraSp"> Thống kê sản phẩm </a></li>
+                                <li class="nav-item"> <a class="nav-link" href="/Admin/DoanhThu"> Doanh thu </a></li>
+                                <li class="nav-item"> <a class="nav-link" href="/Admin/HoaDonBan"> Hóa đơn đã bán </a></li>
+                                <li class="nav-item"> <a class="nav-link" href="/Admin/HoaDonNhap"> Hóa đơn nhập hàng </a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item QlKho">
+                        <a class="nav-link" href="/Admin/KhoHang">
+                            <span class="menu-title">Kho hàng</span>
+                            <i class="mdi mdi-biohazard menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item Admin">
+                        <a class="nav-link" href="/Admin/NhanVien">
+                            <span class="menu-title">Nhân viên</span>
+                            <i class="mdi mdi-account-multiple-outline menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item Admin">
+                        <a class="nav-link" href="/Admin/KhachHang">
+                            <span class="menu-title">Khách hàng</span>
+                            <i class="mdi mdi-account-convert menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item Admin">
+                        <a class="nav-link" href="/Admin/DaXoa">
+                            <span class="menu-title">Đã xóa</span>
+                            <i class="mdi mdi-delete-forever menu-icon"></i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item sidebar-actions">
+                        <span class="nav-link">
+                            <div class="border-bottom">
+                            </div>
+                        </span>
+                    </li>
+                </ul>
+            </nav>
+            <!-- partial -->
+            <div class="main-panel">
+                <div class="content-wrapper" style="min-height:100%;position:relative;">
+                    @RenderBody()
+                </div>
+                <!-- content-wrapper ends -->
+                <!-- partial:partials/_footer.html -->
+                <div class="clear"></div>
+
+                <!-- partial -->
+            </div>
+            <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+
+
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="~/Content/admin/assets/vendors/chart.js/Chart.min.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="~/Content/admin/assets/js/hoverable-collapse.js"></script>
+    <script src="~/Content/admin/assets/js/misc.js"></script>
+
+
+    <script>
+
+        var Id_NhanVien = sessionStorage.getItem("Id_NhanVien");
+
+        $('#document').ready(function () {
+            loadAdminLogin();
+        })
+        function loadAdminLogin() {
+            if (sessionStorage.getItem("email") != null) {
+                if (sessionStorage.getItem("Id_ChucVu") == 5) { window.location = "/Home"; }
+                else {
+                    $('.UserName').html(sessionStorage.getItem("Ten"));
+                    $('#ChucVu').html(sessionStorage.getItem("ChucVu"));
+
+                    if (sessionStorage.getItem("Id_ChucVu") > 2) {
+                        $('.Admin').hide();
+                    }
+                    if (sessionStorage.getItem("Id_ChucVu") > 3) {
+                        $('.QlKho').hide();
+                    }
+                }
+            }
+            else {
+                window.location = "/Home";
+            }
+
+        }
+
+        $('#LogOut').click(function () {
+            cuteAlert({
+                type: "question",
+                title: "Đăng Xuất",
+                message: "Bạn Có Muốn Đăng Xuất Không?",
+                confirmText: "Đồng Ý",
+                cancelText: "Hủy"
+            }).then((e) => {
+                if (e == ("confirm")) {
+                    sessionStorage.clear();
+                    window.location = "/Home";
+                } else {
+                    return;
+                }
+            })
+        });
+
+        $(document).on('click', 'a[name="detail"]', function (e) {
+            e.preventDefault();
+            $('#modal-edit').modal('show');
+            $('#Title').html('Thông tin người dùng');
+            $('#submit_edit').hide();
+            $('#edit').show();
+            $('#lbl-MaNv').show();
+            $('#TenNv').attr('readonly', true);
+            $('#Email').attr('readonly', true);
+            $('#DiaChi').attr('readonly', true);
+            $('#LienHe').attr('readonly', true);
+            $('#GioiTinh').attr('disabled', true);
+            $('#NgaySinh').attr('readonly', true);
+
+            $.ajax({
+                type: 'Get',
+                url: '/NhanVien/Detail',
+                data: {
+                    id: sessionStorage.getItem("Id_NhanVien"),
+                },
+                success: function (data) {
+                    console.log(data)
+                    $('#id_nhanvien').val(data.data.Id);
+                    $('#cmnd').val(data.data.CMND);
+                    $('#MaNv').val(data.data.MaNv);
+                    $('#TenNv').val(data.data.TenNv);
+                    $('#Email').val(data.data.Email);
+                    $('#DiaChi').val(data.data.DiaChi);
+                    $('#LienHe').val(data.data.LienHe);
+                    $('#GioiTinh').val(data.data.GioiTinh);
+                    $('#NgaySinh').val(moment(data.data.NgaySinh).format("YYYY-MM-DD"));
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        })
+
+        $(document).on('click', 'button[id="edit"]', function () {
+            $('#modal-edit').modal('show');
+            $('#Title').html('Cập Nhật Nhân Viên');
+            $('#submit_edit').show();
+            $('#edit').hide();
+            $('#lbl-MaNv').hide();
+            $('#TenNv').attr('readonly', false);
+            $('#Email').attr('readonly', false);
+            $('#DiaChi').attr('readonly', false);
+            $('#LienHe').attr('readonly', false);
+            $('#GioiTinh').attr('disabled', false);
+            $('#NgaySinh').attr('readonly', false);
+
+        })
+
+        $('#form-update').submit(function (e) {
+            e.preventDefault();
+
+            let TenNv = $('#TenNv').val();
+            let Email = $('#Email').val();
+            let DiaChi = $('#DiaChi').val();
+            let LienHe = $('#LienHe').val();
+            let GioiTinh = $('#GioiTinh').val();
+            let NgaySinh = moment($('#NgaySinh').val()).format("YYYY-MM-DD");
+            let CMND = $('#cmnd').val();
+            let ChucVu = -1;
+
+            if (TenNv == "" || Email == "" || NgaySinh == "" || GioiTinh == "" || ChucVu == null) {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Không được để trống thông tin!",
+                    timer: 5000
+                });
+                return;
+            }
+            let id = $('#id_nhanvien').val();
+            $.ajax({
+                type: 'Post',
+                url: '/NhanVien/Update',
+                data: {
+                    Id: id,
+                    TenNv: TenNv,
+                    Email: Email,
+                    DiaChi: DiaChi,
+                    LienHe: LienHe,
+                    GioiTinh: GioiTinh,
+                    NgaySinh: NgaySinh,
+                    CMND: CMND,
+                    Id_ChucVu: ChucVu,
+                },
+                success: function (data) {
+                    console.log(data)
+                    cuteToast({
+                        type: "success", // or 'info', 'error', 'warning'
+                        message: data.msg,
+                        timer: 5000
+                    });
+                    $('#modal-edit').modal('hide');
+                    loadData(pageIndex, TimKiem, Id_ChucVu);
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        })
+
+        $(document).on('click', "a[name='change-pass']", function () {
+            $('#modal-change').modal('show');
+            $('#id_nhanviens').val(sessionStorage.getItem("Id_NhanVien"));
+        });
+
+        $('#form-changePassword').submit(function (e) {
+            e.preventDefault();
+            let id = $('#id_nhanviens').val();
+            let Email = $('#c-email').val();
+            let O_Pass = $('#old-pass').val();
+            let N_Pass = $('#new-pass').val();
+            let C_Pass = $('#pass-confirm').val();
+
+            if (Email == "" || O_Pass == "" || N_Pass == "" || C_Pass == "") {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Không được để trống thông tin!",
+                    timer: 5000
+                });
+                return;
+            }
+
+            if (N_Pass.length < 8 || C_Pass.length < 8) {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Mật khẩu mới quá ngắn!",
+                    timer: 5000
+                });
+                return;
+            }
+            if (N_Pass != C_Pass) {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Mật khẩu xác nhận không trùng khớp!",
+                    timer: 5000
+                });
+                return;
+            }
+            $.ajax({
+                type: 'post',
+                url: '/NhanVien/ChangePassword',
+                data: {
+                    Id: id,
+                    Email: Email,
+                    PasswordConfirm: O_Pass,
+                    Password: N_Pass,
+                },
+                success: function (data) {
+                    console.log(data)
+                    if (data.code == 200) {
+                        cuteToast({
+                            type: "success", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+                        $('#modal-change').modal('hide');
+                        sessionStorage.clear();
+                        loadAdminLogin()
+                    } else {
+                        cuteToast({
+                            type: "error", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+                    }
+
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        })
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

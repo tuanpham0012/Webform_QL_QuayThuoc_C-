@@ -1,0 +1,515 @@
+﻿
+@{
+    ViewBag.Title = "Cart";
+    Layout = "~/Views/Layout/User_Layout.cshtml";
+}
+
+<div class="bg-light py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mb-0">
+                <a href="index.html">Home</a> <span class="mx-2 mb-0">/</span>
+                <strong class="text-black">Cart</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="site-section">
+    <div class="container">
+        <div class="row mb-5" id="cart-container">
+            <form class="col-md-12" method="post">
+                <div class="site-blocks-table">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="product-thumbnail">Hình ảnh</th>
+                                <th class="product-name">Tên sản phẩm</th>
+                                <th class="product-price">Giá bán</th>
+                                <th class="product-quantity">Số lượng</th>
+                                <th class="product-total">Thành tiền</th>
+                                <th class="product-remove">Xóa</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cart">
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+
+        <div class="row mb-5" id="order-container">
+            <form class="col-md-12" method="post">
+                <div class="site-blocks-table">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="product-thumbnail">Mã giao dịch</th>
+                                <th class="product-name">Tên người nhận</th>
+                                <th class="product-price">Liên hệ</th>
+                                <th class="product-quantity">Địa chỉ nhận</th>
+                                <th class="product-quantity">Phương thức thanh toán</th>
+                                <th class="product-total">Trạng thái</th>
+                                <th class="product-remove">Xem chi tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody id="order">
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row mb-5">
+                    <div class="col-md-6">
+                        <a href="/Home/SanPham"><button class="btn btn-outline-primary btn-md btn-block">Tiếp tục mua sắm</button></a>
+                    </div>
+                    <div class="col-md-6">
+                        <button class="btn btn-outline-primary btn-md btn-block" id="DonHang">Đơn hàng đã đặt</button>
+                        <button class="btn btn-outline-primary btn-md btn-block" id="GioHang">Giỏ hàng</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 pl-5">
+                <div class="row justify-content-end">
+                    <div class="col-md-7" id="tt">
+                        <div class="row">
+                            <div class="col-md-12 text-right border-bottom mb-5">
+                                <h3 class="text-black h4 text-uppercase">Tổng hóa đơn</h3>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <span class="text-black">Giảm giá</span>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <strong class="text-black" id="GiamGia">0đ</strong>
+                            </div>
+                        </div>
+                        <div class="row mb-5">
+                            <div class="col-md-6">
+                                <span class="text-black">Tổng tiền</span>
+                            </div>
+                            <div class="col-md-6 text-right">
+                                <strong class="text-black" id="TongTien">0đ</strong>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn btn-primary btn-lg btn-block" id="DatHang">
+                                    Đặt hàng
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*-- Modal chi tiết đơn hàng --*@
+<div class="modal fade" id="modal-DonDat" style="margin-top:60px;">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Hóa đơn đã đặt:</h4>
+                <button readonly type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form class="form-inline" style="margin-bottom:15px;margin:auto;font-size:18px;color:black;">
+                    <div class="form-group mx-sm-3 mb-2" style="margin-top:5px;">
+                        <label for="sr-Ngay">Mã giao dịch: </label>
+                        <label id="MaGG"></label>
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2" style="margin-top:5px;">
+                        <label for="sr-Ngay">Hình thức thanh toán:</label>
+                        <label id="HTTT"></label>
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2" style="margin-top:5px;">
+                        <label for="sr-Ngay">Trạng thái:</label>
+                        <label id="TrangThai"></label>
+                    </div>
+                    <div class="form-group mx-sm-3 mb-2" style="margin-top:5px;">
+                        <label for="sr-Ngay">Ngày đặt:</label>
+                        <label id="NgayTao"></label>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Tên Sản Phẩm</th>
+                                <th scope="col">Giá Bán</th>
+                                <th scope="col">Giảm Giá</th>
+                                <th scope="col">Số Lượng</th>
+                                <th scope="col">Tổng Tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ct-hd"></tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <nav aria-label="Page navigation example" style="margin:8px 180px 0px 0px">
+                    <ul class="pagination" id="model-pag-HDB">
+                    </ul>
+                </nav>
+                <button type="button" class="btn btn-default" id="cancel" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*-- Modal đặt hàng --*@
+<div class="modal fade" id="modal-order">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form action="" id="form-order" method="POST" role="form">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="Title">Thông tin nhận hàng</h4>
+                    <button readonly type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="or-Ten">Tên người nhận</label>
+                        <input type="text" value="" class="form-control" id="or-Ten" placeholder="Tên người nhận">
+                    </div>
+                    <div class="form-group">
+                        <label for="or-DiaChi">Địa chỉ nhận</label>
+                        <input type="text" value="" class="form-control" id="or-DiaChi" placeholder="Địa chỉ nhận hàng">
+                    </div>
+                    <div class="form-group">
+                        <label for="or-LienHe">SDT người nhận</label>
+                        <input type="text" value="" class="form-control" id="or-LienHe" placeholder="SDT người nhận">
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="rd-thanhtoan" value="Thanh toán khi nhận hàng" checked>
+                        <label class="form-check-label" for="exampleRadios1">
+                            Thanh toán khi nhận hàng
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="rd-thanhtoan" value="Thanh toán qua thẻ ngân hàng">
+                        <label class="form-check-label" for="exampleRadios2">
+                            Thanh toán qua thẻ ngân hàng
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="rd-thanhtoan" value="Thanh toán qua ví điện tử">
+                        <label class="form-check-label" for="exampleRadios2">
+                            Thanh toán qua ví điện tử
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                    <button type="submit" class="btn btn-primary">Xác Nhận</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+        var TongDonHang = 0;
+        var TongGiamGia = 0;
+
+        $('document').ready(function () {
+            loadCart();
+            $('#order-container').hide();
+            $('#GioHang').hide();
+        })
+
+        $('#DonHang').click(function () {
+            $('#cart-container').hide();
+            $('#order-container').show();
+            $('#GioHang').show();
+            $('#DonHang').hide();
+            $('#tt').hide();
+            loadDonHang();
+        })
+        $('#GioHang').click(function () {
+            $('#cart-container').show();
+            $('#order-container').hide();
+            $('#GioHang').hide();
+            $('#DonHang').show();
+            $('#tt').show();
+            loadDonHang();
+        })
+
+        function loadDonHang() {
+            $.ajax({
+                type: 'get',
+                url: '/Order/DonDaDat',
+                data: {
+                    Id_NhanVien: Id_NhanVien,
+                }, success: function (data) {
+                    console.log(data);
+                    $('#order').empty();
+                    if (data.data.length > 0) {
+                        
+                        $.each(data.data, function (k, v) {
+                            let html = '<tr id="' + v.Id_Order + '">'
+                            html += '<td>' + v.MaGiaoDich + '</td>'
+                            html += '<td>' + v.TenKhachHang + '</td>'
+                            html += '<td>' + v.LienHe + '</td>'
+                            html += '<td>' + v.DiaChi + '</td>'
+                            html += '<td>' + v.PhuongThucTT + '</td>'
+                            html += '<td>' + v.TrangThai + '</td>'
+                            html += '<td>' + moment(v.NgayTao).format("kk:mm DD-MM-YYYY") + '</td>'
+                            html += '<td style="max-width:150px;" class="text-center">'
+                            html += '<button type="button" name="detail" class="btn btn-info btn-show"><i class="fa fa-info-circle"></i></button>'
+                            html += '</td>'
+                            html += '</tr>'
+                            $('#order').append(html);
+                        })
+                    } else {
+                        let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                        $('#order').append(html);
+                    }
+                }, error: function (error) { console.log(error) }
+            })
+        }
+
+
+        $('#DatHang').click(function (e) {
+            e.preventDefault();
+            $('#modal-order').modal('show');
+        })
+
+        $(document).on('click', 'button[name="detail"]', function () {
+            $('#modal-DonDat').modal('show');
+            let id = $(this).closest('tr').attr('id');
+            $.ajax({
+                type: 'get',
+                url: "/Order/ChiTietDonHang",
+                data: {
+                    Id: id,
+                },
+                success: function (data) {
+                    console.log(data)
+                    $('#ct-hd').empty();
+                    if (data.data.length > 0) {
+                        $.each(data.data, function (k, v) {
+                            let html = '<tr id="' + v.Id + '">'
+                            html += '<td>' + k + '</td>'
+                            html += '<td>' + v.TenSp + '</td>'
+                            html += '<td>' + v.GiaBan + '</td>'
+                            html += '<td>' + v.GiamGia + '</td>'
+                            html += '<td>' + v.SoLuong + '</td>'
+                            html += '<td>' + v.TongTien + '</td>'
+                            html += '</tr>'
+                            $('#ct-hd').append(html);
+                        })
+                        $('#MaGG').html(data.order.MaGiaoDich);
+                        $('#HTTT').html(data.order.PhuongThucTT);
+                        $('#TrangThai').html(data.order.TrangThai);
+                        $('#NgayTao').html(moment(data.order.NgayTao).format("kk:mm DD-MM-YYYY"));
+
+
+                    } else {
+                        let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                        $('#ct-hd').empty();
+                    }
+                }, error: function (error) { console.log(error) }
+            })
+        })
+
+
+        $(document).on('click', 'button[name="minus"]', function () {
+
+            let id = $(this).closest('tr').attr('id');
+            let soluongsp = $('#sl-sp' + id).val();
+            soluongsp--;
+            if (soluongsp == 0) {
+                cuteAlert({
+                    type: "question",
+                    title: "Xóa sản phẩm",
+                    message: "Bạn có muốn xóa sản phẩm khỏi đơn hàng?",
+                    confirmText: "Đồng Ý",
+                    cancelText: "Hủy"
+                }).then((e) => {
+                    if (e == ("confirm")) {
+                        $.ajax({
+                            type: "Post",
+                            url: "/DonHang/ThemDonHang",
+                            data: {
+                                Id_KhoHang: id,
+                                Id_NhanVien: sessionStorage.getItem("Id_NhanVien"),
+                                SoLuong: 0,
+                                check: false,
+                            },
+                            success: function (data) {
+                                console.log(data)
+                                cuteToast({
+                                    type: "success", // or 'info', 'error', 'warning'
+                                    message: data.msg,
+                                    timer: 5000
+                                });
+                                loadCart();
+                            }
+                        })
+                    } else {
+                        return;
+                    }
+                })
+            } else {
+                $.ajax({
+                    type: "Post",
+                    url: "/DonHang/ThemDonHang",
+                    data: {
+                        Id_KhoHang: id,
+                        Id_NhanVien: Id_NhanVien,
+                        SoLuong: soluongsp,
+                        check: false,
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        if (data.code != 100) {
+                            cuteToast({
+                                type: "warning", // or 'info', 'error', 'warning'
+                                message: data.msg,
+                                timer: 5000
+                            });
+                        }
+                        loadCart();
+                    }
+                })
+            }
+        })
+
+        $(document).on('click', 'button[name="plus"]', function () {
+            let id = $(this).closest('tr').attr('id');
+            let soluongsp = $('#sl-sp' + id).val();
+            soluongsp++;
+            $.ajax({
+                type: "Post",
+                url: "/DonHang/ThemDonHang",
+                data: {
+                    Id_KhoHang: id,
+                    Id_NhanVien: Id_NhanVien,
+                    SoLuong: soluongsp,
+                    check: false,
+                },
+                success: function (data) {
+                    console.log(data)
+                    if (data.code != 100) {
+                        cuteToast({
+                            type: "warning", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+                    }
+                    loadCart();
+                }
+            })
+        })
+
+
+        $(document).on('click', 'a[name="delete"]', function () {
+            cuteAlert({
+                type: "question",
+                title: "Xóa sản phẩm",
+                message: "Bạn có muốn xóa sản phẩm khỏi đơn hàng?",
+                confirmText: "Đồng Ý",
+                cancelText: "Hủy"
+            }).then((e) => {
+                if (e == ("confirm")) {
+                    let id = $(this).closest('tr').attr('id');
+                    $.ajax({
+                        type: "Post",
+                        url: "/DonHang/ThemDonHang",
+                        data: {
+                            Id_KhoHang: id,
+                            Id_NhanVien: Id_NhanVien,
+                            SoLuong: 0,
+                            check: false,
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            cuteToast({
+                                type: "success", // or 'info', 'error', 'warning'
+                                message: data.msg,
+                                timer: 5000
+                            });
+                            loadCart();
+                        }
+                    })
+                } else {
+                    return;
+                }
+            })
+        })
+
+
+        $('#form-order').submit(function (e) {
+            e.preventDefault();
+            let PhuongThucTT = "";
+            let selected = $("input[type='radio'][name='rd-thanhtoan']:checked");
+            if (selected.length > 0) {
+                PhuongThucTT = selected.val();
+            } else {
+                alert('chưa chọn hình thức thanh toán')
+            }
+            let TenNd = $('#or-Ten').val();
+            let DiaChi = $('#or-DiaChi').val();
+            let LienHe = $('#or-LienHe').val();
+            if (TenNd == '' || DiaChi == '' || LienHe == '') {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Không được để trống thông tin!",
+                    timer: 5000
+                });
+                return;
+            }
+            cuteAlert({
+                type: "question",
+                title: "Xác nhận đặt hàng",
+                message: "Bạn muốn tạo đơn hàng?",
+                confirmText: "Đồng Ý",
+                cancelText: "Hủy"
+            }).then((e) => {
+                if (e == ("confirm")) {
+                    $.ajax({
+                        type: "Post",
+                        url: "/Order/DatHang",
+                        data: {
+                            TenKhachHang: TenNd,
+                            LienHe: LienHe,
+                            DiaChi: DiaChi,
+                            PhuongThucTT: PhuongThucTT,
+                            Id_NhanVien: Id_NhanVien,
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            cuteToast({
+                                type: "success", // or 'info', 'error', 'warning'
+                                message: data.msg,
+                                timer: 5000
+                            });
+                            loadCart();
+                            $('#modal-order').modal('hide');
+                        }
+                    })
+                } else {
+                    return;
+                }
+            })
+        })
+
+    </script>
+}
+
+
+
+

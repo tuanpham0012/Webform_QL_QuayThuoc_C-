@@ -1,0 +1,150 @@
+﻿
+@{
+    ViewBag.Title = "ChiTietSanPham";
+    Layout = "~/Views/Layout/User_Layout.cshtml";
+}
+
+<div class="bg-light py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 mb-0">
+                <a href="index.html">Trang chủ</a> <span class="mx-2 mb-0">/</span> <a href="shop.html">Sản phẩm</a> <span class="mx-2 mb-0">/</span> <strong class="text-black TenSp">Ibuprofen Tablets, 200mg</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="site-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 mr-auto">
+                <div class="border text-center" id="image">
+                    <img src="images/product_07_large.png" alt="Image" class="img-fluid p-5">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2 class="text-black TenSp">Ibuprofen Tablets, 200mg</h2>
+                <p id="LoaiSp">
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Pariatur, vitae, explicabo? Incidunt facere, natus
+                    soluta dolores iusto! Molestiae expedita veritatis nesciunt doloremque sint asperiores fuga voluptas,
+                    distinctio, aperiam, ratione dolore.
+                </p>
+
+                <div id="GiaBan"><p><del>$95.00</del>  <strong class="text-primary h4">$55.00</strong></p></div>
+
+                <div class="mb-5">
+                    <div class="input-group mb-3" style="max-width: 220px;">
+                        <div class="input-group-prepend">
+                            <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
+                        </div>
+                        <input type="text" id="SoLuong" class="form-control text-center" value="1" placeholder=""
+                               aria-label="Example text with button addon" aria-describedby="button-addon1">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
+                        </div>
+                    </div>
+
+                </div>
+                <p><a href="javascript:void(0)" id="add-to-card" class="buy-now btn btn-sm height-auto px-4 py-3 btn-primary">Add To Cart</a></p>
+
+                <div class="mt-5">
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                            <table class="table custom-table">
+                                <thead>
+                                <th>Thông tin sản phẩm</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td id="ThongTinSp"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+        let params = new URLSearchParams(location.search);
+        let id_sp = params.get('id');
+        
+        $('document').ready(function () {
+            loadData();
+        })
+
+        function loadData() {
+            $.ajax({
+                type: 'get',
+                url: '/Order/ChiTietSp',
+                data: {
+                    id: id_sp,
+                },
+                success: function (data) {
+                    console.log(data);
+                    $('.TenSp').html(data.data.TenSp);
+                    $('#LoaiSp').html(data.data.LoaiSp);
+                    let htm = '';
+                    if (data.data.GiamGia > 0) {
+                        htm = '<p><del>' + formatter.format(data.data.GiaBan) + '</del>  <strong class="text-primary h4">' + formatter.format(data.data.GiaBan - data.data.GiamGia) + '</strong></p>'
+                    }
+                    else {
+                        htm = '<p><strong class="text-primary h4">' + formatter.format(data.data.GiaBan) + '</strong></p>'
+                    }
+                    $('#image').html('<img src="../../Content/User_asset/images/' + data.data.HinhAnh + '" alt="Image" class="img-fluid p-5">')
+                    $('#GiaBan').html(htm);
+                    $('#ThongTinSp').html(data.data.ThongTin);
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        }
+
+        $('#add-to-card').click(function (e) {
+            let Sl = $('#SoLuong').val();
+
+            if (sessionStorage.getItem("Id_NhanVien") == null) {
+                alert("Chưa đăng nhập")
+                return;
+            }
+
+            $.ajax({
+                type: 'post',
+                url: '/DonHang/ThemDonHang',
+                data: {
+                    Id_KhoHang: id_sp,
+                    Id_NhanVien: sessionStorage.getItem("Id_NhanVien"),
+                    SoLuong: Sl,
+                    check: true,
+                },
+                success: function (data) {
+                    console.log(data)
+                    if (data.code == 200) {
+                        cuteToast({
+                            type: "success", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+
+                    }
+                    if (data.code == 500) {
+                        cuteToast({
+                            type: "error", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+
+                    }
+                    loadData();
+                    loadCart();
+                }, error: function (error) { }
+            })
+        })
+
+    </script>
+}

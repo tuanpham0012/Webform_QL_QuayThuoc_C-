@@ -1,0 +1,347 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="QLQuayThuocModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="ChucVu">
+    <Key>
+      <PropertyRef Name="Id_ChucVu" />
+    </Key>
+    <Property Name="Id_ChucVu" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Ten" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="BacLuong" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="NhanViens" Relationship="Self.FK_NhanViens_ToTable" FromRole="ChucVu" ToRole="NhanViens" />
+  </EntityType>
+  <EntityType Name="DonHang">
+    <Key>
+      <PropertyRef Name="Id_DonHang" />
+    </Key>
+    <Property Name="Id_DonHang" Type="Int32" Nullable="false" />
+    <Property Name="Id_KhoHang" Type="Int32" />
+    <Property Name="SoLuong" Type="Int32" />
+    <Property Name="TongGia" Type="Int32" />
+    <Property Name="Id_NhanVien" Type="Int32" />
+    <NavigationProperty Name="KhoHang" Relationship="Self.FK_DonHang_ToTable" FromRole="DonHang" ToRole="KhoHang" />
+    <NavigationProperty Name="NhanVien" Relationship="Self.FK_DonHang_ToTable_1" FromRole="DonHang" ToRole="NhanViens" />
+  </EntityType>
+  <EntityType Name="HoaDonBan">
+    <Key>
+      <PropertyRef Name="Id_HoaDonBan" />
+    </Key>
+    <Property Name="Id_HoaDonBan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaHoaDon" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TongTien" Type="Int32" />
+    <Property Name="Id_NhanVien" Type="Int32" />
+    <Property Name="Id_KhachHang" Type="Int32" />
+    <Property Name="NgayTao" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="NhanVien" Relationship="Self.FK_HoaDonBan_ToTable" FromRole="HoaDonBan" ToRole="NhanViens" />
+    <NavigationProperty Name="KhachHang" Relationship="Self.FK_HoaDonBan_ToTable_1" FromRole="HoaDonBan" ToRole="KhachHang" />
+    <NavigationProperty Name="SanPhamBans" Relationship="Self.FK_SanPhamBan_ToTable" FromRole="HoaDonBan" ToRole="SanPhamBan" />
+  </EntityType>
+  <EntityType Name="HoaDonNhap">
+    <Key>
+      <PropertyRef Name="Id_HoaDonNhap" />
+    </Key>
+    <Property Name="Id_HoaDonNhap" Type="Int32" Nullable="false" />
+    <Property Name="MaHoaDonNhap" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TongTien" Type="Int32" />
+    <Property Name="Id_NhanVien" Type="Int32" />
+    <Property Name="Id_NhaCC" Type="Int32" />
+    <Property Name="NgayTao" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="NhanVien" Relationship="Self.FK_HoaDonNhap_ToTable" FromRole="HoaDonNhap" ToRole="NhanViens" />
+    <NavigationProperty Name="NhaCungCap" Relationship="Self.FK_HoaDonNhap_ToTable_1" FromRole="HoaDonNhap" ToRole="NhaCungCap" />
+  </EntityType>
+  <EntityType Name="KhachHang">
+    <Key>
+      <PropertyRef Name="Id_KhachHang" />
+    </Key>
+    <Property Name="Id_KhachHang" Type="Int32" Nullable="false" />
+    <Property Name="TenKhachHang" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="DiaChi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LienHe" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="LoaiThanhVien" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="HoaDonBans" Relationship="Self.FK_HoaDonBan_ToTable_1" FromRole="KhachHang" ToRole="HoaDonBan" />
+  </EntityType>
+  <EntityType Name="KhoHang">
+    <Key>
+      <PropertyRef Name="Id_KhoHang" />
+    </Key>
+    <Property Name="Id_KhoHang" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaHangHoa" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Id_SanPham" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+    <Property Name="SoLuong" Type="Int32" />
+    <Property Name="GiaBan" Type="Int32" />
+    <Property Name="GiamGia" Type="Int32" />
+    <Property Name="NgaySX" Type="DateTime" Precision="0" />
+    <Property Name="HanSD" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="DonHangs" Relationship="Self.FK_DonHang_ToTable" FromRole="KhoHang" ToRole="DonHang" />
+  </EntityType>
+  <EntityType Name="LoaiSP">
+    <Key>
+      <PropertyRef Name="id_LoaiSP" />
+    </Key>
+    <Property Name="id_LoaiSP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaLoaiSP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TenLoaiSP" Type="String" MaxLength="225" FixedLength="false" Unicode="true" />
+    <Property Name="DaXoa" Type="Boolean" />
+    <NavigationProperty Name="SanPhams" Relationship="Self.FK_SanPham_ToTable" FromRole="LoaiSP" ToRole="SanPham" />
+  </EntityType>
+  <EntityType Name="NhaCungCap">
+    <Key>
+      <PropertyRef Name="Id_NhaCC" />
+    </Key>
+    <Property Name="Id_NhaCC" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TenNhaCC" Type="String" MaxLength="225" FixedLength="false" Unicode="true" />
+    <Property Name="MaNhaCC" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DiaChi" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="LienHe" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="HoaDonNhaps" Relationship="Self.FK_HoaDonNhap_ToTable_1" FromRole="NhaCungCap" ToRole="HoaDonNhap" />
+  </EntityType>
+  <EntityType Name="NhanVien">
+    <Key>
+      <PropertyRef Name="Id_NhanVien" />
+    </Key>
+    <Property Name="Id_NhanVien" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaNV" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TenNV" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="225" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="225" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Id_chucvu" Type="Int32" Nullable="false" />
+    <Property Name="DaXoa" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ChucVu" Relationship="Self.FK_NhanViens_ToTable" FromRole="NhanViens" ToRole="ChucVu" />
+    <NavigationProperty Name="DonHangs" Relationship="Self.FK_DonHang_ToTable_1" FromRole="NhanViens" ToRole="DonHang" />
+    <NavigationProperty Name="HoaDonBans" Relationship="Self.FK_HoaDonBan_ToTable" FromRole="NhanViens" ToRole="HoaDonBan" />
+    <NavigationProperty Name="HoaDonNhaps" Relationship="Self.FK_HoaDonNhap_ToTable" FromRole="NhanViens" ToRole="HoaDonNhap" />
+  </EntityType>
+  <EntityType Name="SanPham">
+    <Key>
+      <PropertyRef Name="id_SanPham" />
+    </Key>
+    <Property Name="id_SanPham" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaSP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TenSP" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="id_LoaiSP" Type="Int32" />
+    <Property Name="ThongTin" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="DonVi" Type="String" MaxLength="225" FixedLength="false" Unicode="true" />
+    <Property Name="HinhAnh" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="DaXoa" Type="Boolean" />
+    <NavigationProperty Name="LoaiSP" Relationship="Self.FK_SanPham_ToTable" FromRole="SanPham" ToRole="LoaiSP" />
+    <NavigationProperty Name="SanPhamBans" Relationship="Self.FK_SanPhamBan_ToTable_1" FromRole="SanPham" ToRole="SanPhamBan" />
+  </EntityType>
+  <EntityType Name="SanPhamBan">
+    <Key>
+      <PropertyRef Name="Id_SanPhamBan" />
+    </Key>
+    <Property Name="Id_SanPhamBan" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Id_HoaDonBan" Type="Int32" />
+    <Property Name="Id_SanPham" Type="Int32" />
+    <Property Name="SoLuong" Type="Int32" />
+    <Property Name="GiaBan" Type="Int32" />
+    <Property Name="NgayBan" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="HoaDonBan" Relationship="Self.FK_SanPhamBan_ToTable" FromRole="SanPhamBan" ToRole="HoaDonBan" />
+    <NavigationProperty Name="SanPham" Relationship="Self.FK_SanPhamBan_ToTable_1" FromRole="SanPhamBan" ToRole="SanPham" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id_NhanVien" />
+    </Key>
+    <Property Name="Id_NhanVien" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaNV" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="TenNV" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="225" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="password" Type="String" MaxLength="225" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="id_chucvu" Type="Int32" Nullable="false" />
+    <Property Name="DaXoa" Type="Boolean" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_NhanViens_ToTable">
+    <End Role="ChucVu" Type="Self.ChucVu" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="NhanViens" Type="Self.NhanVien" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ChucVu">
+        <PropertyRef Name="Id_ChucVu" />
+      </Principal>
+      <Dependent Role="NhanViens">
+        <PropertyRef Name="Id_chucvu" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DonHang_ToTable">
+    <End Role="KhoHang" Type="Self.KhoHang" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DonHang" Type="Self.DonHang" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="KhoHang">
+        <PropertyRef Name="Id_KhoHang" />
+      </Principal>
+      <Dependent Role="DonHang">
+        <PropertyRef Name="Id_KhoHang" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DonHang_ToTable_1">
+    <End Role="NhanViens" Type="Self.NhanVien" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DonHang" Type="Self.DonHang" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhanViens">
+        <PropertyRef Name="Id_NhanVien" />
+      </Principal>
+      <Dependent Role="DonHang">
+        <PropertyRef Name="Id_NhanVien" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_HoaDonBan_ToTable">
+    <End Role="NhanViens" Type="Self.NhanVien" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="HoaDonBan" Type="Self.HoaDonBan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhanViens">
+        <PropertyRef Name="Id_NhanVien" />
+      </Principal>
+      <Dependent Role="HoaDonBan">
+        <PropertyRef Name="Id_NhanVien" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_HoaDonBan_ToTable_1">
+    <End Role="KhachHang" Type="Self.KhachHang" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="HoaDonBan" Type="Self.HoaDonBan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="KhachHang">
+        <PropertyRef Name="Id_KhachHang" />
+      </Principal>
+      <Dependent Role="HoaDonBan">
+        <PropertyRef Name="Id_KhachHang" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SanPhamBan_ToTable">
+    <End Role="HoaDonBan" Type="Self.HoaDonBan" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="SanPhamBan" Type="Self.SanPhamBan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HoaDonBan">
+        <PropertyRef Name="Id_HoaDonBan" />
+      </Principal>
+      <Dependent Role="SanPhamBan">
+        <PropertyRef Name="Id_HoaDonBan" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_HoaDonNhap_ToTable">
+    <End Role="NhanViens" Type="Self.NhanVien" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="HoaDonNhap" Type="Self.HoaDonNhap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhanViens">
+        <PropertyRef Name="Id_NhanVien" />
+      </Principal>
+      <Dependent Role="HoaDonNhap">
+        <PropertyRef Name="Id_NhanVien" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_HoaDonNhap_ToTable_1">
+    <End Role="NhaCungCap" Type="Self.NhaCungCap" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="HoaDonNhap" Type="Self.HoaDonNhap" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NhaCungCap">
+        <PropertyRef Name="Id_NhaCC" />
+      </Principal>
+      <Dependent Role="HoaDonNhap">
+        <PropertyRef Name="Id_NhaCC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SanPham_ToTable">
+    <End Role="LoaiSP" Type="Self.LoaiSP" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="SanPham" Type="Self.SanPham" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LoaiSP">
+        <PropertyRef Name="id_LoaiSP" />
+      </Principal>
+      <Dependent Role="SanPham">
+        <PropertyRef Name="id_LoaiSP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SanPhamBan_ToTable_1">
+    <End Role="SanPham" Type="Self.SanPham" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="SanPhamBan" Type="Self.SanPhamBan" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SanPham">
+        <PropertyRef Name="id_SanPham" />
+      </Principal>
+      <Dependent Role="SanPhamBan">
+        <PropertyRef Name="Id_SanPham" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="QLQuayThuocEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="ChucVus" EntityType="Self.ChucVu" />
+    <EntitySet Name="DonHangs" EntityType="Self.DonHang" />
+    <EntitySet Name="HoaDonBans" EntityType="Self.HoaDonBan" />
+    <EntitySet Name="HoaDonNhaps" EntityType="Self.HoaDonNhap" />
+    <EntitySet Name="KhachHangs" EntityType="Self.KhachHang" />
+    <EntitySet Name="KhoHangs" EntityType="Self.KhoHang" />
+    <EntitySet Name="LoaiSPs" EntityType="Self.LoaiSP" />
+    <EntitySet Name="NhaCungCaps" EntityType="Self.NhaCungCap" />
+    <EntitySet Name="NhanViens" EntityType="Self.NhanVien" />
+    <EntitySet Name="SanPhams" EntityType="Self.SanPham" />
+    <EntitySet Name="SanPhamBans" EntityType="Self.SanPhamBan" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_NhanViens_ToTable" Association="Self.FK_NhanViens_ToTable">
+      <End Role="ChucVu" EntitySet="ChucVus" />
+      <End Role="NhanViens" EntitySet="NhanViens" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DonHang_ToTable" Association="Self.FK_DonHang_ToTable">
+      <End Role="KhoHang" EntitySet="KhoHangs" />
+      <End Role="DonHang" EntitySet="DonHangs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DonHang_ToTable_1" Association="Self.FK_DonHang_ToTable_1">
+      <End Role="NhanViens" EntitySet="NhanViens" />
+      <End Role="DonHang" EntitySet="DonHangs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_HoaDonBan_ToTable" Association="Self.FK_HoaDonBan_ToTable">
+      <End Role="NhanViens" EntitySet="NhanViens" />
+      <End Role="HoaDonBan" EntitySet="HoaDonBans" />
+    </AssociationSet>
+    <AssociationSet Name="FK_HoaDonBan_ToTable_1" Association="Self.FK_HoaDonBan_ToTable_1">
+      <End Role="KhachHang" EntitySet="KhachHangs" />
+      <End Role="HoaDonBan" EntitySet="HoaDonBans" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SanPhamBan_ToTable" Association="Self.FK_SanPhamBan_ToTable">
+      <End Role="HoaDonBan" EntitySet="HoaDonBans" />
+      <End Role="SanPhamBan" EntitySet="SanPhamBans" />
+    </AssociationSet>
+    <AssociationSet Name="FK_HoaDonNhap_ToTable" Association="Self.FK_HoaDonNhap_ToTable">
+      <End Role="NhanViens" EntitySet="NhanViens" />
+      <End Role="HoaDonNhap" EntitySet="HoaDonNhaps" />
+    </AssociationSet>
+    <AssociationSet Name="FK_HoaDonNhap_ToTable_1" Association="Self.FK_HoaDonNhap_ToTable_1">
+      <End Role="NhaCungCap" EntitySet="NhaCungCaps" />
+      <End Role="HoaDonNhap" EntitySet="HoaDonNhaps" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SanPham_ToTable" Association="Self.FK_SanPham_ToTable">
+      <End Role="LoaiSP" EntitySet="LoaiSPs" />
+      <End Role="SanPham" EntitySet="SanPhams" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SanPhamBan_ToTable_1" Association="Self.FK_SanPhamBan_ToTable_1">
+      <End Role="SanPham" EntitySet="SanPhams" />
+      <End Role="SanPhamBan" EntitySet="SanPhamBans" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

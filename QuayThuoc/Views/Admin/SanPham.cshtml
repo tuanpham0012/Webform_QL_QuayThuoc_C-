@@ -1,0 +1,531 @@
+﻿
+@{
+    ViewBag.Title = "SanPham";
+    Layout = "~/Views/Layout/Admin_Layout.cshtml";
+}
+
+<style>
+    #ed {
+        max-width: 120px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<div class="page-header">
+    <h3 class="page-title">
+        <span class="page-title-icon bg-gradient-primary text-white mr-2">
+            <i class="mdi mdi-cube"></i>
+        </span> Sản Phẩm
+    </h3>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+
+                <form class="form-inline" style="margin-bottom:15px;">
+
+                    <div class="form-group mx-sm-3 mb-2" style="margin-top:5px;">
+                        <label for="search" class="sr-only">search</label>
+                        <input type="text" class="form-control" id="search" name="search" placeholder="Tìm kiếm sản phẩm">
+                    </div>
+                    <button type="button" id="btn-search" class="btn btn-outline-info"><i class="fa fa-search" aria-hidden="true"></i></button>
+
+                    <div class="form-group mx-sm-5 mb-2">
+                        <label for="inputState" style="margin-right:10px;">Loại Sản Phẩm</label>
+                        <select class="custom-select mr-sm-4" id="loaisp">
+                            <option selected value="-1">Tất cả sản phẩm</option>
+                            @foreach (var item in ViewBag.LoaiSp)
+                            {
+                                <option value="@item.Id_LoaiSP">@item.TenLoaiSP</option>
+                            }
+                        </select>
+                    </div>
+
+                    <button type="button" style="margin-bottom:10px;" class="btn btn-success btn-add" id="themSp"> <i class="fa fa-plus-circle" aria-hidden="true"></i> Sản Phẩm Mới</button>
+                </form>
+                
+
+                <br />
+                <br />
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Tên Sản Phẩm</th>
+                                <th scope="col">Mã Sản Phẩm</th>
+                                <th scope="col">Loại Sản Phẩm</th>
+                                <th scope="col">Thông Tin</th>
+                                <th scope="col">Đơn Vị</th>
+                                <th scope="col">src Hình Ảnh</th>
+                                <th class="text-center">Xử lý</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sanPham"></tbody>
+                    </table>
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination" id="pagination">
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+
+        @*-- Modal sản phẩm --*@
+        <div class="modal fade" id="modal-edit-sp">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <form action="" id="form-update-sp" method="POST" role="form">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="Title_sp"></h4>
+                            <button readonly type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="number" hidden id="id_sanpham" />
+                            <div class="form-group">
+                                <label for="tensp-edit">Mã sản phẩm</label>
+                                <input name="MaSp" type="text" value="" class="form-control" id="MaSp" placeholder="Mã Sản Phẩm">
+                            </div>
+                            <div class="form-group">
+                                <label for="tensp-edit">Tên sản phẩm</label>
+                                <input name="TenSp" type="text" value="" class="form-control" id="TenSp" placeholder="Tên Sản Phẩm">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Loại sản phẩm</label>
+                                <select id="LoaiSp" class="form-control">
+                                    <option selected>--Chọn...</option>
+                                    @foreach (var item in ViewBag.Loaisp)
+                                    {
+                                        <option value="@item.Id_LoaiSP">@item.TenLoaiSP</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Nhà cung cấp</label>
+                                <select id="NhaCC" class="form-control">
+                                    <option selected>--Chọn...</option>
+                                    @foreach (var item in ViewBag.NhaCC)
+                                    {
+                                        <option value="@item.Id_NhaCC">@item.TenNCC</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Thông tin sản phẩm</label>
+                                <textarea id="ThongTin" name="ThongTin" rows="4" cols="55"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="">Đơn vị</label>
+                                <select id="DonVi" class="form-control">
+                                    <option selected>--Chọn...</option>
+                                    @foreach (var item in ViewBag.DonVi)
+                                    {
+                                        <option value="@item.DonVi1">@item.DonVi1</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="form-group" id="img_file">
+                                <label for="exampleFormControlFile1">Hình ảnh sản phẩm</label>
+                                <input type="file" class="form-control-file" id="fileUpload">
+
+                            </div>
+
+                            <div class="form-group">
+                                <input type="text" class="form-control" id="file_name" />
+                            </div>
+                            <div class="form-group" id="img">
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" id="cancel" data-dismiss="modal">Hủy</button>
+                            <button type="submit" class="btn btn-primary" id="submit_edit">Xác Nhận</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+
+    <script type="text/javascript">
+
+        var pageIndex = 1;
+        var TimKiem = '';
+        var Id_LoaiSp = -1;
+        $(document).ready(function () {
+            loadData(pageIndex, TimKiem, Id_LoaiSp);
+        });
+
+        $('#pagination').on('click', 'li', function (e) {
+            e.preventDefault();
+            var p = $(this).text(); 
+            if (p == '«') {
+                pageIndex--;
+                loadData(pageIndex, TimKiem, Id_LoaiSp);
+            } else if (p == '»') {
+                pageIndex++;
+                loadData(pageIndex, TimKiem, Id_LoaiSp);
+            } else {
+                pageIndex = p;
+                loadData(pageIndex, TimKiem, Id_LoaiSp);
+            }
+           
+        })
+
+        function loadData(pageIndex, TimKiem, Id_LoaiSp) {
+            $.ajax({
+                type: 'get',
+                url: '/SanPham/Show',
+                data: {
+                    pageIndex: pageIndex,
+                    TimKiem: TimKiem,
+                    Id_LoaiSp: Id_LoaiSp,
+                },
+                success: function (data) {
+                    console.log(data);
+                    $('#sanPham').empty();
+                    if (data.data.length > 0) {
+                        console.log(data.msg)
+                        $.each(data.data, function (k, v) {
+                            let html = '<tr id="' + v.Id + '">'
+                            html += '<td>' + k + '</td>'
+                            html += '<td>' + v.TenSp + '</td>'
+                            html += '<td>' + v.MaSp + '</td>'
+                            html += '<td>' + v.TenLoaiSp + '</td>'
+                            html += '<td id="ed">' + v.ThongTin + '</td>'
+                            html += '<td>' + v.DonVi + '</td>'
+                            html += '<td>' + v.HinhAnh + '</td>'
+                            html += '<td style="max-width:150px;" class="text-center">'
+                            html += '<button data-url="" type="button" name="show" class="btn btn-info btn-show"><i class="fa fa-info-circle"></i></button>'
+                            html += '<button data-url="" type="button" name="edit" class="btn btn-warning btn-edit"><i class="fa fa-upload"></i></button>'
+                            html += '<button data-url="" type="button" name="delete" class="btn btn-danger btn-delete"><i class="fa fa-trash"></i></button>'
+                            html += '</td>'
+                            html += '</tr>'
+
+                            $('#sanPham').append(html);
+
+                            if (data.soTrang > 1) {
+                                let li = '';
+                                if (pageIndex > 1) li +='<li class="page-item" ><a class="page-link" href ="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+                                for (i = 1; i <= data.soTrang; i++) {
+                                    if (i == pageIndex) li += '<li class="page-item" ><a class="page-link" href="#" style="background-color: #92a8d1;pointer-events: none;">' + i + '</a></li>'
+                                    else li += '<li class="page-item" ><a class="page-link" href="#">' + i + '</a></li>'
+                                }
+                                if (pageIndex < data.soTrang) li += '<li class="page-item"><a class="page-link" href ="#" aria-label="Next" id="Next"><span aria-hidden="true">&raquo;</span></a></li>'
+                                $('#pagination').html(li);
+
+                            } else {
+                                let li = '<li class="page-item"><a class="page-link" href="#">1</a></li>'
+                                $('#pagination').html(li);
+                            }
+                        })
+                    } else {
+                        let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                        $('#sanPham').append(html);
+                    }
+
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            });
+        }
+
+
+        $(document).on('click', 'button[name="show"]', function () {
+            $('#modal-edit-sp').modal('show');
+            $('#Title_sp').html('Chi Tiết Sản Phẩm');
+            $('#submit_edit').hide();
+            $('#MaSp').attr('readonly', true);
+            $('#TenSp').attr('readonly', true);
+            $('#LoaiSp').attr('disabled', true);
+            $('#ThongTin').attr('readonly', true);
+            $('#DonVi').attr('disabled', true);
+            $('#img_file').hide();
+            $('#img').show();
+            $('#file_name').attr('hidden', false);
+            $('#file_name').attr('readonly', true);
+            let id = $(this).closest('tr').attr('id');
+            $.ajax({
+                type: 'Get',
+                url: '/SanPham/Detail',
+                data: {
+                    id: id,
+                },
+                success: function (data) {
+                    console.log(data)
+                    $('#MaSp').val(data.data.Ma);
+                    $('#TenSp').val(data.data.Ten);
+                    $('#LoaiSp').val(data.data.LoaiSp);
+                    $('#ThongTin').val(data.data.ThongTin);
+                    $('#DonVi').val(data.data.DonVi);
+                    $('#file_name').val(data.data.HinhAnh);
+
+                    let html = '<img src="../../Content/User_asset/images/' + data.data.HinhAnh + '" alt="Hình ảnh sản phẩm" width="135" height="185">';
+                    $('#img').html(html);
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        })
+
+        $(document).on('click', 'button[name="edit"]', function () {
+            $('#modal-edit-sp').modal('show');
+            $('#Title_sp').html('Cập Nhật Sản Phẩm');
+            $('#submit_edit').show();
+            $('#MaSp').attr('readonly', false);
+            $('#TenSp').attr('readonly', false);
+            $('#LoaiSp').attr('disabled', false);
+            $('#ThongTin').attr('readonly', false);
+            $('#DonVi').attr('disabled', false);
+            $('#img_file').show();
+            $('#img').hide();
+            $('#file_name').attr('hidden', false);
+            $('#file_name').attr('readonly', false);
+
+            let id = $(this).closest('tr').attr('id');
+            $.ajax({
+                type: 'Get',
+                url: '/SanPham/Detail',
+                data: {
+                    id: id,
+                },
+                success: function (data) {
+                    console.log(data)
+                    $('#id_sanpham').val(data.data.Id);
+                    $('#MaSp').val(data.data.Ma);
+                    $('#TenSp').val(data.data.Ten);
+                    $('#TenSp').val(data.data.Ten);
+                    $('#LoaiSp').val(data.data.LoaiSp);
+                    $('#NhaCC').val(data.data.NhaCC);
+                    $('#ThongTin').val(data.data.ThongTin);
+                    $('#DonVi').val(data.data.DonVi);
+                    $('#file_name').val(data.data.HinhAnh);
+                }, error: function (jqXHR, textStatus, errorThrown) { }
+            })
+        });
+
+        $('#themSp').click(function () {
+            $('#modal-edit-sp').modal('show');
+            $('#Title_sp').html('Thêm Mới Sản Phẩm');
+            $('#submit_edit').show();
+            $('#MaSp').attr('readonly', false);
+            $('#TenSp').attr('readonly', false);
+            $('#LoaiSp').attr('disabled', false);
+            $('#NhaCC').attr('disabled', false);
+            $('#ThongTin').attr('readonly', false);
+            $('#DonVi').attr('disabled', false);
+            $('#file_name').attr('hidden', true);
+            $('#img_file').show();
+            $('#img').hide();
+            $('#id_sanpham').val('');
+            $('#MaSp').val('');
+            $('#TenSp').val('');
+            $('#ThongTin').val('');
+        })
+
+        $(document).on('click', 'button[name="delete"]', function () {
+            cuteAlert({
+                type: "question",
+                title: "Xóa sản phẩm",
+                message: "Bạn có muốn xóa sản phẩm?",
+                confirmText: "Đồng Ý",
+                cancelText: "Hủy"
+            }).then((e) => {
+                if (e == ("confirm")) {
+                    let id = $(this).closest('tr').attr('id');
+                    $.ajax({
+                        type: "Post",
+                        url: "/SanPham/Delete",
+                        data: {
+                            Id: id
+                        },
+                        success: function (data) {
+                            console.log(data)
+                            cuteToast({
+                                type: "success", // or 'info', 'error', 'warning'
+                                message: data.msg,
+                                timer: 5000
+                            });
+                            loadData(pageIndex, TimKiem, Id_LoaiSp);
+                        }
+                    })
+                } else {
+                    return;
+                }
+            })
+        })
+
+        $('#form-update-sp').submit(function (e) {
+            e.preventDefault();
+
+            let MaSp = $('#MaSp').val();
+            let TenSp = $('#TenSp').val();
+            let LoaiSp = $('#LoaiSp').val();
+            let NhaCC = $('#NhaCC').val();
+
+            if (MaSp == "" || TenSp == "" || LoaiSp == "" || NhaCC == "") {
+                cuteToast({
+                    type: "warning", // or 'info', 'error', 'warning'
+                    message: "Không được để trống thông tin!",
+                    timer: 5000
+                });
+                return;
+            }
+
+
+            let id = $('#id_sanpham').val();
+
+            if (id != "") {
+
+                if (window.FormData !== undefined) {
+
+                    var file = $('#fileUpload').get(0);
+                    var f = file.files;
+
+                    // Create FormData object  
+                    var fileData = new FormData();
+                        fileData.append('file', f[0]);
+                    // Adding one more key to FormData object  
+
+                    $.ajax({
+                        url: '/SanPham/UploadFiles',
+                        type: "POST",
+                        contentType: false, // Not to set any content header  
+                        processData: false, // Not to process data  
+                        data: fileData,
+                        success: function (result) {
+                            
+                        },
+                        error: function (err) {
+                            
+                        }
+                    });
+                }
+                $.ajax({
+                    type: 'Post',
+                    url: '/SanPham/Update',
+                    data: {
+                        Id: $('#id_sanpham').val(),
+                        MaSp: MaSp,
+                        TenSp: TenSp,
+                        LoaiSp: LoaiSp,
+                        NhaCC: NhaCC,
+                        ThongTin: $('#ThongTin').val(),
+                        DonVi: $('#DonVi').val(),
+                        HinhAnh: $('#file_name').val(),
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        cuteToast({
+                            type: "success", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+                        $('#modal-edit-sp').modal('hide');
+                        loadData(pageIndex, TimKiem, Id_LoaiSp);
+                    }, error: function (jqXHR, textStatus, errorThrown) { }
+                })
+            } else {
+
+                if (window.FormData !== undefined) {
+
+                    var file = $('#fileUpload').get(0);
+                    var f = file.files;
+
+                    // Create FormData object  
+                    var fileData = new FormData();
+                    fileData.append('file', f[0]);
+                    // Adding one more key to FormData object  
+
+                    $.ajax({
+                        url: '/SanPham/UploadFiles',
+                        type: "POST",
+                        contentType: false, // Not to set any content header  
+                        processData: false, // Not to process data  
+                        data: fileData,
+                        success: function (result) {
+
+                        },
+                        error: function (err) {
+
+                        }
+                    });
+                }
+                $.ajax({
+                    type: 'Post',
+                    url: '/SanPham/Create',
+                    data: {
+                        MaSp: $('#MaSp').val(),
+                        TenSp: $('#TenSp').val(),
+                        LoaiSp: $('#LoaiSp').val(),
+                        NhaCC: $('#NhaCC').val(),
+                        ThongTin: $('#ThongTin').val(),
+                        DonVi: $('#DonVi').val(),
+                        HinhAnh: f[0].name,
+                    },
+                    success: function (data) {
+                        console.log(data)
+                        cuteToast({
+                            type: "success", // or 'info', 'error', 'warning'
+                            message: data.msg,
+                            timer: 5000
+                        });
+                        $('#modal-edit-sp').modal('hide');
+                        loadData(pageIndex, TimKiem, Id_LoaiSp);
+                    }, error: function (jqXHR, textStatus, errorThrown) { }
+                })
+            }
+
+        })
+        
+        $('#fileUpload').change(function () {
+            var file = $('#fileUpload').get(0);
+            var f = file.files;
+            console.log(f[0]);
+            if (f[0].type == 'image/jpeg' || f[0].type == 'image/png') {
+                if (f[0].size >= 500000000) {
+                    cuteToast({
+                        type: "error", // or 'info', 'error', 'warning'
+                        message: "Kích thước ảnh quá lớn",
+                        timer: 5000
+                    })
+                    $('#fileUpload').val('');
+                } else {
+                    $('#file_name').val(f[0].name);
+                }
+
+            } else {
+                cuteToast({
+                    type: "error", // or 'info', 'error', 'warning'
+                    message: "Chỉ có thể tải lên file ảnh",
+                    timer: 5000
+                })
+                $('#fileUpload').val('');
+            }
+        })
+
+        $('#btn-search').click(function () {
+            TimKiem = $('#search').val();
+            Id_LoaiSp = $('#loaisp').val();
+
+            loadData(pageIndex, TimKiem, Id_LoaiSp);
+        })
+
+        $('#loaisp').change(function () {
+            TimKiem = $('#search').val();
+            Id_LoaiSp = $('#loaisp').val();
+
+            loadData(pageIndex, TimKiem, Id_LoaiSp);
+        })
+
+    </script>
+
+}
+

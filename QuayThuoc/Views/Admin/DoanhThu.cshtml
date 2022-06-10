@@ -1,0 +1,407 @@
+﻿
+@{
+    ViewBag.Title = "DoanhThu";
+    Layout = "~/Views/Layout/Admin_Layout.cshtml";
+}
+
+<div class="page-header">
+    <h3 class="page-title">
+        <span class="page-title-icon bg-gradient-primary text-white mr-2">
+            <i class="mdi mdi-chart-bar"></i>
+        </span> Doanh Thu
+    </h3>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form class="form-inline" style="margin-bottom:15px;">
+
+                    <div class="form-group mx-sm-3 mb-2" style="margin-top:5px;">
+                        <label for="sr-Ngay">Lọc theo ngày</label>
+                        <input type="date" class="form-control" id="sr-Ngay" name="sr-Ngay">
+                    </div>
+
+                    <div class="form-group mx-sm-5 mb-2">
+                        <label for="sr-Thang" style="margin-right:10px;">Lọc theo tháng</label>
+                        <input type="month" class="form-control" id="sr-Thang" name="sr-Thang">
+                    </div>
+
+                    <button type="button" style="margin-bottom:5px;" id="btn-getAll" class="btn btn-outline-info"><i class="fa fa-reply-all" aria-hidden="true"></i></button>
+                </form>
+
+                <br />
+                <br />
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Thời Gian</th>
+                                <th scope="col">Doanh Thu Bán</th>
+                                <th scope="col">Tiền Nhập Hàng</th>
+                                <th scope="col">Thu Chi Khác</th>
+                                <th class="text-center">Xem HD Bán</th>
+                                <th class="text-center">Xem HD Nhập</th>
+                            </tr>
+                        </thead>
+                        <tbody id="DoanhThu"></tbody>
+                    </table>
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination" id="pagination">
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*-- Modal chi tiết hóa đơn bán --*@
+<div class="modal fade" id="modal-HDBan">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Hóa đơn bán ngày: <span id="Title-HDB"></span></h4>
+                <button readonly type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Mã Hóa Đơn</th>
+                                <th scope="col">Tổng Tiền</th>
+                                <th scope="col">Giảm Giá</th>
+                                <th scope="col">Người Tạo</th>
+                                <th scope="col">Khách Hàng</th>
+                                <th scope="col">Ngày Tạo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="HoaDonBan"></tbody>
+                    </table>
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+                <nav aria-label="Page navigation example" style="margin:8px 180px 0px 0px">
+                    <ul class="pagination" id="model-pag-HDB">
+                    </ul>
+                </nav>
+                <button type="button" class="btn btn-default" id="cancel" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*-- Modal chi tiết hóa đơn nhập --*@
+<div class="modal fade" id="modal-HDNhap">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Hóa đơn nhập ngày: <span id="Title-HDN"></span></h4>
+                <button readonly type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">STT</th>
+                                <th scope="col">Mã Hóa Đơn</th>
+                                <th scope="col">Tổng Tiền</th>
+                                <th scope="col">Giảm Giá</th>
+                                <th scope="col">Người Nhập</th>
+                                <th scope="col">Ngày Tạo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="HoaDonNhap"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <nav aria-label="Page navigation example" style="margin:8px 180px 0px 0px">
+                    <ul class="pagination" id="model-pag-HDN">
+                    </ul>
+                </nav>
+                <button type="button" class="btn btn-default" id="cancel" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+
+
+    @section scripts {
+
+        <script type="text/javascript">
+
+            var pageIndex = 1;
+            var TimTheoNgay = moment().format("YYYY-MM-DD");
+            var TimTheoThang = moment().format("YYYY-MM");
+            var Ngay = false;
+            var Thang = false;
+
+            var date = moment().format("YYYY-MM-DD");
+
+            var pageHDB = 1;
+            var pageHDN = 1;
+
+
+            const formatter = new Intl.NumberFormat('vi-en', {
+                style: 'currency',
+                currency: 'VND',
+                minimumFractionDigits: 0
+            })
+
+            $(document).ready(function () {
+                $('#sr-Ngay').val(moment().format("YYYY-MM-DD"));
+                $('#sr-Thang').val(moment().format("YYYY-MM"));
+                loadData(pageIndex, TimTheoNgay, TimTheoThang, Ngay, Thang)
+            })
+
+            function loadData(pageIndex, TimTheoNgay, TimTheoThang, Ngay, Thang) {
+                $.ajax({
+                    type: "GET",
+                    url: "/DoanhThu/LayDoanhThu",
+                    data: {
+                        pageIndex: pageIndex,
+                        TimTheoNgay: TimTheoNgay,
+                        TimTheoThang: TimTheoThang,
+                        Ngay: Ngay,
+                        Thang: Thang,
+                    },
+                    success: function (data) {
+                        TongTien = 0;
+                        console.log(data);
+                        $('#DoanhThu').empty();
+                        if (data.data.length > 0) {
+                            $.each(data.data, function (k, v) {
+                                let html = '<tr id="' + v.Id + '">'
+                                html += '<td>' + k + '</td>'
+                                html += '<td>' + moment(v.Ngay).format("DD-MM-YYYY") + '</td>'
+                                html += '<td>' + v.DoanhThuBan + '</td>'
+                                html += '<td>' + v.TienNhapHang + '</td>'
+                                html += '<td>' + v.ThuChiKhac + '</td>'
+                                html += '<td style="max-width:150px;" class="text-center">'
+                                html += '<button data-date="' + v.Ngay + '" name="show-HDBan" class="btn btn-outline-danger" type ="button"><i class="fa fa-info-circle" aria-hidden="true"></i></button>'
+                                html += '</td>'
+                                html += '<td style="max-width:150px;" class="text-center">'
+                                html += '<button data-date="' + v.Ngay + '" name="show-HDNhap" class="btn btn-outline-danger" type ="button"><i class="fa fa-info-circle" aria-hidden="true"></i></button>'
+                                html += '</td>'
+                                html += '</tr>'
+                                $('#DoanhThu').append(html);
+                            })
+
+                            if (data.soTrang > 1) {
+                                let li = '';
+                                if (pageIndex > 1) li += '<li class="page-item" ><a class="page-link" href ="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+                                for (i = 1; i <= data.soTrang; i++) {
+                                    if (i == pageIndex) li += '<li class="page-item" ><a class="page-link" href="#" style="background-color: #92a8d1;pointer-events: none;">' + i + '</a></li>'
+                                    else li += '<li class="page-item" ><a class="page-link" href="#">' + i + '</a></li>'
+                                }
+                                if (pageIndex < data.soTrang) li += '<li class="page-item"><a class="page-link" href ="#" aria-label="Next" id="Next"><span aria-hidden="true">&raquo;</span></a></li>'
+                                $('#pagination').html(li);
+
+                            } else {
+                                let li = '<li class="page-item"><a class="page-link" href="#">1</a></li>'
+                                $('#pagination').html(li);
+                            }
+
+                        } else {
+                            let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                            $('#DoanhThu').append(html);
+                        }
+                    }, error: function (jqXHR, textStatus, errorThrown) { }
+                })
+            }
+
+            function loadHDBan(pageHDB, TimTheoNgay, TimTheoThang) {
+                $.ajax({
+                    type: "GET",
+                    url: "/HoaDonBan/Show",
+                    data: {
+                        pageIndex: pageHDB,
+                        TimTheoNgay: TimTheoNgay,
+                        TimTheoThang: TimTheoThang,
+                        Ngay: true,
+                        Thang: false,
+                    },
+                    success: function (data) {
+                        TongTien = 0;
+                        console.log(data);
+                        $('#HoaDonBan').empty();
+                        if (data.data.length > 0) {
+                            $.each(data.data, function (k, v) {
+                                let html = '<tr id="' + v.Id + '">'
+                                html += '<td>' + k + '</td>'
+                                html += '<td>' + v.MaHD + '</td>'
+                                html += '<td>' + v.TongTien + '</td>'
+                                html += '<td>' + v.GiamGia + '</td>'
+                                html += '<td>' + v.TenNv + '</td>'
+                                html += '<td>' + v.KhachHang + '</td>'
+                                html += '<td>' + moment(v.NgayTao).format("kk:mm DD-MM-YYYY") + '</td>'
+                                html += '</tr>'
+                                $('#HoaDonBan').append(html);
+                            })
+
+                            if (data.soTrang > 1) {
+                                let li = '';
+                                if (pageHDB > 1) li += '<li class="page-item" ><a class="page-link" href ="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+                                for (i = 1; i <= data.soTrang; i++) {
+                                    if (i == pageHDB) li += '<li class="page-item" ><a class="page-link" href="#" style="background-color: #92a8d1;pointer-events: none;">' + i + '</a></li>'
+                                    else li += '<li class="page-item" ><a class="page-link" href="#">' + i + '</a></li>'
+                                }
+                                if (pageHDB < data.soTrang) li += '<li class="page-item"><a class="page-link" href ="#" aria-label="Next" id="Next"><span aria-hidden="true">&raquo;</span></a></li>'
+                                $('#model-pag-HDB').html(li);
+
+                            } else {
+                                let li = '<li class="page-item"><a class="page-link" href="#">1</a></li>'
+                                $('#model-pag-HDB').html(li);
+                            }
+
+                        } else {
+                            let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                            $('#HoaDonBan').append(html);
+                        }
+                    }, error: function (jqXHR, textStatus, errorThrown) { }
+                })
+            }
+
+            function loadHDNhap(pageHDN, TimTheoNgay, TimTheoThang) {
+                $.ajax({
+                    type: "GET",
+                    url: "/HoaDonNhap/Show",
+                    data: {
+                        pageIndex: pageHDN,
+                        TimTheoNgay: TimTheoNgay,
+                        TimTheoThang: TimTheoThang,
+                        Ngay: true,
+                        Thang: false,
+                    },
+                    success: function (data) {
+                        TongTien = 0;
+                        console.log(data);
+                        $('#HoaDonNhap').empty();
+                        if (data.data.length > 0) {
+                            $.each(data.data, function (k, v) {
+                                let html = '<tr id="' + v.Id + '">'
+                                html += '<td>' + k + '</td>'
+                                html += '<td>' + v.MaHD + '</td>'
+                                html += '<td>' + v.TongTien + '</td>'
+                                html += '<td>' + v.GiamGia + '</td>'
+                                html += '<td>' + v.TenNv + '</td>'
+                                html += '<td>' + moment(v.NgayTao).format("kk:mm DD-MM-YYYY") + '</td>'
+                                html += '</tr>'
+                                $('#HoaDonNhap').append(html);
+                            })
+
+                            if (data.soTrang > 1) {
+                                let li = '';
+                                if (pageHDN > 1) li += '<li class="page-item" ><a class="page-link" href ="#" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+                                for (i = 1; i <= data.soTrang; i++) {
+                                    if (i == pageHDN) li += '<li class="page-item" ><a class="page-link" href="#" style="background-color: #92a8d1;pointer-events: none;">' + i + '</a></li>'
+                                    else li += '<li class="page-item" ><a class="page-link" href="#">' + i + '</a></li>'
+                                }
+                                if (pageHDN < data.soTrang) li += '<li class="page-item"><a class="page-link" href ="#" aria-label="Next" id="Next"><span aria-hidden="true">&raquo;</span></a></li>'
+                                $('#model-pag-HDN').html(li);
+
+                            } else {
+                                let li = '<li class="page-item"><a class="page-link" href="#">1</a></li>'
+                                $('#model-pag-HDN').html(li);
+                            }
+
+                        } else {
+                            let html = '<tr><td colspan="7"><span style="color: red">Không có dữ liệu.</span></td><tr>';
+                            $('#HoaDonNhap').append(html);
+                        }
+                    }, error: function (jqXHR, textStatus, errorThrown) { }
+                })
+            }
+
+            $('#pagination').on('click', 'li', function (e) {
+                e.preventDefault();
+                var p = $(this).text();
+                if (p == '«') {
+                    pageIndex--;
+                    loadData(pageIndex, TimTheoNgay, TimTheoThang, Ngay, Thang)
+                } else if (p == '»') {
+                    pageIndex++;
+                    loadData(pageIndex, TimTheoNgay, TimTheoThang, Ngay, Thang)
+                } else {
+                    pageIndex = p;
+                    loadData(pageIndex, TimTheoNgay, TimTheoThang, Ngay, Thang)
+                }
+
+            })
+
+            $('#model-pag-HDB').on('click', 'li', function (e) {
+                e.preventDefault();
+                var p = $(this).text();
+                if (p == '«') {
+                    pageHDB--;
+                    loadHDBan(pageHDB, date, TimTheoThang);
+                } else if (p == '»') {
+                    pageHDB++;
+                    loadHDBan(pageHDB, date, TimTheoThang);
+                } else {
+                    pageHDB = p;
+                    loadHDBan(pageHDB, date, TimTheoThang);
+                }
+
+            })
+
+            $('#model-pag-HDN').on('click', 'li', function (e) {
+                e.preventDefault();
+                var p = $(this).text();
+                if (p == '«') {
+                    pageHDN--;
+                    loadHDNhap(pageHDN, date, TimTheoThang);
+                } else if (p == '»') {
+                    pageHDN++;
+                    loadHDNhap(pageHDN, date, TimTheoThang);
+                } else {
+                    pageHDN = p;
+                    loadHDNhap(pageHDN, date, TimTheoThang);
+                }
+
+            })
+
+            $('#sr-Ngay').change(function () {
+                TimTheoNgay = moment($('#sr-Ngay').val()).format("YYYY-MM-DD");
+                Ngay = true;
+                Thang = false;
+                loadData(pageIndex, TimTheoNgay, TimTheoThang, Ngay, Thang)
+            })
+
+            $('#sr-Thang').change(function () {
+                TimTheoThang = moment($('#sr-Thang').val()).format("YYYY-MM-DD");
+                Thang = true;
+                Ngay = false;
+                loadData(pageIndex, TimTheoNgay, TimTheoThang, Ngay, Thang)
+            })
+            $('#btn-getAll').click(function () {
+                Thang = false;
+                Ngay = false;
+                loadData(pageIndex, TimTheoNgay, TimTheoThang, Ngay, Thang)
+            })
+
+            $(document).on('click', 'button[name="show-HDBan"]', function () {
+                date = moment($(this).attr('data-date')).format("YYYY-MM-DD");
+                $('#modal-HDBan').modal('show');
+                $('#Title-HDB').html(date);
+                loadHDBan(pageHDB, date, TimTheoThang);
+            })
+            $(document).on('click', 'button[name="show-HDNhap"]', function () {
+                date = moment($(this).attr('data-date')).format("YYYY-MM-DD");
+                $('#modal-HDNhap').modal('show');
+                $('#Title-HDN').html(date);
+                loadHDNhap(pageHDN, date, TimTheoThang);
+            })
+
+        </script>
+
+    }
+
